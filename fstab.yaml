@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: "https://author-p130360-e1272151.adobeaemcloud.com/bin/franklin.delivery/OAPI-Commercial-OMNI/otsuka-codekit-otsukapatientassistance/main"
+    url: "https://author-p172753-e1855059.adobeaemcloud.com/bin/franklin.delivery/OAPI-Commercial-OMNI/otsuka-codekit-otsukapatientassistance/main"
     type: "markup"
     suffix: ".html"
