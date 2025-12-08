@@ -1,0 +1,5 @@
+mountpoints:
+  /:
+    url: "https://author-p130360-e1272151.adobeaemcloud.com/bin/franklin.delivery/OAPI-Commercial-OMNI/otsuka-codekit-boilerplate/main"
+    type: "markup"
+    suffix: ".html"

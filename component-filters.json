@@ -1,0 +1,100 @@
+[
+  {
+    "id": "main",
+    "components": [
+      "section"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "accordions",
+      "audio",
+      "button",
+      "cards",
+      "carousel",
+      "columns",
+      "embed",
+      "flip-cards",
+      "fragment",
+      "hero",
+      "image",
+      "scrolling-timeline",
+      "tabs",
+      "tester-card",
+      "text",
+      "title",
+      "panels",
+      "slides"
+    ]
+  },
+  {
+    "id": "accordions",
+    "components": [
+      "accordion"
+    ]
+  },
+  {
+    "id": "audio",
+    "components": [
+      "source"
+    ]
+  },
+  {
+    "id": "cards",
+    "components": [
+      "card"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "carousel-item"
+    ]
+  },
+  {
+    "id": "columns",
+    "components": [
+      "column"
+    ]
+  },
+  {
+    "id": "column",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title"
+    ]
+  },
+  {
+    "id": "flip-cards",
+    "components": [
+      "flip-card"
+    ]
+  },
+  {
+    "id": "panels",
+    "components": [
+      "panel"
+    ]
+  },
+  {
+    "id": "scrolling-timeline",
+    "components": [
+      "timeline-entry"
+    ]
+  },
+  {
+    "id": "slides",
+    "components": [
+      "slide"
+    ]
+  },
+  {
+    "id": "tabs",
+    "components": [
+      "tabs-item"
+    ]
+  }
+]

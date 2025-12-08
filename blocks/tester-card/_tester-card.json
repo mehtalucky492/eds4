@@ -1,0 +1,90 @@
+{
+  "definitions": [
+    {
+      "title": "Tester Card",
+      "id": "tester-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Tester Card",
+              "model": "tester-card"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "tester-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Profile Image",
+          "required": true,
+          "description": "Profile photo of the testimonial author",
+          "multi": false,
+          "rootPath": "/content/dam/otsuka/testimonials"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt Text",
+          "required": true,
+          "description": "Alternative text for accessibility",
+          "maxLength": 125
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "quote",
+          "label": "Testimonial Quote",
+          "required": true,
+          "description": "The testimonial text (recommended length: 50-100 words)",
+          "maxLength": 500,
+          "placeholder": "Enter the testimonial quote here..."
+        },
+        {
+          "component": "container",
+          "valueType": "string",
+          "name": "authorContainer",
+          "label": "Author Container",
+          "required": true,
+          "collapsible": true,
+          "fields": [
+            {
+              "component": "text",
+              "valueType": "string",
+              "name": "authorName",
+              "label": "Author Name",
+              "required": true,
+              "description": "Name of the person providing the testimonial"
+            },
+            {
+              "component": "text",
+              "valueType": "string",
+              "name": "authorPosition",
+              "label": "Author Position",
+              "required": false,
+              "description": "Job title or role of the author"
+            },
+            {
+              "component": "text",
+              "valueType": "string",
+              "name": "authorCompany",
+              "label": "Author Company",
+              "required": false,
+              "description": "Company or organization of the author"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

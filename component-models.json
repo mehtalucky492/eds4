@@ -1,0 +1,820 @@
+[
+  {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "jcr:title",
+        "label": "Title"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "jcr:description",
+        "label": "Description"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "keywords",
+        "multi": true,
+        "label": "Keywords"
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Alt Text"
+      }
+    ]
+  },
+  {
+    "id": "section",
+    "fields": [
+      {
+        "component": "text",
+        "name": "name",
+        "label": "Section Name",
+        "description": "The label shown for this section in the Content Tree"
+      },
+      {
+        "component": "multiselect",
+        "name": "style",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Highlight",
+            "value": "highlight"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "accordions",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "accordionsDescription",
+        "value": "",
+        "label": "Accordions Description"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Accordions Group header",
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "headingType",
+        "label": "Heading Type",
+        "description": "HTML heading level for the accordions heading",
+        "value": "h2",
+        "options": [
+          {
+            "value": "h1",
+            "name": "H1"
+          },
+          {
+            "value": "h2",
+            "name": "H2"
+          },
+          {
+            "value": "h3",
+            "name": "H3"
+          },
+          {
+            "value": "h4",
+            "name": "H4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "accordion",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "accordionName",
+        "label": "Accordion Name",
+        "description": "Title displayed in the accordion header",
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "accordionNameType",
+        "label": "Accordion Name Type",
+        "description": "HTML heading level for the accordion heading",
+        "value": "h2",
+        "options": [
+          {
+            "value": "h1",
+            "name": "H1"
+          },
+          {
+            "value": "h2",
+            "name": "H2"
+          },
+          {
+            "value": "h3",
+            "name": "H3"
+          },
+          {
+            "value": "h4",
+            "name": "H4"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "accordionContent",
+        "label": "Accordion Content",
+        "description": "Content displayed when the accordion section is expanded",
+        "required": true
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "iconPosition",
+        "label": "Icon Position",
+        "description": "Position of the expand/collapse icon",
+        "required": false,
+        "value": "right",
+        "options": [
+          {
+            "value": "left",
+            "name": "Left"
+          },
+          {
+            "value": "right",
+            "name": "Right"
+          }
+        ]
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "isDisabled",
+        "label": "Disable Section",
+        "description": "Make this section non-expandable (always closed)",
+        "required": false,
+        "value": false
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "settings_allowMultipleOpen",
+        "label": "Allow Multiple Open",
+        "description": "Allow multiple accordion sections to be open simultaneously",
+        "value": false
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "settings_openFirstByDefault",
+        "label": "Open First Section By Default",
+        "description": "Automatically open the first accordion section when the page loads",
+        "value": true
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "style_layout",
+        "label": "Layout Style",
+        "description": "Visual style for the accordion container",
+        "value": "default",
+        "options": [
+          {
+            "value": "default",
+            "name": "Default"
+          },
+          {
+            "value": "boxed",
+            "name": "Boxed"
+          },
+          {
+            "value": "minimal",
+            "name": "Minimal"
+          },
+          {
+            "value": "bordered",
+            "name": "Bordered"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "audio",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "audioFallback",
+        "label": "Audio fallback Text",
+        "value": "Your browser does not support the audio element."
+      }
+    ]
+  },
+  {
+    "id": "source",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "sourceURL",
+        "label": "Source URL",
+        "multi": false,
+        "rootPath": "/content/dam/otsuka-xwalk-boilerplate"
+      }
+    ]
+  },
+  {
+    "id": "button",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "Text"
+      },
+      {
+        "component": "text",
+        "name": "linkTitle",
+        "label": "Title"
+      },
+      {
+        "component": "select",
+        "name": "linkType",
+        "label": "Type",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "primary",
+            "value": "primary"
+          },
+          {
+            "name": "secondary",
+            "value": "secondary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "carousel-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "media_image",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "media_imageAlt",
+        "value": "",
+        "label": "Bacgkround Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "content_text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "columns",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "columns",
+        "value": "",
+        "label": "Columns"
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "rows",
+        "value": "",
+        "label": "Rows"
+      }
+    ]
+  },
+  {
+    "id": "embed",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "embed_placeholder",
+        "label": "Placeholder Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "embed_placeholderAlt",
+        "value": "",
+        "label": "Placeholder Image Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "embed_uri",
+        "label": "URI"
+      }
+    ]
+  },
+  {
+    "id": "flip-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image (Front)",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "front",
+        "value": "",
+        "label": "Text (Front)",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "back",
+        "value": "",
+        "label": "Text (Back)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "fragment",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "reference",
+        "label": "Reference"
+      }
+    ]
+  },
+  {
+    "id": "hero",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "panels",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "mainHeading",
+        "label": "Main Heading",
+        "description": "Main heading text displayed above the accordion sections",
+        "required": false,
+        "maxLength": 100
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "mainHeadingType",
+        "label": "Heading Type",
+        "description": "HTML heading level for the section heading",
+        "required": false,
+        "value": "h2",
+        "options": [
+          {
+            "value": "h1",
+            "name": "H1"
+          },
+          {
+            "value": "h2",
+            "name": "H2"
+          },
+          {
+            "value": "h3",
+            "name": "H3"
+          },
+          {
+            "value": "h4",
+            "name": "H4"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "mainDescription",
+        "label": "Main Description",
+        "description": "Optional introduction text displayed above the accordion sections",
+        "required": false
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "settings_allowMultipleOpen",
+        "label": "Allow Multiple Open",
+        "description": "Allow multiple accordion sections to be open simultaneously",
+        "required": false,
+        "value": false
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "settings_openFirstByDefault",
+        "label": "Open First Section By Default",
+        "description": "Automatically open the first accordion section when the page loads",
+        "required": false,
+        "value": true
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "style_layout",
+        "label": "Layout Style",
+        "description": "Visual style for the accordion container",
+        "required": false,
+        "value": "default",
+        "options": [
+          {
+            "value": "default",
+            "name": "Default"
+          },
+          {
+            "value": "boxed",
+            "name": "Boxed"
+          },
+          {
+            "value": "minimal",
+            "name": "Minimal"
+          },
+          {
+            "value": "bordered",
+            "name": "Bordered"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "panel",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "panelName",
+        "label": "Panel Name",
+        "description": "Title displayed in the panel header",
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "panelContent",
+        "label": "Panel Content",
+        "description": "Content displayed when the accordion section is expanded",
+        "required": true
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "iconPosition",
+        "label": "Icon Position",
+        "description": "Position of the expand/collapse icon",
+        "required": false,
+        "value": "right",
+        "options": [
+          {
+            "value": "left",
+            "name": "Left"
+          },
+          {
+            "value": "right",
+            "name": "Right"
+          }
+        ]
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "isDisabled",
+        "label": "Disable Section",
+        "description": "Make this section non-expandable (always closed)",
+        "required": false,
+        "value": false
+      }
+    ]
+  },
+  {
+    "id": "timeline-entry",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "year",
+        "value": "",
+        "label": "Year",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "value": "",
+        "label": "Description",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "slide",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "slideHeading",
+        "label": "Slide Heading",
+        "description": "Title displayed in the slide",
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "slideHeadingType",
+        "label": "Slide Heading Type",
+        "description": "HTML heading level for the section heading",
+        "required": false,
+        "value": "h2",
+        "options": [
+          {
+            "value": "h1",
+            "name": "H1"
+          },
+          {
+            "value": "h2",
+            "name": "H2"
+          },
+          {
+            "value": "h3",
+            "name": "H3"
+          },
+          {
+            "value": "h4",
+            "name": "H4"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "slideContent",
+        "label": "Slide Content",
+        "description": "Content displayed when the parallax slide scrolls into view",
+        "required": true
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "showDownIcon",
+        "label": "Show Down Icon",
+        "description": "Select whether to show down icon",
+        "required": false,
+        "value": false
+      }
+    ]
+  },
+  {
+    "id": "tabs-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tabName",
+        "value": "",
+        "label": "Tab Name"
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "value": "",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "tester-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Profile Image",
+        "required": true,
+        "description": "Profile photo of the testimonial author",
+        "multi": false,
+        "rootPath": "/content/dam/otsuka/testimonials"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "required": true,
+        "description": "Alternative text for accessibility",
+        "maxLength": 125
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "quote",
+        "label": "Testimonial Quote",
+        "required": true,
+        "description": "The testimonial text (recommended length: 50-100 words)",
+        "maxLength": 500,
+        "placeholder": "Enter the testimonial quote here..."
+      },
+      {
+        "component": "container",
+        "valueType": "string",
+        "name": "authorContainer",
+        "label": "Author Container",
+        "required": true,
+        "collapsible": true,
+        "fields": [
+          {
+            "component": "text",
+            "valueType": "string",
+            "name": "authorName",
+            "label": "Author Name",
+            "required": true,
+            "description": "Name of the person providing the testimonial"
+          },
+          {
+            "component": "text",
+            "valueType": "string",
+            "name": "authorPosition",
+            "label": "Author Position",
+            "required": false,
+            "description": "Job title or role of the author"
+          },
+          {
+            "component": "text",
+            "valueType": "string",
+            "name": "authorCompany",
+            "label": "Author Company",
+            "required": false,
+            "description": "Company or organization of the author"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "title",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "select",
+        "name": "titleType",
+        "label": "Title Type",
+        "options": [
+          {
+            "name": "h1",
+            "value": "h1"
+          },
+          {
+            "name": "h2",
+            "value": "h2"
+          },
+          {
+            "name": "h3",
+            "value": "h3"
+          },
+          {
+            "name": "h4",
+            "value": "h4"
+          },
+          {
+            "name": "h5",
+            "value": "h5"
+          },
+          {
+            "name": "h6",
+            "value": "h6"
+          },
+          {
+            "name": "h7",
+            "value": "h7"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "video",
+    "fields": [
+      {
+        "component": "text",
+        "name": "videoUrl",
+        "label": "Video URL",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "name": "placeholder",
+        "label": "Placeholder Image",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "caption",
+        "label": "Caption",
+        "valueType": "string"
+      }
+    ]
+  }
+]
