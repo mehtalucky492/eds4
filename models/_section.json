@@ -31,8 +31,16 @@
           "label": "Style",
           "options": [
             {
-              "name": "Highlight",
-              "value": "highlight"
+              "name": "Top (footer)",
+              "value": "top"
+            },
+            {
+              "name": "Middle (footer)",
+              "value": "middle"
+            },
+            {
+              "name": "Bottom (footer)",
+              "value": "bottom"
             }
           ]
         }
