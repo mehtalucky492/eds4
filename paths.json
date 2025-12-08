@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/otsuka-codekit-boilerplate/:/",
-    "/content/otsuka-codekit-boilerplate/configuration:/.helix/config.json",
-    "/content/otsuka-codekit-boilerplate/metadata:/metadata.json"
+    "/content/otsuka-codekit-otsukapatientassistance/:/",
+    "/content/otsuka-codekit-otsukapatientassistance/configuration:/.helix/config.json",
+    "/content/otsuka-codekit-otsukapatientassistance/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/otsuka-codekit-boilerplate/"
+    "/content/otsuka-codekit-otsukapatientassistance/"
   ]
 }
