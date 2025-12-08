@@ -68,7 +68,8 @@
         "text",
         "title",
         "panels",
-        "slides"
+        "slides",
+        "video"
       ]
     }
   ]
