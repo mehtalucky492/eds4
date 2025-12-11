@@ -25,7 +25,7 @@
         {
           "component": "select",
           "name": "headerType",
-          "label": "HeaderType",
+          "label": "Header Type",
           "options": [
             {
               "name": "default",
