@@ -20,6 +20,21 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "select",
+        "name": "headerType",
+        "label": "HeaderType",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "patient portal",
+            "value": "patient-portal"
+          }
+        ]
       }
     ]
   },
