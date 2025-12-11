@@ -12,15 +12,15 @@ const isDesktop = window.matchMedia('(min-width: 992px)');
 function addGoBackLink(submenu, level) {
   const goBackItem = document.createElement('li');
   goBackItem.className = `main-menu__item main-menu__item--sub main-menu__item--sub-${level}`;
-  
+
   const goBackLink = document.createElement('span');
   goBackLink.className = `go-back-sub-menu-link main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
   goBackLink.textContent = 'Go Back';
   goBackLink.setAttribute('tabindex', '0');
-  
+
   goBackItem.appendChild(goBackLink);
   submenu.insertBefore(goBackItem, submenu.firstChild);
-  
+
   goBackLink.addEventListener('click', () => {
     const parentLi = submenu.closest('li.main-menu__item--with-sub');
     if (parentLi) {
@@ -28,11 +28,10 @@ function addGoBackLink(submenu, level) {
       // Also close the submenu
       submenu.classList.remove('main-menu--sub-open');
       submenu.classList.remove('main-menu-sub-menu-opened');
-      
+
       // Find the parent menu (could be main menu or a parent submenu)
-      const parentSubmenu = submenu.closest('.main-menu--sub:not(.main-menu--sub-open)');
       const grandParentSubmenu = parentLi.closest('.main-menu--sub');
-      
+
       // Remove the class from the appropriate parent menu
       if (grandParentSubmenu) {
         // This is a nested submenu - remove class from parent submenu
@@ -44,7 +43,7 @@ function addGoBackLink(submenu, level) {
           mainMenu.classList.remove('main-menu-sub-menu-open');
         }
       }
-      
+
       // Toggle expand-sub icon
       const expandSub = parentLi.querySelector(':scope > .expand-sub');
       if (expandSub) {
@@ -59,7 +58,7 @@ function closeOnEscape(e) {
     const nav = document.getElementById('nav');
     const mainMenu = nav.querySelector('.main-nav');
     const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
-    
+
     if (expandedItems.length > 0 && isDesktop.matches) {
       expandedItems.forEach((item) => item.classList.remove('active'));
       expandedItems[0].focus();
@@ -71,21 +70,6 @@ function closeOnEscape(e) {
   }
 }
 
-function closeOnFocusLost(e) {
-  const nav = e.currentTarget;
-  if (!nav.contains(e.relatedTarget)) {
-    const mainMenu = nav.querySelector('.main-nav');
-    const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
-    
-    if (expandedItems.length > 0 && isDesktop.matches) {
-      expandedItems.forEach((item) => item.classList.remove('active'));
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, mainMenu, false);
-    }
-  }
-}
-
 function openOnKeydown(e) {
   const focused = document.activeElement;
   const isMenuWithSub = focused.classList.contains('main-menu__link--with-sub');
@@ -93,13 +77,13 @@ function openOnKeydown(e) {
     e.preventDefault();
     const parentLi = focused.closest('li');
     const isActive = parentLi.classList.contains('active');
-    
+
     // Close all other submenus at the same level
     const parentUl = parentLi.parentElement;
     parentUl.querySelectorAll(':scope > li.main-menu__item--with-sub.active').forEach((item) => {
       if (item !== parentLi) item.classList.remove('active');
     });
-    
+
     parentLi.classList.toggle('active', !isActive);
   }
 }
@@ -115,7 +99,7 @@ function focusMenuItem() {
 function toggleSubmenu(menuItem) {
   const isActive = menuItem.classList.contains('active');
   const submenu = menuItem.querySelector(':scope > .main-menu--sub');
-  
+
   // Close all other submenus at the same level
   const parentUl = menuItem.parentElement;
   parentUl.querySelectorAll(':scope > li.main-menu__item--with-sub.active').forEach((item) => {
@@ -128,23 +112,23 @@ function toggleSubmenu(menuItem) {
       }
     }
   });
-  
+
   // Toggle the current menu item
   menuItem.classList.toggle('active', !isActive);
-  
+
   // Toggle submenu open class
   if (submenu) {
     submenu.classList.toggle('main-menu--sub-open', !isActive);
-    
+
     // On mobile, add the special class for full submenu view
     if (!isDesktop.matches) {
       if (!isActive) {
         // Opening submenu on mobile
         submenu.classList.add('main-menu-sub-menu-opened');
-        
+
         // Find the root main menu or parent submenu to hide siblings
         let menuToHide;
-        
+
         // Check if this is a nested submenu (parent is also a submenu)
         const parentSubmenu = menuItem.closest('.main-menu--sub');
         if (parentSubmenu) {
@@ -154,18 +138,18 @@ function toggleSubmenu(menuItem) {
           // This is a top-level submenu - hide items in main menu
           menuToHide = document.querySelector('.main-menu');
         }
-        
+
         if (menuToHide) {
           menuToHide.classList.add('main-menu-sub-menu-open');
         }
       } else {
         // Closing submenu on mobile
         submenu.classList.remove('main-menu-sub-menu-opened');
-        
+
         // Remove class from parent menu
         const parentSubmenu = menuItem.closest('.main-menu--sub');
         const menuToShow = parentSubmenu || document.querySelector('.main-menu');
-        
+
         if (menuToShow) {
           menuToShow.classList.remove('main-menu-sub-menu-open');
         }
@@ -182,7 +166,7 @@ function toggleSubmenu(menuItem) {
  */
 function toggleMenu(nav, mainNav, forceExpanded = null) {
   const button = document.getElementById('toggle-expand');
-  
+
   // Determine if we should expand or collapse
   let shouldExpand;
   if (forceExpanded !== null) {
@@ -192,32 +176,32 @@ function toggleMenu(nav, mainNav, forceExpanded = null) {
     // Toggle current state
     shouldExpand = nav.getAttribute('aria-expanded') !== 'true';
   }
-  
+
   // Don't block page scrolling - menu uses position: absolute, not fixed
   // So page should remain scrollable when menu is open
-  
+
   // Set aria-expanded attribute
   nav.setAttribute('aria-expanded', shouldExpand ? 'true' : 'false');
-  
+
   // Toggle .open class on nav for CSS
   if (shouldExpand) {
     nav.classList.add('open');
   } else {
     nav.classList.remove('open');
-    
+
     // Reset all submenus to closed state when menu closes
     if (!isDesktop.matches) {
       // Remove active class from all menu items
       mainNav.querySelectorAll('.main-menu__item--with-sub').forEach((item) => {
         item.classList.remove('active');
       });
-      
+
       // Close all open submenus
       mainNav.querySelectorAll('.main-menu--sub').forEach((submenu) => {
         submenu.classList.remove('main-menu--sub-open');
         submenu.classList.remove('main-menu-sub-menu-opened');
       });
-      
+
       // Reset main menu and any parent submenu states
       const mainMenu = mainNav.querySelector('.main-menu');
       if (mainMenu) {
@@ -228,248 +212,21 @@ function toggleMenu(nav, mainNav, forceExpanded = null) {
       });
     }
   }
-  
+
   // Toggle all submenu items (for desktop)
   mainNav.querySelectorAll('.main-menu__item--with-sub').forEach((item) => {
     if (!isDesktop.matches && !shouldExpand) {
       item.classList.remove('active');
     }
   });
-  
+
   button.setAttribute('aria-label', shouldExpand ? 'Close navigation' : 'Open navigation');
-  
+
   // Enable menu collapse on escape keypress only (no focusout/click outside)
   if (shouldExpand && !isDesktop.matches) {
     window.addEventListener('keydown', closeOnEscape);
   } else {
     window.removeEventListener('keydown', closeOnEscape);
-  }
-}
-
-/**
- * loads and decorates the header, mainly the nav
- * @param {Element} block The header block element
- */
-export default async function decorate(block) {
-  // load nav as fragment
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
-
-  // decorate nav DOM
-  block.textContent = '';
-  
-  // Create region-top section (above header)
-  const regionTop = document.createElement('div');
-  regionTop.className = 'region region-top clearfix';
-  
-  const phoneBlock = document.createElement('div');
-  phoneBlock.id = 'block-phonefax';
-  phoneBlock.className = 'block block-content-phone--fax block-content-paragraphs block-content-phone--fax block-content-paragraphs';
-  phoneBlock.setAttribute('data-block-plugin-id', 'block_content:76e4c96b-f912-44a7-a081-694cd6184460');
-  
-  const fieldItems = document.createElement('div');
-  fieldItems.className = 'field field--name-field-paragraph field--type-entity-reference-revisions field--label-hidden field__items';
-  
-  const fieldItem = document.createElement('div');
-  fieldItem.className = 'field__item';
-  
-  const paragraph = document.createElement('div');
-  paragraph.className = 'paragraph paragraph--wrapper-text';
-  
-  const content = document.createElement('div');
-  content.className = 'content';
-  
-  const textWrapper = document.createElement('div');
-  textWrapper.className = 'text-wrapper';
-  
-  const textLong = document.createElement('div');
-  textLong.className = 'text-long';
-  
-  const phoneText = document.createElement('p');
-  phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
-  phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
-  
-  textLong.appendChild(phoneText);
-  textWrapper.appendChild(textLong);
-  content.appendChild(textWrapper);
-  paragraph.appendChild(content);
-  fieldItem.appendChild(paragraph);
-  fieldItems.appendChild(fieldItem);
-  phoneBlock.appendChild(fieldItems);
-  regionTop.appendChild(phoneBlock);
-  
-  // Add region-top to the block first
-  block.appendChild(regionTop);
-  
-  // Create container and region structure for main header
-  const container = document.createElement('div');
-  container.className = 'container';
-  
-  const region = document.createElement('div');
-  region.className = 'region region-header-top clearfix';
-  
-  // Process fragment sections - look for .section divs or direct children
-  const sections = fragment.querySelectorAll(':scope > div.section, :scope > div');
-  
-  // Find the brand section (logo)
-  let brandSection = null;
-  let menuSection = null;
-  
-  sections.forEach((section) => {
-    if (section.classList.contains('nav-brand') || section.querySelector('picture, img')) {
-      brandSection = section;
-    } else if (section.classList.contains('nav-sections') || section.querySelector('ul')) {
-      menuSection = section;
-    }
-  });
-  
-  // First section: Site Branding (Logo)
-  if (brandSection) {
-    const siteBranding = document.createElement('div');
-    siteBranding.id = 'block-sitebranding-2';
-    siteBranding.className = 'block';
-    siteBranding.setAttribute('data-block-plugin-id', 'system_branding_block');
-    
-    const logoLink = document.createElement('a');
-    logoLink.href = '/';
-    logoLink.rel = 'home';
-    logoLink.className = 'site-logo';
-    
-    // Look for picture or img in the brand section
-    const logoImg = brandSection.querySelector('picture') || brandSection.querySelector('img');
-    if (logoImg) {
-      if (logoImg.tagName === 'IMG') {
-        // If it's just an img, wrap it in the structure
-        logoLink.appendChild(logoImg.cloneNode(true));
-      } else {
-        // If it's a picture element, clone it
-        logoLink.appendChild(logoImg.cloneNode(true));
-      }
-    }
-    
-    siteBranding.appendChild(logoLink);
-    region.appendChild(siteBranding);
-  }
-  
-  // Add "Call Us" link block (appears on mobile)
-  const callUsBlock = document.createElement('div');
-  callUsBlock.id = 'block-calluslink';
-  callUsBlock.className = 'block block-content-call-us-link block-content-basic block-content-call-us-link block-content-basic';
-  callUsBlock.setAttribute('data-block-plugin-id', 'block_content:ea999aaa-6c4b-41d7-9595-7b03786bc779');
-  
-  const textLongDiv = document.createElement('div');
-  textLongDiv.className = 'text-long';
-  
-  const callUsPara = document.createElement('p');
-  const callUsLink = document.createElement('a');
-  callUsLink.className = 'call-us';
-  callUsLink.href = 'tel:18557276274';
-  callUsLink.textContent = 'Call Us';
-  
-  callUsPara.appendChild(callUsLink);
-  textLongDiv.appendChild(callUsPara);
-  callUsBlock.appendChild(textLongDiv);
-  region.appendChild(callUsBlock);
-  
-  // Second section: Navigation Menu
-  if (menuSection) {
-    const nav = document.createElement('nav');
-    nav.setAttribute('role', 'navigation');
-    nav.setAttribute('aria-labelledby', 'block-mainmenu-menu');
-    nav.id = 'block-mainmenu';
-    nav.className = 'navigation';
-    nav.setAttribute('data-block-plugin-id', 'system_menu_block:main-menu');
-    
-    const navTitle = document.createElement('h2');
-    navTitle.className = 'navigation__title';
-    navTitle.textContent = 'Main menu';
-    nav.appendChild(navTitle);
-    
-    const navWrapper = document.createElement('div');
-    
-    // Create toggle expand button (using button instead of link)
-    const toggleExpand = document.createElement('button');
-    toggleExpand.type = 'button';
-    toggleExpand.id = 'toggle-expand';
-    toggleExpand.className = 'toggle-expand';
-    toggleExpand.setAttribute('aria-label', 'Open navigation');
-    toggleExpand.innerHTML = `
-      <span class="toggle-expand__open">
-        <span class="toggle-expand__text"></span>
-      </span>
-      <span class="toggle-expand__close">
-        <span class="toggle-expand__text"></span>
-      </span>
-    `;
-    navWrapper.appendChild(toggleExpand);
-    
-    // Create main nav container
-    const mainNav = document.createElement('div');
-    mainNav.id = 'main-nav';
-    mainNav.className = 'main-nav';
-    
-    // Convert the section's ul to main-menu - look deeper in the structure
-    const originalUl = menuSection.querySelector('ul');
-    if (originalUl) {
-      const mainMenu = convertToMainMenu(originalUl, 0);
-      
-      // Add "Call us" link as the last item in the main menu (mobile only)
-      const callUsItem = document.createElement('li');
-      callUsItem.className = 'main-menu__item';
-      
-      const callUsLink = document.createElement('a');
-      callUsLink.href = 'tel:18557276274';
-      callUsLink.target = '_self';
-      callUsLink.className = 'call-us-menu-link main-menu__link';
-      callUsLink.textContent = 'Call us';
-      
-      callUsItem.appendChild(callUsLink);
-      mainMenu.appendChild(callUsItem);
-      
-      mainNav.appendChild(mainMenu);
-    }
-    
-    navWrapper.appendChild(mainNav);
-    nav.appendChild(navWrapper);
-    
-    // Add toggle functionality - only close when menu is open
-    toggleExpand.addEventListener('click', (e) => {
-      e.preventDefault();
-      const navElement = document.getElementById('block-mainmenu');
-      const isExpanded = navElement.getAttribute('aria-expanded') === 'true';
-      
-      // Only toggle if menu is already open (to close it)
-      // Or if menu is closed (to open it)
-      if (isExpanded) {
-        // Menu is open, close it
-        toggleMenu(navElement, mainNav, false);
-      } else {
-        // Menu is closed, open it
-        toggleMenu(navElement, mainNav, true);
-      }
-    });
-    
-    region.appendChild(nav);
-  }
-  
-  container.appendChild(region);
-  
-  // Add middle header section (empty for now, matching site-head.html)
-  const headerMiddle = document.createElement('div');
-  headerMiddle.className = 'flexible-header__b header-middle';
-  container.appendChild(headerMiddle);
-  
-  block.append(container);
-  
-  // Set initial state
-  const navElement = document.getElementById('block-mainmenu');
-  if (navElement) {
-    navElement.setAttribute('aria-expanded', 'false');
-    const mainNav = navElement.querySelector('.main-nav');
-    // Prevent mobile nav behavior on window resize
-    toggleMenu(navElement, mainNav, isDesktop.matches);
-    isDesktop.addEventListener('change', () => toggleMenu(navElement, mainNav, isDesktop.matches));
   }
 }
 
@@ -482,23 +239,23 @@ export default async function decorate(block) {
 function convertToMainMenu(ul, level = 0) {
   const menu = document.createElement('ul');
   menu.className = level === 0 ? 'main-menu' : `main-menu main-menu--sub main-menu--sub-${level}`;
-  
+
   const items = ul.querySelectorAll(':scope > li');
-  
+
   items.forEach((item) => {
     const menuItem = document.createElement('li');
     const hasSubmenu = item.querySelector(':scope > ul');
-    
+
     if (level === 0) {
-      menuItem.className = hasSubmenu 
-        ? 'main-menu__item main-menu__item--with-sub' 
+      menuItem.className = hasSubmenu
+        ? 'main-menu__item main-menu__item--with-sub'
         : 'main-menu__item';
     } else {
       menuItem.className = hasSubmenu
         ? `main-menu__item main-menu__item--sub main-menu__item--sub-${level} main-menu__item--with-sub`
         : `main-menu__item main-menu__item--sub main-menu__item--sub-${level}`;
     }
-    
+
     // Get the text/link content - look for direct p, a, or button-container
     let content = item.querySelector(':scope > p:not(.button-container)');
     if (!content) {
@@ -507,25 +264,25 @@ function convertToMainMenu(ul, level = 0) {
     if (!content) {
       content = item.querySelector(':scope > a');
     }
-    
+
     let menuLink;
-    
+
     if (content) {
       // Check if there's an anchor inside
       const anchor = content.querySelector('a') || (content.tagName === 'A' ? content : null);
-      
+
       if (anchor && !hasSubmenu) {
         // Regular link item
         menuLink = document.createElement('a');
         menuLink.href = anchor.href;
         menuLink.title = anchor.title || anchor.textContent.trim();
         menuLink.textContent = anchor.textContent.trim();
-        menuLink.className = level === 0 
-          ? 'main-menu__link' 
+        menuLink.className = level === 0
+          ? 'main-menu__link'
           : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
-        
+
         if (anchor.target) menuLink.target = anchor.target;
-        
+
         // Add special classes based on link text
         const linkText = menuLink.textContent.toLowerCase();
         if (linkText.includes('patient')) menuLink.classList.add('apply-patients');
@@ -539,35 +296,39 @@ function convertToMainMenu(ul, level = 0) {
         const textContent = content.textContent.trim();
         menuLink = document.createElement('span');
         menuLink.textContent = textContent;
-        menuLink.className = hasSubmenu
-          ? (level === 0 
-            ? 'main-menu__link main-menu__link--with-sub' 
-            : `main-menu__link main-menu__link--sub main-menu__link--sub-${level} main-menu__link--with-sub`)
-          : (level === 0 
-            ? 'main-menu__link' 
-            : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`);
-        
+
+        // Determine className based on level and hasSubmenu
+        if (hasSubmenu) {
+          menuLink.className = level === 0
+            ? 'main-menu__link main-menu__link--with-sub'
+            : `main-menu__link main-menu__link--sub main-menu__link--sub-${level} main-menu__link--with-sub`;
+        } else {
+          menuLink.className = level === 0
+            ? 'main-menu__link'
+            : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
+        }
+
         // Add special classes based on text content
         if (textContent.toLowerCase().includes('follow')) menuLink.classList.add('social-links');
         if (textContent.toLowerCase().includes('form')) menuLink.classList.add('apply-forms');
-        
+
         if (hasSubmenu) {
           menuLink.setAttribute('tabindex', '0');
         }
       }
-      
+
       menuItem.appendChild(menuLink);
-      
+
       // Add expand icon for items with submenus
       if (hasSubmenu) {
         const expandSub = document.createElement('span');
         expandSub.className = 'expand-sub';
         menuItem.appendChild(expandSub);
-        
+
         // Store reference to expandSub for use in event handlers
         const currentExpandSub = expandSub;
         const currentMenuItem = menuItem;
-        
+
         // Add click handler for submenu toggle - works on both mobile and desktop at all levels
         menuLink.addEventListener('click', (e) => {
           // Always prevent default for spans, and for links with submenus
@@ -583,7 +344,7 @@ function convertToMainMenu(ul, level = 0) {
             }
           }
         });
-        
+
         expandSub.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -596,25 +357,252 @@ function convertToMainMenu(ul, level = 0) {
             currentExpandSub.classList.add('expand-sub--open');
           }
         });
-        
+
         // Add keyboard support
         menuLink.addEventListener('focus', focusMenuItem);
-        
+
         // Process submenu
         const submenu = item.querySelector(':scope > ul');
         if (submenu) {
           const convertedSubmenu = convertToMainMenu(submenu, level + 1);
-          
+
           // Add "Go Back" link
           addGoBackLink(convertedSubmenu, level + 1);
-          
+
           menuItem.appendChild(convertedSubmenu);
         }
       }
     }
-    
+
     menu.appendChild(menuItem);
   });
-  
+
   return menu;
+}
+
+/**
+ * loads and decorates the header, mainly the nav
+ * @param {Element} block The header block element
+ */
+export default async function decorate(block) {
+  // load nav as fragment
+  const navMeta = getMetadata('nav');
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const fragment = await loadFragment(navPath);
+
+  // decorate nav DOM
+  block.textContent = '';
+
+  // Create region-top section (above header)
+  const regionTop = document.createElement('div');
+  regionTop.className = 'region region-top clearfix';
+
+  const phoneBlock = document.createElement('div');
+  phoneBlock.id = 'block-phonefax';
+  phoneBlock.className = 'block block-content-phone--fax block-content-paragraphs block-content-phone--fax block-content-paragraphs';
+  phoneBlock.setAttribute('data-block-plugin-id', 'block_content:76e4c96b-f912-44a7-a081-694cd6184460');
+
+  const fieldItems = document.createElement('div');
+  fieldItems.className = 'field field--name-field-paragraph field--type-entity-reference-revisions field--label-hidden field__items';
+
+  const fieldItem = document.createElement('div');
+  fieldItem.className = 'field__item';
+
+  const paragraph = document.createElement('div');
+  paragraph.className = 'paragraph paragraph--wrapper-text';
+
+  const content = document.createElement('div');
+  content.className = 'content';
+
+  const textWrapper = document.createElement('div');
+  textWrapper.className = 'text-wrapper';
+
+  const textLong = document.createElement('div');
+  textLong.className = 'text-long';
+
+  const phoneText = document.createElement('p');
+  phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
+  phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
+
+  textLong.appendChild(phoneText);
+  textWrapper.appendChild(textLong);
+  content.appendChild(textWrapper);
+  paragraph.appendChild(content);
+  fieldItem.appendChild(paragraph);
+  fieldItems.appendChild(fieldItem);
+  phoneBlock.appendChild(fieldItems);
+  regionTop.appendChild(phoneBlock);
+
+  // Add region-top to the block first
+  block.appendChild(regionTop);
+
+  // Create container and region structure for main header
+  const container = document.createElement('div');
+  container.className = 'container';
+
+  const region = document.createElement('div');
+  region.className = 'region region-header-top clearfix';
+
+  // Process fragment sections - look for .section divs or direct children
+  const sections = fragment.querySelectorAll(':scope > div.section, :scope > div');
+
+  // Find the brand section (logo)
+  let brandSection = null;
+  let menuSection = null;
+
+  sections.forEach((section) => {
+    if (section.classList.contains('nav-brand') || section.querySelector('picture, img')) {
+      brandSection = section;
+    } else if (section.classList.contains('nav-sections') || section.querySelector('ul')) {
+      menuSection = section;
+    }
+  });
+
+  // First section: Site Branding (Logo)
+  if (brandSection) {
+    const siteBranding = document.createElement('div');
+    siteBranding.id = 'block-sitebranding-2';
+    siteBranding.className = 'block';
+    siteBranding.setAttribute('data-block-plugin-id', 'system_branding_block');
+
+    const logoLink = document.createElement('a');
+    logoLink.href = '/';
+    logoLink.rel = 'home';
+    logoLink.className = 'site-logo';
+
+    // Look for picture or img in the brand section
+    const logoImg = brandSection.querySelector('picture') || brandSection.querySelector('img');
+    if (logoImg) {
+      if (logoImg.tagName === 'IMG') {
+        // If it's just an img, wrap it in the structure
+        logoLink.appendChild(logoImg.cloneNode(true));
+      } else {
+        // If it's a picture element, clone it
+        logoLink.appendChild(logoImg.cloneNode(true));
+      }
+    }
+
+    siteBranding.appendChild(logoLink);
+    region.appendChild(siteBranding);
+  }
+
+  // Add "Call Us" link block (appears on mobile)
+  const callUsBlock = document.createElement('div');
+  callUsBlock.id = 'block-calluslink';
+  callUsBlock.className = 'block block-content-call-us-link block-content-basic block-content-call-us-link block-content-basic';
+  callUsBlock.setAttribute('data-block-plugin-id', 'block_content:ea999aaa-6c4b-41d7-9595-7b03786bc779');
+
+  const textLongDiv = document.createElement('div');
+  textLongDiv.className = 'text-long';
+
+  const callUsPara = document.createElement('p');
+  const callUsLink = document.createElement('a');
+  callUsLink.className = 'call-us';
+  callUsLink.href = 'tel:18557276274';
+  callUsLink.textContent = 'Call Us';
+
+  callUsPara.appendChild(callUsLink);
+  textLongDiv.appendChild(callUsPara);
+  callUsBlock.appendChild(textLongDiv);
+  region.appendChild(callUsBlock);
+
+  // Second section: Navigation Menu
+  if (menuSection) {
+    const nav = document.createElement('nav');
+    nav.setAttribute('role', 'navigation');
+    nav.setAttribute('aria-labelledby', 'block-mainmenu-menu');
+    nav.id = 'block-mainmenu';
+    nav.className = 'navigation';
+    nav.setAttribute('data-block-plugin-id', 'system_menu_block:main-menu');
+
+    const navTitle = document.createElement('h2');
+    navTitle.className = 'navigation__title';
+    navTitle.textContent = 'Main menu';
+    nav.appendChild(navTitle);
+
+    const navWrapper = document.createElement('div');
+
+    // Create toggle expand button (using button instead of link)
+    const toggleExpand = document.createElement('button');
+    toggleExpand.type = 'button';
+    toggleExpand.id = 'toggle-expand';
+    toggleExpand.className = 'toggle-expand';
+    toggleExpand.setAttribute('aria-label', 'Open navigation');
+    toggleExpand.innerHTML = `
+      <span class="toggle-expand__open">
+        <span class="toggle-expand__text"></span>
+      </span>
+      <span class="toggle-expand__close">
+        <span class="toggle-expand__text"></span>
+      </span>
+    `;
+    navWrapper.appendChild(toggleExpand);
+
+    // Create main nav container
+    const mainNav = document.createElement('div');
+    mainNav.id = 'main-nav';
+    mainNav.className = 'main-nav';
+
+    // Convert the section's ul to main-menu - look deeper in the structure
+    const originalUl = menuSection.querySelector('ul');
+    if (originalUl) {
+      const mainMenu = convertToMainMenu(originalUl, 0);
+
+      // Add "Call us" link as the last item in the main menu (mobile only)
+      const callUsItem = document.createElement('li');
+      callUsItem.className = 'main-menu__item';
+
+      const callUsMenuLink = document.createElement('a');
+      callUsMenuLink.href = 'tel:18557276274';
+      callUsMenuLink.target = '_self';
+      callUsMenuLink.className = 'call-us-menu-link main-menu__link';
+      callUsMenuLink.textContent = 'Call us';
+
+      callUsItem.appendChild(callUsMenuLink);
+      mainMenu.appendChild(callUsItem);
+
+      mainNav.appendChild(mainMenu);
+    }
+
+    navWrapper.appendChild(mainNav);
+    nav.appendChild(navWrapper);
+
+    // Add toggle functionality - only close when menu is open
+    toggleExpand.addEventListener('click', (e) => {
+      e.preventDefault();
+      const navElement = document.getElementById('block-mainmenu');
+      const isExpanded = navElement.getAttribute('aria-expanded') === 'true';
+
+      // Only toggle if menu is already open (to close it)
+      // Or if menu is closed (to open it)
+      if (isExpanded) {
+        // Menu is open, close it
+        toggleMenu(navElement, mainNav, false);
+      } else {
+        // Menu is closed, open it
+        toggleMenu(navElement, mainNav, true);
+      }
+    });
+
+    region.appendChild(nav);
+  }
+
+  container.appendChild(region);
+
+  // Add middle header section (empty for now, matching site-head.html)
+  const headerMiddle = document.createElement('div');
+  headerMiddle.className = 'flexible-header__b header-middle';
+  container.appendChild(headerMiddle);
+
+  block.append(container);
+
+  // Set initial state
+  const navElement = document.getElementById('block-mainmenu');
+  if (navElement) {
+    navElement.setAttribute('aria-expanded', 'false');
+    const mainNav = navElement.querySelector('.main-nav');
+    // Prevent mobile nav behavior on window resize
+    toggleMenu(navElement, mainNav, isDesktop.matches);
+    isDesktop.addEventListener('change', () => toggleMenu(navElement, mainNav, isDesktop.matches));
+  }
 }
