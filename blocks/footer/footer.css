@@ -18,6 +18,10 @@ footer .footer p {
     margin: 0;
 }
 
+footer .footer .logo{
+    text-align: center;
+}
+
 footer .middle {
     margin: 2.5rem 0 3.75rem;
     margin: var(--s-extra-extra-large) 0 3.75rem;
@@ -63,7 +67,7 @@ footer .middle {
     font-weight: 300;
 }
 
-  /* .footer .section.middle .text-long p {
+/* .footer .section.middle .text-long p {
       margin: 0 0 2.5rem;
       margin: 0 0 var(--s-extra-extra-large);
   } */
@@ -80,20 +84,19 @@ footer .middle {
 }
 
 .footer .section.section.bottom .prc-date,
-.footer .section.section.bottom .prc-code  {
+.footer .section.section.bottom .prc-code {
     margin: 0 0.5rem;
     margin: 0 var(--s-small);
 }
 
 @media (width < 991px) {
-.footer .section.section.bottom .copyright {
-    text-align: center;
-    max-width: 16.625rem;
-    margin: 0 auto 2.5rem;
-    margin: 0 auto var(--s-extra-extra-large);
+    .footer .section.section.bottom .copyright {
+        text-align: center;
+        max-width: 16.625rem;
+        margin: 0 auto 2.5rem;
+        margin: 0 auto var(--s-extra-extra-large);
+    }
 }
-}
-
 
 .footer .section.section.bottom .prc {
     display: flex;
