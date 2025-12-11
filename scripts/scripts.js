@@ -145,6 +145,9 @@ function autolinkModals(doc) {
 async function loadLazy(doc) {
   autolinkModals(doc);
 
+  // Load header first before rest of page content
+  await loadHeader(doc.querySelector('header'));
+
   const main = doc.querySelector('main');
   await loadSections(main);
 
@@ -152,7 +155,6 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
