@@ -2,7 +2,7 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
+const isDesktop = window.matchMedia('(min-width: 992px)');
 
 /**
  * Add "Go Back" link to submenus
@@ -27,6 +27,24 @@ function addGoBackLink(submenu, level) {
       parentLi.classList.remove('active');
       // Also close the submenu
       submenu.classList.remove('main-menu--sub-open');
+      submenu.classList.remove('main-menu-sub-menu-opened');
+      
+      // Find the parent menu (could be main menu or a parent submenu)
+      const parentSubmenu = submenu.closest('.main-menu--sub:not(.main-menu--sub-open)');
+      const grandParentSubmenu = parentLi.closest('.main-menu--sub');
+      
+      // Remove the class from the appropriate parent menu
+      if (grandParentSubmenu) {
+        // This is a nested submenu - remove class from parent submenu
+        grandParentSubmenu.classList.remove('main-menu-sub-menu-open');
+      } else {
+        // This is a top-level submenu - remove class from main menu
+        const mainMenu = document.querySelector('.main-menu');
+        if (mainMenu) {
+          mainMenu.classList.remove('main-menu-sub-menu-open');
+        }
+      }
+      
       // Toggle expand-sub icon
       const expandSub = parentLi.querySelector(':scope > .expand-sub');
       if (expandSub) {
@@ -106,6 +124,7 @@ function toggleSubmenu(menuItem) {
       const otherSubmenu = item.querySelector(':scope > .main-menu--sub');
       if (otherSubmenu) {
         otherSubmenu.classList.remove('main-menu--sub-open');
+        otherSubmenu.classList.remove('main-menu-sub-menu-opened');
       }
     }
   });
@@ -116,6 +135,42 @@ function toggleSubmenu(menuItem) {
   // Toggle submenu open class
   if (submenu) {
     submenu.classList.toggle('main-menu--sub-open', !isActive);
+    
+    // On mobile, add the special class for full submenu view
+    if (!isDesktop.matches) {
+      if (!isActive) {
+        // Opening submenu on mobile
+        submenu.classList.add('main-menu-sub-menu-opened');
+        
+        // Find the root main menu or parent submenu to hide siblings
+        let menuToHide;
+        
+        // Check if this is a nested submenu (parent is also a submenu)
+        const parentSubmenu = menuItem.closest('.main-menu--sub');
+        if (parentSubmenu) {
+          // This is a nested submenu - hide items in the parent submenu
+          menuToHide = parentSubmenu;
+        } else {
+          // This is a top-level submenu - hide items in main menu
+          menuToHide = document.querySelector('.main-menu');
+        }
+        
+        if (menuToHide) {
+          menuToHide.classList.add('main-menu-sub-menu-open');
+        }
+      } else {
+        // Closing submenu on mobile
+        submenu.classList.remove('main-menu-sub-menu-opened');
+        
+        // Remove class from parent menu
+        const parentSubmenu = menuItem.closest('.main-menu--sub');
+        const menuToShow = parentSubmenu || document.querySelector('.main-menu');
+        
+        if (menuToShow) {
+          menuToShow.classList.remove('main-menu-sub-menu-open');
+        }
+      }
+    }
   }
 }
 
@@ -126,27 +181,68 @@ function toggleSubmenu(menuItem) {
  * @param {*} forceExpanded Optional param to force nav expand behavior when not null
  */
 function toggleMenu(nav, mainNav, forceExpanded = null) {
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
   const button = document.getElementById('toggle-expand');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   
-  // Toggle all submenu items
+  // Determine if we should expand or collapse
+  let shouldExpand;
+  if (forceExpanded !== null) {
+    // Explicit state requested
+    shouldExpand = forceExpanded;
+  } else {
+    // Toggle current state
+    shouldExpand = nav.getAttribute('aria-expanded') !== 'true';
+  }
+  
+  // Don't block page scrolling - menu uses position: absolute, not fixed
+  // So page should remain scrollable when menu is open
+  
+  // Set aria-expanded attribute
+  nav.setAttribute('aria-expanded', shouldExpand ? 'true' : 'false');
+  
+  // Toggle .open class on nav for CSS
+  if (shouldExpand) {
+    nav.classList.add('open');
+  } else {
+    nav.classList.remove('open');
+    
+    // Reset all submenus to closed state when menu closes
+    if (!isDesktop.matches) {
+      // Remove active class from all menu items
+      mainNav.querySelectorAll('.main-menu__item--with-sub').forEach((item) => {
+        item.classList.remove('active');
+      });
+      
+      // Close all open submenus
+      mainNav.querySelectorAll('.main-menu--sub').forEach((submenu) => {
+        submenu.classList.remove('main-menu--sub-open');
+        submenu.classList.remove('main-menu-sub-menu-opened');
+      });
+      
+      // Reset main menu and any parent submenu states
+      const mainMenu = mainNav.querySelector('.main-menu');
+      if (mainMenu) {
+        mainMenu.classList.remove('main-menu-sub-menu-open');
+      }
+      mainNav.querySelectorAll('.main-menu--sub').forEach((submenu) => {
+        submenu.classList.remove('main-menu-sub-menu-open');
+      });
+    }
+  }
+  
+  // Toggle all submenu items (for desktop)
   mainNav.querySelectorAll('.main-menu__item--with-sub').forEach((item) => {
-    if (!isDesktop.matches && expanded) {
+    if (!isDesktop.matches && !shouldExpand) {
       item.classList.remove('active');
     }
   });
   
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+  button.setAttribute('aria-label', shouldExpand ? 'Close navigation' : 'Open navigation');
   
-  // Enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
+  // Enable menu collapse on escape keypress only (no focusout/click outside)
+  if (shouldExpand && !isDesktop.matches) {
     window.addEventListener('keydown', closeOnEscape);
-    nav.addEventListener('focusout', closeOnFocusLost);
   } else {
     window.removeEventListener('keydown', closeOnEscape);
-    nav.removeEventListener('focusout', closeOnFocusLost);
   }
 }
 
@@ -163,7 +259,50 @@ export default async function decorate(block) {
   // decorate nav DOM
   block.textContent = '';
   
-  // Create container and region structure
+  // Create region-top section (above header)
+  const regionTop = document.createElement('div');
+  regionTop.className = 'region region-top clearfix';
+  
+  const phoneBlock = document.createElement('div');
+  phoneBlock.id = 'block-phonefax';
+  phoneBlock.className = 'block block-content-phone--fax block-content-paragraphs block-content-phone--fax block-content-paragraphs';
+  phoneBlock.setAttribute('data-block-plugin-id', 'block_content:76e4c96b-f912-44a7-a081-694cd6184460');
+  
+  const fieldItems = document.createElement('div');
+  fieldItems.className = 'field field--name-field-paragraph field--type-entity-reference-revisions field--label-hidden field__items';
+  
+  const fieldItem = document.createElement('div');
+  fieldItem.className = 'field__item';
+  
+  const paragraph = document.createElement('div');
+  paragraph.className = 'paragraph paragraph--wrapper-text';
+  
+  const content = document.createElement('div');
+  content.className = 'content';
+  
+  const textWrapper = document.createElement('div');
+  textWrapper.className = 'text-wrapper';
+  
+  const textLong = document.createElement('div');
+  textLong.className = 'text-long';
+  
+  const phoneText = document.createElement('p');
+  phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
+  phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
+  
+  textLong.appendChild(phoneText);
+  textWrapper.appendChild(textLong);
+  content.appendChild(textWrapper);
+  paragraph.appendChild(content);
+  fieldItem.appendChild(paragraph);
+  fieldItems.appendChild(fieldItem);
+  phoneBlock.appendChild(fieldItems);
+  regionTop.appendChild(phoneBlock);
+  
+  // Add region-top to the block first
+  block.appendChild(regionTop);
+  
+  // Create container and region structure for main header
   const container = document.createElement('div');
   container.className = 'container';
   
@@ -213,6 +352,26 @@ export default async function decorate(block) {
     region.appendChild(siteBranding);
   }
   
+  // Add "Call Us" link block (appears on mobile)
+  const callUsBlock = document.createElement('div');
+  callUsBlock.id = 'block-calluslink';
+  callUsBlock.className = 'block block-content-call-us-link block-content-basic block-content-call-us-link block-content-basic';
+  callUsBlock.setAttribute('data-block-plugin-id', 'block_content:ea999aaa-6c4b-41d7-9595-7b03786bc779');
+  
+  const textLongDiv = document.createElement('div');
+  textLongDiv.className = 'text-long';
+  
+  const callUsPara = document.createElement('p');
+  const callUsLink = document.createElement('a');
+  callUsLink.className = 'call-us';
+  callUsLink.href = 'tel:18557276274';
+  callUsLink.textContent = 'Call Us';
+  
+  callUsPara.appendChild(callUsLink);
+  textLongDiv.appendChild(callUsPara);
+  callUsBlock.appendChild(textLongDiv);
+  region.appendChild(callUsBlock);
+  
   // Second section: Navigation Menu
   if (menuSection) {
     const nav = document.createElement('nav');
@@ -229,11 +388,12 @@ export default async function decorate(block) {
     
     const navWrapper = document.createElement('div');
     
-    // Create toggle expand button
-    const toggleExpand = document.createElement('a');
-    toggleExpand.href = '#';
+    // Create toggle expand button (using button instead of link)
+    const toggleExpand = document.createElement('button');
+    toggleExpand.type = 'button';
     toggleExpand.id = 'toggle-expand';
     toggleExpand.className = 'toggle-expand';
+    toggleExpand.setAttribute('aria-label', 'Open navigation');
     toggleExpand.innerHTML = `
       <span class="toggle-expand__open">
         <span class="toggle-expand__text"></span>
@@ -253,17 +413,41 @@ export default async function decorate(block) {
     const originalUl = menuSection.querySelector('ul');
     if (originalUl) {
       const mainMenu = convertToMainMenu(originalUl, 0);
+      
+      // Add "Call us" link as the last item in the main menu (mobile only)
+      const callUsItem = document.createElement('li');
+      callUsItem.className = 'main-menu__item';
+      
+      const callUsLink = document.createElement('a');
+      callUsLink.href = 'tel:18557276274';
+      callUsLink.target = '_self';
+      callUsLink.className = 'call-us-menu-link main-menu__link';
+      callUsLink.textContent = 'Call us';
+      
+      callUsItem.appendChild(callUsLink);
+      mainMenu.appendChild(callUsItem);
+      
       mainNav.appendChild(mainMenu);
     }
     
     navWrapper.appendChild(mainNav);
     nav.appendChild(navWrapper);
     
-    // Add toggle functionality
+    // Add toggle functionality - only close when menu is open
     toggleExpand.addEventListener('click', (e) => {
       e.preventDefault();
       const navElement = document.getElementById('block-mainmenu');
-      toggleMenu(navElement, mainNav);
+      const isExpanded = navElement.getAttribute('aria-expanded') === 'true';
+      
+      // Only toggle if menu is already open (to close it)
+      // Or if menu is closed (to open it)
+      if (isExpanded) {
+        // Menu is open, close it
+        toggleMenu(navElement, mainNav, false);
+      } else {
+        // Menu is closed, open it
+        toggleMenu(navElement, mainNav, true);
+      }
     });
     
     region.appendChild(nav);
