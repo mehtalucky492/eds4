@@ -21,7 +21,7 @@
       "id": "video",
       "fields": [
         {
-          "component": "text",
+          "component": "richtext",
           "name": "videoUrl",
           "label": "Video URL",
           "valueType": "string"

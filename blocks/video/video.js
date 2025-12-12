@@ -35,7 +35,7 @@ function embedYoutube(url, autoplay, background) {
 }
 
 function embedVimeo(url, autoplay, background) {
-  const [, video] = url.pathname.split('/');
+  const [, , video] = url.pathname.split('/');
   let suffix = '';
   if (background || autoplay) {
     const suffixParams = {
