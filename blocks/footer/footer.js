@@ -2,6 +2,58 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
+ * Initialize back-to-top button behavior
+ * @param {Element} button The back-to-top button element
+ * @param {Element} footerBlock The footer block element
+ */
+function initBackToTop(button, footerBlock) {
+  let footerHeight = 0;
+  let windowHeight = 0;
+
+  // Calculate dimensions
+  function updateDimensions() {
+    footerHeight = footerBlock.offsetHeight || 380;
+    windowHeight = window.innerHeight;
+  }
+
+  // Show/hide button based on scroll position
+  function handleScroll() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const footerTop = footerBlock.offsetTop;
+
+    // Show button when user scrolls down and reaches near the footer
+    if (scrollTop + windowHeight - footerHeight / 2 > footerTop) {
+      button.classList.add('visible');
+    } else {
+      button.classList.remove('visible');
+    }
+  }
+
+  // Scroll to top smoothly
+  button.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  });
+
+  // Initialize
+  updateDimensions();
+  handleScroll();
+
+  // Listen to scroll and resize events
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', () => {
+    updateDimensions();
+    handleScroll();
+  });
+  window.addEventListener('load', () => {
+    updateDimensions();
+    handleScroll();
+  });
+}
+
+/**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
@@ -97,4 +149,24 @@ export default async function decorate(block) {
   }
 
   block.append(footer);
+
+  // Add back-to-top button
+  const backToTopWrapper = document.createElement('div');
+  backToTopWrapper.className = 'back-to-top-buttons d-flex justify-content-center';
+
+  const backToTopButton = document.createElement('button');
+  backToTopButton.id = 'back-to-top';
+  backToTopButton.className = 'back-to-top-button__oval text-uppercase sticky-back-to-top-to-buttom';
+  backToTopButton.setAttribute('aria-label', 'Back to top');
+  backToTopButton.innerHTML = `
+    <span class="text-center">
+      <span class="text-span"></span>
+    </span>
+  `;
+
+  backToTopWrapper.append(backToTopButton);
+  block.append(backToTopWrapper);
+
+  // Initialize back-to-top functionality
+  initBackToTop(backToTopButton, block);
 }
