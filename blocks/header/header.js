@@ -55,18 +55,89 @@ function addGoBackLink(submenu, level) {
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
+    const nav = document.getElementById('block-mainmenu');
+    if (!nav) return;
+    
     const mainMenu = nav.querySelector('.main-nav');
+    if (!mainMenu) return;
+    
     const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
 
     if (expandedItems.length > 0 && isDesktop.matches) {
-      expandedItems.forEach((item) => item.classList.remove('active'));
-      expandedItems[0].focus();
+      expandedItems.forEach((item) => {
+        item.classList.remove('active');
+        const submenu = item.querySelector(':scope > .main-menu--sub');
+        if (submenu) {
+          submenu.classList.remove('main-menu--sub-open');
+          submenu.classList.remove('main-menu-sub-menu-opened');
+        }
+        const expandSub = item.querySelector(':scope > .expand-sub');
+        if (expandSub) {
+          expandSub.classList.remove('expand-sub--open');
+        }
+      });
+      if (expandedItems[0]) expandedItems[0].focus();
     } else if (!isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
       toggleMenu(nav, mainMenu);
-      nav.querySelector('button').focus();
+      const button = nav.querySelector('button');
+      if (button) button.focus();
     }
+  }
+}
+
+/**
+ * Close all open submenus
+ */
+function closeAllSubmenus() {
+  const nav = document.getElementById('block-mainmenu');
+  if (!nav) return;
+  
+  const mainMenu = nav.querySelector('.main-nav');
+  if (!mainMenu) return;
+
+  // Get all expanded menu items (including nested ones)
+  const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
+  
+  expandedItems.forEach((item) => {
+    item.classList.remove('active');
+    const submenu = item.querySelector(':scope > .main-menu--sub');
+    if (submenu) {
+      submenu.classList.remove('main-menu--sub-open');
+      submenu.classList.remove('main-menu-sub-menu-opened');
+    }
+    // Reset expand-sub icons
+    const expandSub = item.querySelector(':scope > .expand-sub');
+    if (expandSub) {
+      expandSub.classList.remove('expand-sub--open');
+    }
+  });
+
+  // Reset any menu state classes
+  const allSubmenus = mainMenu.querySelectorAll('.main-menu--sub');
+  allSubmenus.forEach((submenu) => {
+    submenu.classList.remove('main-menu-sub-menu-open');
+  });
+  
+  const mainMenuUl = mainMenu.querySelector('.main-menu');
+  if (mainMenuUl) {
+    mainMenuUl.classList.remove('main-menu-sub-menu-open');
+  }
+}
+
+/**
+ * Close all submenus when clicking outside on desktop
+ * @param {Event} e The click event
+ */
+function closeOnClickOutside(e) {
+  if (!isDesktop.matches) return; // Only for desktop
+
+  const nav = document.getElementById('block-mainmenu');
+  if (!nav) return;
+
+  // Check if click is outside the navigation
+  if (!nav.contains(e.target)) {
+    closeAllSubmenus();
   }
 }
 
@@ -100,18 +171,86 @@ function toggleSubmenu(menuItem) {
   const isActive = menuItem.classList.contains('active');
   const submenu = menuItem.querySelector(':scope > .main-menu--sub');
 
-  // Close all other submenus at the same level
-  const parentUl = menuItem.parentElement;
-  parentUl.querySelectorAll(':scope > li.main-menu__item--with-sub.active').forEach((item) => {
-    if (item !== menuItem) {
-      item.classList.remove('active');
-      const otherSubmenu = item.querySelector(':scope > .main-menu--sub');
-      if (otherSubmenu) {
-        otherSubmenu.classList.remove('main-menu--sub-open');
-        otherSubmenu.classList.remove('main-menu-sub-menu-opened');
+  // On desktop: Check if this is a TOP-LEVEL parent (not a child submenu item)
+  if (isDesktop.matches) {
+    // Check if this is a top-level menu item (not inside a submenu)
+    const isTopLevel = !menuItem.closest('.main-menu--sub');
+    
+    if (isTopLevel) {
+      // Top-level parent menu logic: two-click behavior
+      const nav = document.getElementById('block-mainmenu');
+      if (nav) {
+        const mainMenu = nav.querySelector('.main-nav');
+        if (mainMenu) {
+          // Check if ANY top-level menu items are open
+          const anyOpenTopLevelItems = mainMenu.querySelectorAll('.main-menu > .main-menu__item--with-sub.active');
+          
+          // If there are open top-level items and this item is not currently active
+          if (anyOpenTopLevelItems.length > 0 && !isActive) {
+            // Close ALL open menus first (including their children)
+            anyOpenTopLevelItems.forEach((item) => {
+              item.classList.remove('active');
+              const openSubmenu = item.querySelector(':scope > .main-menu--sub');
+              if (openSubmenu) {
+                openSubmenu.classList.remove('main-menu--sub-open');
+                openSubmenu.classList.remove('main-menu-sub-menu-opened');
+                
+                // Also close any nested submenus
+                const nestedOpenItems = openSubmenu.querySelectorAll('.main-menu__item--with-sub.active');
+                nestedOpenItems.forEach((nestedItem) => {
+                  nestedItem.classList.remove('active');
+                  const nestedSubmenu = nestedItem.querySelector(':scope > .main-menu--sub');
+                  if (nestedSubmenu) {
+                    nestedSubmenu.classList.remove('main-menu--sub-open');
+                    nestedSubmenu.classList.remove('main-menu-sub-menu-opened');
+                  }
+                  const nestedExpandSub = nestedItem.querySelector(':scope > .expand-sub');
+                  if (nestedExpandSub) {
+                    nestedExpandSub.classList.remove('expand-sub--open');
+                  }
+                });
+              }
+              const expandSub = item.querySelector(':scope > .expand-sub');
+              if (expandSub) {
+                expandSub.classList.remove('expand-sub--open');
+              }
+            });
+            
+            // Don't open the clicked menu yet - user needs to click again
+            return;
+          }
+        }
       }
+    } else {
+      // Child submenu item: close siblings at the same level only
+      const parentUl = menuItem.parentElement;
+      parentUl.querySelectorAll(':scope > li.main-menu__item--with-sub.active').forEach((item) => {
+        if (item !== menuItem) {
+          item.classList.remove('active');
+          const otherSubmenu = item.querySelector(':scope > .main-menu--sub');
+          if (otherSubmenu) {
+            otherSubmenu.classList.remove('main-menu--sub-open');
+            otherSubmenu.classList.remove('main-menu-sub-menu-opened');
+          }
+        }
+      });
     }
-  });
+  }
+
+  // On mobile: Close other submenus at the same level only
+  if (!isDesktop.matches) {
+    const parentUl = menuItem.parentElement;
+    parentUl.querySelectorAll(':scope > li.main-menu__item--with-sub.active').forEach((item) => {
+      if (item !== menuItem) {
+        item.classList.remove('active');
+        const otherSubmenu = item.querySelector(':scope > .main-menu--sub');
+        if (otherSubmenu) {
+          otherSubmenu.classList.remove('main-menu--sub-open');
+          otherSubmenu.classList.remove('main-menu-sub-menu-opened');
+        }
+      }
+    });
+  }
 
   // Toggle the current menu item
   menuItem.classList.toggle('active', !isActive);
@@ -222,8 +361,8 @@ function toggleMenu(nav, mainNav, forceExpanded = null) {
 
   button.setAttribute('aria-label', shouldExpand ? 'Close navigation' : 'Open navigation');
 
-  // Enable menu collapse on escape keypress only (no focusout/click outside)
-  if (shouldExpand && !isDesktop.matches) {
+  // Enable menu collapse on escape keypress
+  if (shouldExpand) {
     window.addEventListener('keydown', closeOnEscape);
   } else {
     window.removeEventListener('keydown', closeOnEscape);
@@ -283,14 +422,54 @@ function convertToMainMenu(ul, level = 0) {
 
         if (anchor.target) menuLink.target = anchor.target;
 
-        // Add special classes based on link text
-        const linkText = menuLink.textContent.toLowerCase();
-        if (linkText.includes('patient')) menuLink.classList.add('apply-patients');
-        if (linkText.includes('hcp')) menuLink.classList.add('apply-hcps');
-        if (linkText.includes('form')) menuLink.classList.add('apply-forms');
-        if (linkText.includes('facebook')) menuLink.classList.add('facebook-link');
-        if (linkText.includes('linkedin')) menuLink.classList.add('linkedin-link');
-        if (linkText.includes('call')) menuLink.classList.add('call-us-menu-link');
+        // Add special classes based on data attributes or existing classes from source
+        // Check for data-link-style attribute on the anchor or its parent
+        const dataLinkStyle = anchor.dataset.linkStyle || anchor.parentElement?.dataset.linkStyle;
+        if (dataLinkStyle) {
+          menuLink.classList.add(dataLinkStyle);
+        }
+
+        // Preserve any meaningful classes from the original anchor
+        // Filter out generic framework/system classes but keep custom classes
+        const excludeClasses = ['button', 'button-container', 'default-content-wrapper'];
+        anchor.classList.forEach((className) => {
+          if (!excludeClasses.includes(className)) {
+            menuLink.classList.add(className);
+          }
+        });
+
+        // Look for icon image in the source and add it to the menu link
+        // Search in multiple possible locations:
+        // 1. Inside content (p or button-container)
+        // 2. As sibling of anchor inside content
+        // 3. As sibling of content in the item
+        let icon = content.querySelector('img');
+        if (!icon && anchor) {
+          // Check if icon is a sibling of the anchor within content
+          const siblings = Array.from(content.children);
+          icon = siblings.find(el => el.tagName === 'IMG');
+        }
+        if (!icon) {
+          // Look for img as a sibling in the item (before or after the content)
+          const itemImages = item.querySelectorAll(':scope > img');
+          if (itemImages.length > 0) {
+            icon = itemImages[0];
+          }
+        }
+        
+        
+        if (icon) {
+          const iconClone = icon.cloneNode(true);
+          const iconName = icon.dataset?.iconName || icon.alt || 'icon';
+          // Add icon class for styling
+          menuLink.classList.add(`icon-${iconName}`);
+          
+          // Clear text content and rebuild with icon
+          const textNode = document.createTextNode(menuLink.textContent);
+          menuLink.textContent = '';
+          menuLink.appendChild(iconClone);
+          menuLink.appendChild(textNode);
+        }
       } else {
         // Item with submenu or span
         const textContent = content.textContent.trim();
@@ -308,9 +487,53 @@ function convertToMainMenu(ul, level = 0) {
             : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
         }
 
-        // Add special classes based on text content
-        if (textContent.toLowerCase().includes('follow')) menuLink.classList.add('social-links');
-        if (textContent.toLowerCase().includes('form')) menuLink.classList.add('apply-forms');
+        // Add special classes based on data attributes or existing classes from source
+        // Check for data-link-style attribute on the content element or its parent
+        const dataLinkStyle = content.dataset.linkStyle || content.parentElement?.dataset.linkStyle;
+        if (dataLinkStyle) {
+          menuLink.classList.add(dataLinkStyle);
+        }
+
+        // Preserve any meaningful classes from the content element
+        // Filter out generic framework/system classes but keep custom classes
+        const excludeClasses = ['button', 'button-container', 'default-content-wrapper'];
+        content.classList.forEach((className) => {
+          if (!excludeClasses.includes(className)) {
+            menuLink.classList.add(className);
+          }
+        });
+
+        // Look for icon image in the source and add it to the menu link
+        // Search in multiple possible locations:
+        // 1. Inside content (p or button-container)
+        // 2. As sibling of content children
+        // 3. As sibling of content in the item
+        let icon = content.querySelector('img');
+        if (!icon) {
+          // Check if icon is a sibling of text within content
+          const siblings = Array.from(content.children);
+          icon = siblings.find(el => el.tagName === 'IMG');
+        }
+        if (!icon) {
+          // Look for img as a sibling in the item (before or after the content)
+          const itemImages = item.querySelectorAll(':scope > img');
+          if (itemImages.length > 0) {
+            icon = itemImages[0];
+          }
+        }
+        
+        if (icon) {
+          const iconClone = icon.cloneNode(true);
+          const iconName = icon.dataset?.iconName || icon.alt || 'icon';
+          // Add icon class for styling
+          menuLink.classList.add(`icon-${iconName}`);
+          
+          // Clear text content and rebuild with icon
+          const textNode = document.createTextNode(menuLink.textContent);
+          menuLink.textContent = '';
+          menuLink.appendChild(iconClone);
+          menuLink.appendChild(textNode);
+        }
 
         if (hasSubmenu) {
           menuLink.setAttribute('tabindex', '0');
@@ -334,27 +557,30 @@ function convertToMainMenu(ul, level = 0) {
           // Always prevent default for spans, and for links with submenus
           if (menuLink.tagName === 'SPAN') {
             e.preventDefault();
+            e.stopPropagation(); // Prevent click from bubbling to document
             const wasActive = currentMenuItem.classList.contains('active');
             toggleSubmenu(currentMenuItem);
             // Toggle expand-sub class based on new state
-            if (wasActive) {
-              currentExpandSub.classList.remove('expand-sub--open');
-            } else {
+            // Note: After toggleSubmenu, check again if it's active (may have been closed without opening)
+            if (currentMenuItem.classList.contains('active')) {
               currentExpandSub.classList.add('expand-sub--open');
+            } else {
+              currentExpandSub.classList.remove('expand-sub--open');
             }
           }
         });
 
         expandSub.addEventListener('click', (e) => {
           e.preventDefault();
-          e.stopPropagation();
+          e.stopPropagation(); // Prevent click from bubbling to document
           const wasActive = currentMenuItem.classList.contains('active');
           toggleSubmenu(currentMenuItem);
           // Toggle expand-sub class based on new state
-          if (wasActive) {
-            currentExpandSub.classList.remove('expand-sub--open');
-          } else {
+          // Note: After toggleSubmenu, check again if it's active (may have been closed without opening)
+          if (currentMenuItem.classList.contains('active')) {
             currentExpandSub.classList.add('expand-sub--open');
+          } else {
+            currentExpandSub.classList.remove('expand-sub--open');
           }
         });
 
@@ -393,6 +619,22 @@ export default async function decorate(block) {
   // decorate nav DOM
   block.textContent = '';
 
+  // Process fragment sections to find call now section
+  const allSections = fragment.querySelectorAll(':scope > div.section, :scope > div');
+  let callNowSection = null;
+
+  allSections.forEach((section) => {
+    // Look for a section with "call now" class or text content
+    if (section.classList.contains('call-now') || 
+        section.textContent.toLowerCase().includes('call') ||
+        section.querySelector('p')?.textContent.toLowerCase().includes('call')) {
+      // Make sure it's not the navigation section
+      if (!section.querySelector('ul') && !section.classList.contains('nav-sections')) {
+        callNowSection = section;
+      }
+    }
+  });
+
   // Create region-top section (above header)
   const regionTop = document.createElement('div');
   regionTop.className = 'region region-top clearfix';
@@ -420,11 +662,54 @@ export default async function decorate(block) {
   const textLong = document.createElement('div');
   textLong.className = 'text-long';
 
-  const phoneText = document.createElement('p');
-  phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
-  phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
+  // Check if we found a call now section with authored content
+  if (callNowSection) {
+    // Look for the paragraph with the phone content
+    const authoredPara = callNowSection.querySelector('p');
+    if (authoredPara) {
+      const phoneText = document.createElement('p');
+      phoneText.className = 'align-center d-flex justify-content-center white';
+      
+      // Check if there's an icon in the authored content
+      const icon = authoredPara.querySelector('img');
+      if (icon) {
+        const iconName = icon.dataset?.iconName || icon.alt || 'phone-without-bg';
+        const iconSrc = icon.src || icon.getAttribute('src');
+        phoneText.classList.add(`icon-${iconName}--before`);
+        
+        // Set the icon as a CSS custom property so ::before can use it
+        if (iconSrc) {
+          phoneText.style.setProperty('--icon-url', `url(${iconSrc})`);
+        }
+      } else {
+        // Default to phone icon if no icon specified
+        phoneText.classList.add('icon-phone--before');
+      }
+      
+      // Get the text content (without the image)
+      const textContent = Array.from(authoredPara.childNodes)
+        .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'IMG'))
+        .map(node => node.textContent)
+        .join('')
+        .trim();
+      
+      phoneText.textContent = textContent;
+      textLong.appendChild(phoneText);
+    } else {
+      // Fallback to default if no paragraph found
+      const phoneText = document.createElement('p');
+      phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
+      phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
+      textLong.appendChild(phoneText);
+    }
+  } else {
+    // Fallback to default hardcoded text if no call now section found
+    const phoneText = document.createElement('p');
+    phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
+    phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
+    textLong.appendChild(phoneText);
+  }
 
-  textLong.appendChild(phoneText);
   textWrapper.appendChild(textLong);
   content.appendChild(textWrapper);
   paragraph.appendChild(content);
@@ -446,15 +731,32 @@ export default async function decorate(block) {
   // Process fragment sections - look for .section divs or direct children
   const sections = fragment.querySelectorAll(':scope > div.section, :scope > div');
 
-  // Find the brand section (logo)
+  // Find the brand section (logo) and menu section
   let brandSection = null;
   let menuSection = null;
 
   sections.forEach((section) => {
-    if (section.classList.contains('nav-brand') || section.querySelector('picture, img')) {
+    // Check for nav-brand class first (most specific)
+    if (section.classList.contains('nav-brand')) {
       brandSection = section;
-    } else if (section.classList.contains('nav-sections') || section.querySelector('ul')) {
+    } 
+    // Check for nav-sections class for menu
+    else if (section.classList.contains('nav-sections')) {
       menuSection = section;
+    }
+    // Look for menu section (has ul)
+    else if (section.querySelector('ul') && !menuSection) {
+      menuSection = section;
+    }
+    // Look for brand section (first section with image/picture but no ul and not the call section)
+    else if (!brandSection && !section.querySelector('ul') && section.querySelector('picture, img')) {
+      // Make sure this isn't the "call now" section
+      const textContent = section.textContent.toLowerCase();
+      const isCallSection = textContent.includes('call') || textContent.includes('fax') || section.classList.contains('call-now');
+      
+      if (!isCallSection) {
+        brandSection = section;
+      }
     }
   });
 
@@ -471,15 +773,40 @@ export default async function decorate(block) {
     logoLink.className = 'site-logo';
 
     // Look for picture or img in the brand section
-    const logoImg = brandSection.querySelector('picture') || brandSection.querySelector('img');
-    if (logoImg) {
-      if (logoImg.tagName === 'IMG') {
-        // If it's just an img, wrap it in the structure
-        logoLink.appendChild(logoImg.cloneNode(true));
-      } else {
-        // If it's a picture element, clone it
-        logoLink.appendChild(logoImg.cloneNode(true));
+    // Prioritize picture elements, then look for logo images (not icons)
+    const pictureElement = brandSection.querySelector('picture');
+    let imgElement = null;
+    
+    if (!pictureElement) {
+      // Get all images and filter out small icons
+      const allImages = brandSection.querySelectorAll('img');
+      
+      // Find the logo by filtering out icons (which are typically small or have icon-related names)
+      const logoImages = Array.from(allImages).filter(img => {
+        const src = img.getAttribute('src') || '';
+        
+        // Exclude images that are clearly icons (small size, icon-related names)
+        const isIcon = src.includes('/icons/') && (
+          src.includes('phone') || 
+          src.includes('menu') || 
+          src.includes('search') ||
+          src.includes('arrow') ||
+          src.includes('close')
+        );
+        
+        return !isIcon;
+      });
+      
+      // Use the first non-icon image as the logo
+      if (logoImages.length > 0) {
+        imgElement = logoImages[0];
       }
+    }
+    
+    if (pictureElement) {
+      logoLink.appendChild(pictureElement.cloneNode(true));
+    } else if (imgElement) {
+      logoLink.appendChild(imgElement.cloneNode(true));
     }
 
     siteBranding.appendChild(logoLink);
@@ -605,4 +932,7 @@ export default async function decorate(block) {
     toggleMenu(navElement, mainNav, isDesktop.matches);
     isDesktop.addEventListener('change', () => toggleMenu(navElement, mainNav, isDesktop.matches));
   }
+
+  // Add click outside handler for desktop - close all submenus
+  document.addEventListener('click', closeOnClickOutside);
 }
