@@ -1109,6 +1109,7 @@ header.flexible-header.js--header-hidden {
     background-size: contain;
     background-position: center;
     vertical-align: middle;
+
     /* Use CSS custom property for dynamic icon URL */
     background-image: var(--icon-url, url("../../icons/phone-without-bg.svg"));
     margin-right: 1.5rem;

@@ -57,10 +57,10 @@ function closeOnEscape(e) {
   if (e.code === 'Escape') {
     const nav = document.getElementById('block-mainmenu');
     if (!nav) return;
-    
+
     const mainMenu = nav.querySelector('.main-nav');
     if (!mainMenu) return;
-    
+
     const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
 
     if (expandedItems.length > 0 && isDesktop.matches) {
@@ -92,13 +92,13 @@ function closeOnEscape(e) {
 function closeAllSubmenus() {
   const nav = document.getElementById('block-mainmenu');
   if (!nav) return;
-  
+
   const mainMenu = nav.querySelector('.main-nav');
   if (!mainMenu) return;
 
   // Get all expanded menu items (including nested ones)
   const expandedItems = mainMenu.querySelectorAll('.main-menu__item--with-sub.active');
-  
+
   expandedItems.forEach((item) => {
     item.classList.remove('active');
     const submenu = item.querySelector(':scope > .main-menu--sub');
@@ -118,7 +118,7 @@ function closeAllSubmenus() {
   allSubmenus.forEach((submenu) => {
     submenu.classList.remove('main-menu-sub-menu-open');
   });
-  
+
   const mainMenuUl = mainMenu.querySelector('.main-menu');
   if (mainMenuUl) {
     mainMenuUl.classList.remove('main-menu-sub-menu-open');
@@ -164,6 +164,36 @@ function focusMenuItem() {
 }
 
 /**
+ * Handle Tab key to open menus on focus
+ */
+function handleTabKey() {
+  const menuLinks = document.querySelectorAll('.main-menu__link--with-sub');
+
+  window.addEventListener('keyup', (e) => {
+    // Tab key (keyCode 9)
+    if (e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+      menuLinks.forEach((link) => {
+        if (link === document.activeElement) {
+          const parentLi = link.closest('li.main-menu__item--with-sub');
+          const submenu = link.nextElementSibling;
+
+          if (parentLi && submenu && submenu.classList.contains('main-menu--sub')) {
+            const mainMenu = document.querySelector('.main-menu:not(.main-menu--sub)');
+
+            // Add classes to show submenu on tab focus
+            if (mainMenu) {
+              mainMenu.classList.add('main-menu-sub-menu-open');
+            }
+            submenu.classList.add('main-menu-sub-menu-opened');
+            parentLi.classList.add('active');
+          }
+        }
+      });
+    }
+  });
+}
+
+/**
  * Toggles submenu visibility
  * @param {Element} menuItem The menu item with submenu
  */
@@ -175,7 +205,7 @@ function toggleSubmenu(menuItem) {
   if (isDesktop.matches) {
     // Check if this is a top-level menu item (not inside a submenu)
     const isTopLevel = !menuItem.closest('.main-menu--sub');
-    
+
     if (isTopLevel) {
       // Top-level parent menu logic: two-click behavior
       const nav = document.getElementById('block-mainmenu');
@@ -184,7 +214,7 @@ function toggleSubmenu(menuItem) {
         if (mainMenu) {
           // Check if ANY top-level menu items are open
           const anyOpenTopLevelItems = mainMenu.querySelectorAll('.main-menu > .main-menu__item--with-sub.active');
-          
+
           // If there are open top-level items and this item is not currently active
           if (anyOpenTopLevelItems.length > 0 && !isActive) {
             // Close ALL open menus first (including their children)
@@ -194,7 +224,7 @@ function toggleSubmenu(menuItem) {
               if (openSubmenu) {
                 openSubmenu.classList.remove('main-menu--sub-open');
                 openSubmenu.classList.remove('main-menu-sub-menu-opened');
-                
+
                 // Also close any nested submenus
                 const nestedOpenItems = openSubmenu.querySelectorAll('.main-menu__item--with-sub.active');
                 nestedOpenItems.forEach((nestedItem) => {
@@ -215,7 +245,7 @@ function toggleSubmenu(menuItem) {
                 expandSub.classList.remove('expand-sub--open');
               }
             });
-            
+
             // Don't open the clicked menu yet - user needs to click again
             return;
           }
@@ -442,28 +472,35 @@ function convertToMainMenu(ul, level = 0) {
         // Search in multiple possible locations:
         // 1. Inside content (p or button-container)
         // 2. As sibling of anchor inside content
-        // 3. As sibling of content in the item
+        // 3. As sibling of content in the item (span.icon wrapper)
+        // 4. Direct img as sibling in the item
         let icon = content.querySelector('img');
         if (!icon && anchor) {
           // Check if icon is a sibling of the anchor within content
           const siblings = Array.from(content.children);
-          icon = siblings.find(el => el.tagName === 'IMG');
+          icon = siblings.find((el) => el.tagName === 'IMG');
+        }
+        if (!icon) {
+          // Look for span.icon wrapper as a sibling in the item
+          const iconSpan = item.querySelector(':scope > span.icon');
+          if (iconSpan) {
+            icon = iconSpan.querySelector('img');
+          }
         }
         if (!icon) {
           // Look for img as a sibling in the item (before or after the content)
           const itemImages = item.querySelectorAll(':scope > img');
           if (itemImages.length > 0) {
-            icon = itemImages[0];
+            [icon] = itemImages;
           }
         }
-        
-        
+
         if (icon) {
           const iconClone = icon.cloneNode(true);
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
           // Add icon class for styling
           menuLink.classList.add(`icon-${iconName}`);
-          
+
           // Clear text content and rebuild with icon
           const textNode = document.createTextNode(menuLink.textContent);
           menuLink.textContent = '';
@@ -507,27 +544,35 @@ function convertToMainMenu(ul, level = 0) {
         // Search in multiple possible locations:
         // 1. Inside content (p or button-container)
         // 2. As sibling of content children
-        // 3. As sibling of content in the item
+        // 3. As sibling of content in the item (span.icon wrapper)
+        // 4. Direct img as sibling in the item
         let icon = content.querySelector('img');
         if (!icon) {
           // Check if icon is a sibling of text within content
           const siblings = Array.from(content.children);
-          icon = siblings.find(el => el.tagName === 'IMG');
+          icon = siblings.find((el) => el.tagName === 'IMG');
+        }
+        if (!icon) {
+          // Look for span.icon wrapper as a sibling in the item
+          const iconSpan = item.querySelector(':scope > span.icon');
+          if (iconSpan) {
+            icon = iconSpan.querySelector('img');
+          }
         }
         if (!icon) {
           // Look for img as a sibling in the item (before or after the content)
           const itemImages = item.querySelectorAll(':scope > img');
           if (itemImages.length > 0) {
-            icon = itemImages[0];
+            [icon] = itemImages;
           }
         }
-        
+
         if (icon) {
           const iconClone = icon.cloneNode(true);
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
           // Add icon class for styling
           menuLink.classList.add(`icon-${iconName}`);
-          
+
           // Clear text content and rebuild with icon
           const textNode = document.createTextNode(menuLink.textContent);
           menuLink.textContent = '';
@@ -558,10 +603,9 @@ function convertToMainMenu(ul, level = 0) {
           if (menuLink.tagName === 'SPAN') {
             e.preventDefault();
             e.stopPropagation(); // Prevent click from bubbling to document
-            const wasActive = currentMenuItem.classList.contains('active');
             toggleSubmenu(currentMenuItem);
             // Toggle expand-sub class based on new state
-            // Note: After toggleSubmenu, check again if it's active (may have been closed without opening)
+            // Note: After toggleSubmenu, check if active (may be closed without opening)
             if (currentMenuItem.classList.contains('active')) {
               currentExpandSub.classList.add('expand-sub--open');
             } else {
@@ -573,10 +617,9 @@ function convertToMainMenu(ul, level = 0) {
         expandSub.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation(); // Prevent click from bubbling to document
-          const wasActive = currentMenuItem.classList.contains('active');
           toggleSubmenu(currentMenuItem);
           // Toggle expand-sub class based on new state
-          // Note: After toggleSubmenu, check again if it's active (may have been closed without opening)
+          // Note: After toggleSubmenu, check if active (may be closed without opening)
           if (currentMenuItem.classList.contains('active')) {
             currentExpandSub.classList.add('expand-sub--open');
           } else {
@@ -625,9 +668,9 @@ export default async function decorate(block) {
 
   allSections.forEach((section) => {
     // Look for a section with "call now" class or text content
-    if (section.classList.contains('call-now') || 
-        section.textContent.toLowerCase().includes('call') ||
-        section.querySelector('p')?.textContent.toLowerCase().includes('call')) {
+    if (section.classList.contains('call-now')
+        || section.textContent.toLowerCase().includes('call')
+        || section.querySelector('p')?.textContent.toLowerCase().includes('call')) {
       // Make sure it's not the navigation section
       if (!section.querySelector('ul') && !section.classList.contains('nav-sections')) {
         callNowSection = section;
@@ -669,14 +712,14 @@ export default async function decorate(block) {
     if (authoredPara) {
       const phoneText = document.createElement('p');
       phoneText.className = 'align-center d-flex justify-content-center white';
-      
+
       // Check if there's an icon in the authored content
       const icon = authoredPara.querySelector('img');
       if (icon) {
         const iconName = icon.dataset?.iconName || icon.alt || 'phone-without-bg';
         const iconSrc = icon.src || icon.getAttribute('src');
         phoneText.classList.add(`icon-${iconName}--before`);
-        
+
         // Set the icon as a CSS custom property so ::before can use it
         if (iconSrc) {
           phoneText.style.setProperty('--icon-url', `url(${iconSrc})`);
@@ -685,14 +728,14 @@ export default async function decorate(block) {
         // Default to phone icon if no icon specified
         phoneText.classList.add('icon-phone--before');
       }
-      
+
       // Get the text content (without the image)
       const textContent = Array.from(authoredPara.childNodes)
-        .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'IMG'))
-        .map(node => node.textContent)
+        .filter((node) => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'IMG'))
+        .map((node) => node.textContent)
         .join('')
         .trim();
-      
+
       phoneText.textContent = textContent;
       textLong.appendChild(phoneText);
     } else {
@@ -739,21 +782,22 @@ export default async function decorate(block) {
     // Check for nav-brand class first (most specific)
     if (section.classList.contains('nav-brand')) {
       brandSection = section;
-    } 
-    // Check for nav-sections class for menu
-    else if (section.classList.contains('nav-sections')) {
+    } else if (section.classList.contains('nav-sections')) {
+      // Check for nav-sections class for menu
       menuSection = section;
-    }
-    // Look for menu section (has ul)
-    else if (section.querySelector('ul') && !menuSection) {
+    } else if (section.querySelector('ul') && !menuSection) {
+      // Look for menu section (has ul)
       menuSection = section;
-    }
-    // Look for brand section (first section with image/picture but no ul and not the call section)
-    else if (!brandSection && !section.querySelector('ul') && section.querySelector('picture, img')) {
+    } else if (!brandSection
+      && !section.querySelector('ul')
+      && section.querySelector('picture, img')) {
+      // Look for brand section (first with image/picture, no ul, not call section)
       // Make sure this isn't the "call now" section
       const textContent = section.textContent.toLowerCase();
-      const isCallSection = textContent.includes('call') || textContent.includes('fax') || section.classList.contains('call-now');
-      
+      const isCallSection = textContent.includes('call')
+        || textContent.includes('fax')
+        || section.classList.contains('call-now');
+
       if (!isCallSection) {
         brandSection = section;
       }
@@ -773,40 +817,19 @@ export default async function decorate(block) {
     logoLink.className = 'site-logo';
 
     // Look for picture or img in the brand section
-    // Prioritize picture elements, then look for logo images (not icons)
-    const pictureElement = brandSection.querySelector('picture');
-    let imgElement = null;
-    
-    if (!pictureElement) {
-      // Get all images and filter out small icons
-      const allImages = brandSection.querySelectorAll('img');
-      
-      // Find the logo by filtering out icons (which are typically small or have icon-related names)
-      const logoImages = Array.from(allImages).filter(img => {
-        const src = img.getAttribute('src') || '';
-        
-        // Exclude images that are clearly icons (small size, icon-related names)
-        const isIcon = src.includes('/icons/') && (
-          src.includes('phone') || 
-          src.includes('menu') || 
-          src.includes('search') ||
-          src.includes('arrow') ||
-          src.includes('close')
-        );
-        
-        return !isIcon;
-      });
-      
-      // Use the first non-icon image as the logo
-      if (logoImages.length > 0) {
-        imgElement = logoImages[0];
+    const logoImg = brandSection.querySelector('picture') || brandSection.querySelector('img');
+    if (logoImg) {
+      const cloned = logoImg.cloneNode(true);
+
+      // If it's an img element, ensure src attribute is preserved
+      if (cloned.tagName === 'IMG') {
+        const originalSrc = logoImg.getAttribute('src');
+        if (originalSrc && originalSrc !== cloned.getAttribute('src')) {
+          cloned.setAttribute('src', originalSrc);
+        }
       }
-    }
-    
-    if (pictureElement) {
-      logoLink.appendChild(pictureElement.cloneNode(true));
-    } else if (imgElement) {
-      logoLink.appendChild(imgElement.cloneNode(true));
+
+      logoLink.appendChild(cloned);
     }
 
     siteBranding.appendChild(logoLink);
@@ -935,4 +958,7 @@ export default async function decorate(block) {
 
   // Add click outside handler for desktop - close all submenus
   document.addEventListener('click', closeOnClickOutside);
+
+  // Add Tab key handler for menu accessibility
+  handleTabKey();
 }
