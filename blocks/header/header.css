@@ -1146,8 +1146,43 @@ header.flexible-header.js--header-hidden {
     display: block;
 }
 
+/* Hide icons in mobile view by default */
+@media (width <= 991.98px) {
+    .main-menu__link--sub img {
+        display: none;
+    }
+    
+    /* Show mobile-specific icons if they have the mobile-visible class */
+    .main-menu__link--sub img.icon-mobile-visible {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+}
+
+/* Desktop: ensure icons are visible */
+@media (width >= 992px) {
+    .main-menu__link--sub img {
+        display: block;
+    }
+}
+
 /* Adjust padding for submenu links with icons */
 .main-menu__link--sub[class*="icon-"] {
     padding-left: 4.8125rem;
     position: relative;
+}
+
+/* Adjust padding for mobile icons */
+@media (width <= 991.98px) {
+    .main-menu__link--sub[class*="-mobile"] {
+        padding-left: 0;
+    }
+    
+    /* Add padding if mobile icon exists */
+    .main-menu__link--sub:has(img.icon-mobile-visible) {
+        padding-left: 3rem;
+    }
 }
