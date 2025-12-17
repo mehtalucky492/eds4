@@ -41,6 +41,14 @@
             {
               "name": "Bottom (footer)",
               "value": "bottom"
+            },
+            {
+              "name": "Site Branding (header)",
+              "value": "site-branding"
+            },
+            {
+              "name": "Navigation (header)",
+              "value": "navigation"
             }
           ]
         }
