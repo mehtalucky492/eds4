@@ -496,88 +496,37 @@ function convertToMainMenu(ul, level = 0) {
         }
 
         if (icon) {
-          const iconClone = icon.cloneNode(true);
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
-          
-          // Check if we should use mobile version of the icon
-          const iconSrc = iconClone.getAttribute('src') || iconClone.src;
-          if (iconSrc) {
-            // Try multiple patterns for mobile icon naming
-            const pathParts = iconSrc.split('/');
-            const fileName = pathParts[pathParts.length - 1];
-            const fileNameWithoutExt = fileName.replace(/\.[^.]+$/, '');
-            const fileExt = fileName.match(/\.[^.]+$/)?.[0] || '.svg';
-            const basePath = pathParts.slice(0, -1).join('/');
-            
-            // Generate potential mobile icon paths
-            const mobileIconOptions = [
-              `${basePath}/${fileNameWithoutExt}-mobile${fileExt}`, // e.g., linkedin-icon-mobile.svg
-              `${basePath}/${fileNameWithoutExt.replace(/-icon$/, '')}-mobile${fileExt}`, // e.g., linkedin-mobile.svg
-              `${basePath}/${fileNameWithoutExt.replace(/-icon$/, '-mobile-icon')}${fileExt}`, // e.g., linkedin-mobile-icon.svg
-            ];
-            
-            // Remove duplicates
-            const uniqueMobileOptions = [...new Set(mobileIconOptions)];
-            
-            // Store both desktop and mobile sources as data attributes
-            iconClone.setAttribute('data-desktop-src', iconSrc);
-            
-            // Check if mobile icon exists
-            let mobileIconFound = null;
-            const checkMobileIcon = async () => {
-              for (const mobileIconSrc of uniqueMobileOptions) {
-                try {
-                  const response = await fetch(mobileIconSrc, { method: 'HEAD' });
-                  if (response.ok) {
-                    mobileIconFound = mobileIconSrc;
-                    iconClone.setAttribute('data-mobile-src', mobileIconSrc);
-                    break;
-                  }
-                } catch (error) {
-                  // Continue to next option
-                }
-              }
-              
-              // Set initial display state after check completes
-              updateIconForViewport();
-            };
-            
-            // Function to update icon based on viewport
-            const updateIconForViewport = () => {
-              if (!isDesktop.matches) {
-                // Mobile view - only show if mobile icon exists
-                if (mobileIconFound) {
-                  // Mobile icon found - show it
-                  iconClone.setAttribute('src', mobileIconFound);
-                  iconClone.classList.add('icon-mobile-visible');
-                } else {
-                  // No mobile icon found - hide on mobile
-                  // Don't add icon-mobile-visible class, so CSS will hide it
-                  iconClone.classList.remove('icon-mobile-visible');
-                }
-              } else {
-                // Desktop view - always show original desktop icon
-                iconClone.setAttribute('src', iconSrc);
-                // Remove mobile class, desktop CSS will show icon by default
-                iconClone.classList.remove('icon-mobile-visible');
-              }
-            };
-            
-            // Check for mobile icon availability
-            checkMobileIcon();
-            
-            // Listen for viewport changes
-            isDesktop.addEventListener('change', updateIconForViewport);
-          }
-          
-          // Add icon class for styling
+          const iconSrc = icon.getAttribute('src');
+
+          // Add icon class for styling via CSS
           menuLink.classList.add(`icon-${iconName}`);
 
-          // Clear text content and rebuild with icon
-          const textNode = document.createTextNode(menuLink.textContent);
-          menuLink.textContent = '';
-          menuLink.appendChild(iconClone);
-          menuLink.appendChild(textNode);
+          // Store icon path as data attribute for CSS to use
+          if (iconSrc) {
+            menuLink.setAttribute('data-icon-src', iconSrc);
+          }
+
+          // Check for mobile icon version
+          const parts = iconSrc.split('/');
+          const filename = parts[parts.length - 1];
+          const filenameWithoutExt = filename.replace(/\.[^.]+$/, '');
+          const ext = filename.match(/\.[^.]+$/)?.[0] || '.svg';
+          const basePath = iconSrc.substring(0, iconSrc.lastIndexOf('/') + 1);
+
+          // Generate possible mobile icon paths
+          const mobileOptions = [
+            `${basePath}${filenameWithoutExt}-mobile${ext}`,
+            `${basePath}${filenameWithoutExt.replace(/-icon$/, '')}-mobile${ext}`,
+            `${basePath}${filenameWithoutExt.replace(/-icon$/, '-mobile-icon')}${ext}`,
+          ];
+
+          // Check if mobile version exists and store it
+          fetch(mobileOptions[0], { method: 'HEAD' }).then((response) => {
+            if (response.ok && mobileOptions[0].includes('-mobile')) {
+              menuLink.setAttribute('data-icon-mobile-src', mobileOptions[0]);
+            }
+          }).catch(() => {});
         }
       } else {
         // Item with submenu or span
@@ -640,88 +589,37 @@ function convertToMainMenu(ul, level = 0) {
         }
 
         if (icon) {
-          const iconClone = icon.cloneNode(true);
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
-          
-          // Check if we should use mobile version of the icon
-          const iconSrc = iconClone.getAttribute('src') || iconClone.src;
-          if (iconSrc) {
-            // Try multiple patterns for mobile icon naming
-            const pathParts = iconSrc.split('/');
-            const fileName = pathParts[pathParts.length - 1];
-            const fileNameWithoutExt = fileName.replace(/\.[^.]+$/, '');
-            const fileExt = fileName.match(/\.[^.]+$/)?.[0] || '.svg';
-            const basePath = pathParts.slice(0, -1).join('/');
-            
-            // Generate potential mobile icon paths
-            const mobileIconOptions = [
-              `${basePath}/${fileNameWithoutExt}-mobile${fileExt}`, // e.g., linkedin-icon-mobile.svg
-              `${basePath}/${fileNameWithoutExt.replace(/-icon$/, '')}-mobile${fileExt}`, // e.g., linkedin-mobile.svg
-              `${basePath}/${fileNameWithoutExt.replace(/-icon$/, '-mobile-icon')}${fileExt}`, // e.g., linkedin-mobile-icon.svg
-            ];
-            
-            // Remove duplicates
-            const uniqueMobileOptions = [...new Set(mobileIconOptions)];
-            
-            // Store both desktop and mobile sources as data attributes
-            iconClone.setAttribute('data-desktop-src', iconSrc);
-            
-            // Check if mobile icon exists
-            let mobileIconFound = null;
-            const checkMobileIcon = async () => {
-              for (const mobileIconSrc of uniqueMobileOptions) {
-                try {
-                  const response = await fetch(mobileIconSrc, { method: 'HEAD' });
-                  if (response.ok) {
-                    mobileIconFound = mobileIconSrc;
-                    iconClone.setAttribute('data-mobile-src', mobileIconSrc);
-                    break;
-                  }
-                } catch (error) {
-                  // Continue to next option
-                }
-              }
-              
-              // Set initial display state after check completes
-              updateIconForViewport();
-            };
-            
-            // Function to update icon based on viewport
-            const updateIconForViewport = () => {
-              if (!isDesktop.matches) {
-                // Mobile view - only show if mobile icon exists
-                if (mobileIconFound) {
-                  // Mobile icon found - show it
-                  iconClone.setAttribute('src', mobileIconFound);
-                  iconClone.classList.add('icon-mobile-visible');
-                } else {
-                  // No mobile icon found - hide on mobile
-                  // Don't add icon-mobile-visible class, so CSS will hide it
-                  iconClone.classList.remove('icon-mobile-visible');
-                }
-              } else {
-                // Desktop view - always show original desktop icon
-                iconClone.setAttribute('src', iconSrc);
-                // Remove mobile class, desktop CSS will show icon by default
-                iconClone.classList.remove('icon-mobile-visible');
-              }
-            };
-            
-            // Check for mobile icon availability
-            checkMobileIcon();
-            
-            // Listen for viewport changes
-            isDesktop.addEventListener('change', updateIconForViewport);
-          }
-          
-          // Add icon class for styling
+          const iconSrc = icon.getAttribute('src');
+
+          // Add icon class for styling via CSS
           menuLink.classList.add(`icon-${iconName}`);
 
-          // Clear text content and rebuild with icon
-          const textNode = document.createTextNode(menuLink.textContent);
-          menuLink.textContent = '';
-          menuLink.appendChild(iconClone);
-          menuLink.appendChild(textNode);
+          // Store icon path as data attribute for CSS to use
+          if (iconSrc) {
+            menuLink.setAttribute('data-icon-src', iconSrc);
+          }
+
+          // Check for mobile icon version
+          const parts = iconSrc.split('/');
+          const filename = parts[parts.length - 1];
+          const filenameWithoutExt = filename.replace(/\.[^.]+$/, '');
+          const ext = filename.match(/\.[^.]+$/)?.[0] || '.svg';
+          const basePath = iconSrc.substring(0, iconSrc.lastIndexOf('/') + 1);
+
+          // Generate possible mobile icon paths
+          const mobileOptions = [
+            `${basePath}${filenameWithoutExt}-mobile${ext}`,
+            `${basePath}${filenameWithoutExt.replace(/-icon$/, '')}-mobile${ext}`,
+            `${basePath}${filenameWithoutExt.replace(/-icon$/, '-mobile-icon')}${ext}`,
+          ];
+
+          // Check if mobile version exists and store it
+          fetch(mobileOptions[0], { method: 'HEAD' }).then((response) => {
+            if (response.ok && mobileOptions[0].includes('-mobile')) {
+              menuLink.setAttribute('data-icon-mobile-src', mobileOptions[0]);
+            }
+          }).catch(() => {});
         }
 
         if (hasSubmenu) {
@@ -923,11 +821,17 @@ export default async function decorate(block) {
   let menuSection = null;
 
   sections.forEach((section) => {
-    // Check for nav-brand class first (most specific)
-    if (section.classList.contains('nav-brand')) {
+    // Check for site-branding class
+    if (section.classList.contains('site-branding')) {
+      brandSection = section;
+    } else if (section.classList.contains('navigation')) {
+      // Check for navigation class for menu
+      menuSection = section;
+    } else if (section.classList.contains('nav-brand')) {
+      // Fallback: Check for nav-brand class (legacy support)
       brandSection = section;
     } else if (section.classList.contains('nav-sections')) {
-      // Check for nav-sections class for menu
+      // Fallback: Check for nav-sections class for menu (legacy support)
       menuSection = section;
     } else if (section.querySelector('ul') && !menuSection) {
       // Look for menu section (has ul)
@@ -950,6 +854,11 @@ export default async function decorate(block) {
 
   // First section: Site Branding (Logo)
   if (brandSection) {
+    // Create wrapper div with section class and style
+    const brandWrapper = document.createElement('div');
+    // Preserve classes like "section site-branding"
+    brandWrapper.className = brandSection.className;
+
     const siteBranding = document.createElement('div');
     siteBranding.id = 'block-sitebranding-2';
     siteBranding.className = 'block';
@@ -977,7 +886,8 @@ export default async function decorate(block) {
     }
 
     siteBranding.appendChild(logoLink);
-    region.appendChild(siteBranding);
+    brandWrapper.appendChild(siteBranding);
+    region.appendChild(brandWrapper);
   }
 
   // Add "Call Us" link block (appears on mobile)
@@ -1002,6 +912,11 @@ export default async function decorate(block) {
 
   // Second section: Navigation Menu
   if (menuSection) {
+    // Create wrapper div with section class and style
+    const navWrapper = document.createElement('div');
+    // Preserve classes like "section navigation"
+    navWrapper.className = menuSection.className;
+
     const nav = document.createElement('nav');
     nav.setAttribute('role', 'navigation');
     nav.setAttribute('aria-labelledby', 'block-mainmenu-menu');
@@ -1014,7 +929,7 @@ export default async function decorate(block) {
     navTitle.textContent = 'Main menu';
     nav.appendChild(navTitle);
 
-    const navWrapper = document.createElement('div');
+    const navInnerWrapper = document.createElement('div');
 
     // Create toggle expand button (using button instead of link)
     const toggleExpand = document.createElement('button');
@@ -1030,7 +945,7 @@ export default async function decorate(block) {
         <span class="toggle-expand__text"></span>
       </span>
     `;
-    navWrapper.appendChild(toggleExpand);
+    navInnerWrapper.appendChild(toggleExpand);
 
     // Create main nav container
     const mainNav = document.createElement('div');
@@ -1058,8 +973,8 @@ export default async function decorate(block) {
       mainNav.appendChild(mainMenu);
     }
 
-    navWrapper.appendChild(mainNav);
-    nav.appendChild(navWrapper);
+    navInnerWrapper.appendChild(mainNav);
+    nav.appendChild(navInnerWrapper);
 
     // Add toggle functionality - only close when menu is open
     toggleExpand.addEventListener('click', (e) => {
@@ -1078,7 +993,8 @@ export default async function decorate(block) {
       }
     });
 
-    region.appendChild(nav);
+    navWrapper.appendChild(nav);
+    region.appendChild(navWrapper);
   }
 
   container.appendChild(region);

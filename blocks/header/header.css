@@ -72,53 +72,7 @@ header.flexible-header.js--header-hidden {
     transform: translateY(-100%);
 }
 
-@media (width >= 992px) {
-    header.flexible-header .container {
-        max-width: 1022px;
-    }
-}
-
-@media (width >= 1200px) {
-    header.flexible-header .container {
-        max-width: 1202px;
-    }
-}
-
-@media (width >= 1400px) {
-    header.flexible-header .container {
-        max-width: 1382px;
-    }
-}
-
-.flexible-header__b {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 0.75rem 0;
-    padding: var(--s-half-medium) var(--s-half-medium) 0;
-    position: relative;
-    border-bottom: solid 1px #ccc;
-}
-
-.flexible-header__b > div,
-.flexible-header__b > div > div {
-    display: flex;
-    align-items: center;
-}
-
-.flexible-header__b > div > div {
-    gap: 1.25rem;
-    gap: var(--s-half-large);
-}
-
-.flexible-header .toggle-expand--open {
-    text-align: right;
-}
-
-.flexible-header.bg-light {
-    background-color: #f8f9fa;
-}
-
+/* Container Styles */
 .container {
     width: 100%;
     padding-right: 15px;
@@ -140,37 +94,47 @@ header.flexible-header.js--header-hidden {
 }
 
 @media (width >= 992px) {
-    .container {
+    .container,
+    header .container,
+    header.flexible-header .container {
         max-width: 960px;
     }
 }
 
 @media (width >= 1200px) {
-    .container {
+    .container,
+    header .container,
+    header.flexible-header .container {
         max-width: 1140px;
     }
 }
 
 @media (width >= 1400px) {
-    .container {
+    .container,
+    header .container,
+    header.flexible-header .container {
         max-width: 1320px;
     }
 }
 
+/* Header specific container overrides */
 @media (width >= 992px) {
-    header .container {
+    header .container,
+    header.flexible-header .container {
         max-width: 1022px;
     }
 }
 
 @media (width >= 1200px) {
-    header .container {
+    header .container,
+    header.flexible-header .container {
         max-width: 1202px;
     }
 }
 
 @media (width >= 1400px) {
-    header .container {
+    header .container,
+    header.flexible-header .container {
         max-width: 1382px;
     }
 }
@@ -635,6 +599,7 @@ header.flexible-header.js--header-hidden {
     }
 }
 
+/* Arrow for menu items with submenus - applies to top-level items */
 .main-menu__item.main-menu__item--with-sub
     .main-menu__link--with-sub:not(
         .main-menu__link--sub-1,
@@ -649,6 +614,27 @@ header.flexible-header.js--header-hidden {
     right: 2.2rem;
     background-size: contain;
     top: 0.5rem;
+}
+
+/* Arrow for ALL submenu items with children - mobile only */
+@media (width <= 991.98px) {
+    .main-menu__item.main-menu__item--with-sub
+        .main-menu__link--with-sub.main-menu__link--sub-1::after,
+    .main-menu__item.main-menu__item--with-sub
+        .main-menu__link--with-sub.main-menu__link--sub-2::after {
+        content: "";
+        background-image: url("../../icons/right-arrow.svg");
+        width: 1.25rem;
+        height: 1.25rem;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 0;
+        flex-shrink: 0;
+        top: 0;
+        left: 2.2rem;
+    }
 }
 
 @media (width >= 992px) {
@@ -674,6 +660,16 @@ header.flexible-header.js--header-hidden {
         .main-menu__link--sub-2
     ):hover::after {
     background-image: url("../../icons/right-arrow-blue.svg");
+}
+
+/* Hover state for nested submenu items with children - mobile only */
+@media (width <= 991.98px) {
+    .main-menu__item.main-menu__item--with-sub
+        .main-menu__link--with-sub.main-menu__link--sub-1:hover::after,
+    .main-menu__item.main-menu__item--with-sub
+        .main-menu__link--with-sub.main-menu__link--sub-2:hover::after {
+        background-image: url("../../icons/right-arrow-blue.svg");
+    }
 }
 
 @media (width >= 992px) {
@@ -704,6 +700,14 @@ header.flexible-header.js--header-hidden {
 }
 
 @media (width >= 992px) {
+    /* Apply styles when parent ul has exactly 3 li children */
+    ul:has(> li:nth-child(3):last-child) > .main-menu__item--sub {
+        display: block;
+        position: relative;
+        width: 100%;
+        margin-top: 0.875rem;
+    }
+    
     .main-menu__item--sub {
         display: block;
         position: relative;
@@ -828,13 +832,15 @@ header.flexible-header.js--header-hidden {
 .main-menu__link--sub::after {
     content: "";
     background-image: url("../../icons/menu-sub-arrow.svg");
-    width: 0.7rem;
-    height: 0.6rem;
-    position: absolute;
+    width: 0.875rem;
+    height: 0.75rem;
     background-repeat: no-repeat;
     background-size: contain;
-    top: 1.5rem;
-    right: 2.5rem;
+    display: inline-block;
+    margin-left: 0.625rem;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.5rem;
 }
 
 .main-menu__link.main-menu__link--sub.main-menu__link--sub-2:hover::after,
@@ -842,9 +848,55 @@ header.flexible-header.js--header-hidden {
     background-image: url("../../icons/menu-sub-arrow--red.svg");
 }
 
-/* Remove before pseudo-element for level 2 submenu items */
-.main-menu__link--sub-2::before {
+/* Remove before pseudo-element for level 2 submenu items without icons */
+.main-menu__link--sub-2:not([data-icon-src])::before {
     content: none;
+}
+
+/* Icon styles for submenu items using ::before pseudo-element */
+.main-menu__link--sub[data-icon-src]::before {
+    content: "";
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: -0.5rem;
+    left: -0.125rem;
+}
+
+/* Desktop icon paths */
+@media (width >= 992px) {
+    .main-menu__link--sub.icon-patient::before {
+        background-image: url("../../icons/patient.svg");
+    }
+
+    .main-menu__link--sub.icon-hcps::before {
+        background-image: url("../../icons/hcps.svg");
+    }
+
+    .main-menu__link--sub.icon-forms::before {
+        background-image: url("../../icons/forms.svg");
+    }
+
+    .main-menu__link--sub.icon-facebook::before {
+        background-image: url("../../icons/facebook.svg");
+    }
+
+    .main-menu__link--sub.icon-linkedin-icon::before {
+        background-image: url("../../icons/linkedin-icon.svg");
+    }
+}
+
+/* Mobile icon paths */
+@media (width <= 991.98px) {
+    .main-menu__link--sub.icon-facebook::before {
+        background-image: url("../../icons/facebook-mobile.svg");
+    }
+
+    .main-menu__link--sub.icon-linkedin-icon::before {
+        background-image: url("../../icons/linkedin-mobile.svg");
+    }
 }
 
 .main-menu__link.main-menu__link--sub.main-menu__link--sub-2 {
@@ -885,9 +937,7 @@ header.flexible-header.js--header-hidden {
 }
 
 /* Top-level submenu when opened */
-.navigation.open
-    .main-menu.main-menu-sub-menu-open 
-    .main-menu-sub-menu-opened {
+.navigation.open .main-menu.main-menu-sub-menu-open .main-menu-sub-menu-opened {
     position: inherit;
     display: block !important;
     z-index: 12;
@@ -948,10 +998,14 @@ header.flexible-header.js--header-hidden {
     padding: 1rem 0;
 }
 
+/* Remove arrows from opened submenu items that DON'T have submenus */
 .navigation.open
     .main-menu.main-menu-sub-menu-open
     .main-menu-sub-menu-opened
-    .main-menu__link--sub:not(.go-back-sub-menu-link)::after {
+    .main-menu__link--sub:not(
+        .go-back-sub-menu-link,
+        .main-menu__link--with-sub
+    )::after {
     content: none;
 }
 
@@ -979,6 +1033,7 @@ header.flexible-header.js--header-hidden {
     font-weight: 600;
     padding-left: 1rem;
     cursor: pointer;
+    color: black;
 }
 
 .navigation.open
@@ -996,7 +1051,6 @@ header.flexible-header.js--header-hidden {
     top: 50%;
     transform: translateY(-50%);
 }
-
 
 .navigation.open
     .main-menu.main-menu-sub-menu-open
@@ -1059,6 +1113,8 @@ header.flexible-header.js--header-hidden {
 @media (width >= 992px) {
     .main-menu__item--with-sub.active > .main-menu--sub {
         display: block;
+        min-height: 9.375rem;
+        height: auto;
     }
 }
 
@@ -1136,36 +1192,19 @@ header.flexible-header.js--header-hidden {
     }
 }
 
-/* Icon images within submenu links */
-.main-menu__link--sub img {
-    width: 5rem;
-    height: 5rem;
-    position: absolute;
-    top: -0.5rem;
-    left: -0.125rem;
-    display: block;
-}
-
-/* Hide icons in mobile view by default */
-@media (width <= 991.98px) {
-    .main-menu__link--sub img {
-        display: none;
+/* Mobile-specific adjustments for icon spacing */
+@media (width <= 575.98px) {
+    [class*="icon-"][class*="--before"]::before,
+    [class*="icon-"][class*="--after"]::after {
+        margin-right: 0.75rem;
+        margin-left: 0.75rem;
     }
-    
-    /* Show mobile-specific icons if they have the mobile-visible class */
-    .main-menu__link--sub img.icon-mobile-visible {
-        display: block;
-        width: 2rem;
-        height: 2rem;
-        top: 0.5rem;
-        left: 0.5rem;
-    }
-}
 
-/* Desktop: ensure icons are visible */
-@media (width >= 992px) {
-    .main-menu__link--sub img {
-        display: block;
+    .site-logo img {
+        width: 99px;
+        height: 70.77px;
+        margin-top: 1rem;
+        margin-left: 1.375rem;
     }
 }
 
@@ -1177,12 +1216,47 @@ header.flexible-header.js--header-hidden {
 
 /* Adjust padding for mobile icons */
 @media (width <= 991.98px) {
-    .main-menu__link--sub[class*="-mobile"] {
+    /* Remove padding for items without icons */
+    .main-menu__link--sub:not([class*="icon-"]) {
         padding-left: 0;
     }
-    
-    /* Add padding if mobile icon exists */
-    .main-menu__link--sub:has(img.icon-mobile-visible) {
+
+    /* Add padding if icon exists */
+    .main-menu__link--sub[class*="icon-"] {
         padding-left: 3rem;
+    }
+}
+
+@media (width <= 991.98px) {
+    .main-menu__item.main-menu__item--sub.main-menu__item--sub-1:not(
+            :first-child
+        ) {
+        width: auto;
+        padding-left: 2.8125rem;
+        background-repeat: no-repeat;
+        background-size: 30px;
+        background-position: left 2px;
+    }
+
+    .main-menu__link--sub[data-icon-src].icon-facebook::before {
+        content: "";
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: contain;
+        top: 1rem;
+        left: 5rem;
+    }
+
+    .main-menu__link--sub[data-icon-src].icon-linkedin-icon::before {
+        content: "";
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: contain;
+        top: 1rem;
+        left: 5.5rem;
     }
 }
