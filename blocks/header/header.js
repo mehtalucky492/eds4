@@ -427,17 +427,18 @@ function convertToMainMenu(ul, level = 0) {
 
     // Get the text/link content - look for direct p, a, or button-container
     let content = item.querySelector(':scope > p:not(.button-container)');
-    // if null content just look for regular text content
-    if(!content){
-      content = item.textContent;
-    }
+
     if (!content) {
       content = item.querySelector(':scope > p.button-container');
     }
     if (!content) {
       content = item.querySelector(':scope > a');
     }
-
+     // if null content just look for regular text content
+    if(!content){
+      content = item.textContent;
+    }
+    
     let menuLink;
 
     if (content) {
