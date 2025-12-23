@@ -488,6 +488,15 @@ function convertToMainMenu(ul, level = 0) {
     } else if (content) {
       // Try to get text content, excluding images and nested ul
       itemText = getDirectTextContent(content);
+      
+      // If still no text, check for direct text nodes in the parent li
+      if (!itemText) {
+        Array.from(item.childNodes).forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() && node.tagName !== 'UL') {
+            if (!itemText) itemText = node.textContent.trim();
+          }
+        });
+      }
     } else if (textContent) {
       itemText = textContent;
     }
