@@ -425,31 +425,51 @@ function convertToMainMenu(ul, level = 0) {
         : `main-menu__item main-menu__item--sub main-menu__item--sub-${level}`;
     }
 
-      // Get the text/link content - look for direct p, a, or button-container
-//      let content = item.querySelector(':scope > p:not(.button-container)');
+    // Get the text/link content - look for direct children excluding nested ul
+    let content = null;
+    let textContent = '';
+    let anchor = null;
+    
+    // First, check if there's an anchor tag anywhere in the item (excluding nested ul)
+    const allNodes = Array.from(item.childNodes);
+    allNodes.forEach((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'UL') {
+        if (node.tagName === 'A') {
+          // Direct anchor tag
+          anchor = node;
+          if (!content) content = node;
+        } else if (node.querySelector) {
+          // Look for anchor inside this element
+          const foundAnchor = node.querySelector('a');
+          if (foundAnchor && !anchor) {
+            anchor = foundAnchor;
+          }
+          if (!content) content = node;
+        } else if (!content) {
+          content = node;
+        }
+      } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        if (!textContent) textContent = node.textContent.trim();
+      }
+    });
 
-//      if (!content) {
-//        content = item.querySelector(':scope > p.button-container');
-//      }
-//     if (!content) {
-//        content = item.querySelector(':scope > a');
-  //    }
-      // if null content just look for regular text content
-//      if(!content){
-  //      content = item.childNodes[0].textContent;
-  //    }
+    // If no content element found but we have text, create a text node reference
+    if (!content && textContent) {
+      content = { textContent };
+    }
+
     let menuLink;
-    let content = item;
-    if (content.textContent.trim().length > 0) {
-      // Check if there's an anchor inside
-      const anchor = content.querySelector('a') || (content.tagName === 'A' ? content : null);
-
+    
+    // Process the menu item based on what content we found
+    if ((content && content.textContent && content.textContent.trim().length > 0) || anchor) {
+      const itemText = anchor ? anchor.textContent.trim() : content.textContent.trim();
+      
       if (anchor && !hasSubmenu) {
-        // Regular link item
+        // Regular link item (no submenu)
         menuLink = document.createElement('a');
         menuLink.href = anchor.href;
-        menuLink.title = anchor.title || anchor.textContent.trim();
-        menuLink.textContent = anchor.textContent.trim();
+        menuLink.title = anchor.title || itemText;
+        menuLink.textContent = itemText;
         menuLink.className = level === 0
           ? 'main-menu__link'
           : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
@@ -457,14 +477,12 @@ function convertToMainMenu(ul, level = 0) {
         if (anchor.target) menuLink.target = anchor.target;
 
         // Add special classes based on data attributes or existing classes from source
-        // Check for data-link-style attribute on the anchor or its parent
-        const dataLinkStyle = anchor.dataset.linkStyle || anchor.parentElement?.dataset.linkStyle;
+        const dataLinkStyle = anchor.dataset?.linkStyle || anchor.parentElement?.dataset.linkStyle;
         if (dataLinkStyle) {
           menuLink.classList.add(dataLinkStyle);
         }
 
         // Preserve any meaningful classes from the original anchor
-        // Filter out generic framework/system classes but keep custom classes
         const excludeClasses = ['button', 'button-container', 'default-content-wrapper'];
         anchor.classList.forEach((className) => {
           if (!excludeClasses.includes(className)) {
@@ -472,41 +490,18 @@ function convertToMainMenu(ul, level = 0) {
           }
         });
 
-        // Look for icon image in the source and add it to the menu link
-        // Search in multiple possible locations:
-        // 1. Inside content (p or button-container)
-        // 2. As sibling of anchor inside content
-        // 3. As sibling of content in the item (span.icon wrapper)
-        // 4. Direct img as sibling in the item
-        let icon = content.querySelector('img');
-        if (!icon && anchor) {
-          // Check if icon is a sibling of the anchor within content
-          const siblings = Array.from(content.children);
-          icon = siblings.find((el) => el.tagName === 'IMG');
-        }
-        if (!icon) {
-          // Look for span.icon wrapper as a sibling in the item
-          const iconSpan = item.querySelector(':scope > span.icon');
-          if (iconSpan) {
-            icon = iconSpan.querySelector('img');
-          }
-        }
-        if (!icon) {
-          // Look for img as a sibling in the item (before or after the content)
-          const itemImages = item.querySelectorAll(':scope > img');
-          if (itemImages.length > 0) {
-            [icon] = itemImages;
-          }
+        // Look for icon - check in item and content
+        let icon = item.querySelector('img');
+        if (!icon && content.querySelector) {
+          icon = content.querySelector('img');
         }
 
         if (icon) {
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
           const iconSrc = icon.getAttribute('src');
 
-          // Add icon class for styling via CSS
           menuLink.classList.add(`icon-${iconName}`);
 
-          // Store icon path as data attribute for CSS to use
           if (iconSrc) {
             menuLink.setAttribute('data-icon-src', iconSrc);
           }
@@ -518,14 +513,12 @@ function convertToMainMenu(ul, level = 0) {
           const ext = filename.match(/\.[^.]+$/)?.[0] || '.svg';
           const basePath = iconSrc.substring(0, iconSrc.lastIndexOf('/') + 1);
 
-          // Generate possible mobile icon paths
           const mobileOptions = [
             `${basePath}${filenameWithoutExt}-mobile${ext}`,
             `${basePath}${filenameWithoutExt.replace(/-icon$/, '')}-mobile${ext}`,
             `${basePath}${filenameWithoutExt.replace(/-icon$/, '-mobile-icon')}${ext}`,
           ];
 
-          // Check if mobile version exists and store it
           fetch(mobileOptions[0], { method: 'HEAD' }).then((response) => {
             if (response.ok && mobileOptions[0].includes('-mobile')) {
               menuLink.setAttribute('data-icon-mobile-src', mobileOptions[0]);
@@ -533,73 +526,51 @@ function convertToMainMenu(ul, level = 0) {
           }).catch(() => {});
         }
       } else {
-        // Item with submenu or span
-        const textContent = content.childNodes[0].textContent.trim() || content.querySelector(':scope > p')?.textContent.trim();
+        // Item with submenu or span (no href)
         menuLink = document.createElement('span');
-        menuLink.textContent = textContent;
+        menuLink.textContent = itemText;
 
-        // Determine className based on level and hasSubmenu
         if (hasSubmenu) {
           menuLink.className = level === 0
             ? 'main-menu__link main-menu__link--with-sub'
             : `main-menu__link main-menu__link--sub main-menu__link--sub-${level} main-menu__link--with-sub`;
+          menuLink.setAttribute('tabindex', '0');
         } else {
           menuLink.className = level === 0
             ? 'main-menu__link'
             : `main-menu__link main-menu__link--sub main-menu__link--sub-${level}`;
         }
 
-        // Add special classes based on data attributes or existing classes from source
-        // Check for data-link-style attribute on the content element or its parent
-        const dataLinkStyle = content.dataset.linkStyle || content.parentElement?.dataset.linkStyle;
-        if (dataLinkStyle) {
-          menuLink.classList.add(dataLinkStyle);
+        // Add special classes based on data attributes
+        if (content.dataset) {
+          const dataLinkStyle = content.dataset.linkStyle || content.parentElement?.dataset.linkStyle;
+          if (dataLinkStyle) {
+            menuLink.classList.add(dataLinkStyle);
+          }
         }
 
-        // Preserve any meaningful classes from the content element
-        // Filter out generic framework/system classes but keep custom classes
-        const excludeClasses = ['button', 'button-container', 'default-content-wrapper'];
-        content.classList.forEach((className) => {
-          if (!excludeClasses.includes(className)) {
-            menuLink.classList.add(className);
-          }
-        });
+        // Preserve any meaningful classes
+        if (content.classList) {
+          const excludeClasses = ['button', 'button-container', 'default-content-wrapper'];
+          content.classList.forEach((className) => {
+            if (!excludeClasses.includes(className)) {
+              menuLink.classList.add(className);
+            }
+          });
+        }
 
-        // Look for icon image in the source and add it to the menu link
-        // Search in multiple possible locations:
-        // 1. Inside content (p or button-container)
-        // 2. As sibling of content children
-        // 3. As sibling of content in the item (span.icon wrapper)
-        // 4. Direct img as sibling in the item
-        let icon = content.querySelector('img');
-        if (!icon) {
-          // Check if icon is a sibling of text within content
-          const siblings = Array.from(content.children);
-          icon = siblings.find((el) => el.tagName === 'IMG');
-        }
-        if (!icon) {
-          // Look for span.icon wrapper as a sibling in the item
-          const iconSpan = item.querySelector(':scope > span.icon');
-          if (iconSpan) {
-            icon = iconSpan.querySelector('img');
-          }
-        }
-        if (!icon) {
-          // Look for img as a sibling in the item (before or after the content)
-          const itemImages = item.querySelectorAll(':scope > img');
-          if (itemImages.length > 0) {
-            [icon] = itemImages;
-          }
+        // Look for icon
+        let icon = item.querySelector('img');
+        if (!icon && content.querySelector) {
+          icon = content.querySelector('img');
         }
 
         if (icon) {
           const iconName = icon.dataset?.iconName || icon.alt || 'icon';
           const iconSrc = icon.getAttribute('src');
 
-          // Add icon class for styling via CSS
           menuLink.classList.add(`icon-${iconName}`);
 
-          // Store icon path as data attribute for CSS to use
           if (iconSrc) {
             menuLink.setAttribute('data-icon-src', iconSrc);
           }
@@ -611,47 +582,50 @@ function convertToMainMenu(ul, level = 0) {
           const ext = filename.match(/\.[^.]+$/)?.[0] || '.svg';
           const basePath = iconSrc.substring(0, iconSrc.lastIndexOf('/') + 1);
 
-          // Generate possible mobile icon paths
           const mobileOptions = [
             `${basePath}${filenameWithoutExt}-mobile${ext}`,
             `${basePath}${filenameWithoutExt.replace(/-icon$/, '')}-mobile${ext}`,
             `${basePath}${filenameWithoutExt.replace(/-icon$/, '-mobile-icon')}${ext}`,
           ];
 
-          // Check if mobile version exists and store it
           fetch(mobileOptions[0], { method: 'HEAD' }).then((response) => {
             if (response.ok && mobileOptions[0].includes('-mobile')) {
               menuLink.setAttribute('data-icon-mobile-src', mobileOptions[0]);
             }
           }).catch(() => {});
         }
-
-        if (hasSubmenu) {
-          menuLink.setAttribute('tabindex', '0');
-        }
       }
 
+      // Append the menuLink to menuItem
       menuItem.appendChild(menuLink);
+    } else if (hasSubmenu) {
+      // li has only a ul child (no text content) - still create a clickable element
+      menuLink = document.createElement('span');
+      menuLink.textContent = 'Menu'; // Fallback text
+      menuLink.className = level === 0
+        ? 'main-menu__link main-menu__link--with-sub'
+        : `main-menu__link main-menu__link--sub main-menu__link--sub-${level} main-menu__link--with-sub`;
+      menuLink.setAttribute('tabindex', '0');
+      
+      menuItem.appendChild(menuLink);
+    }
 
-      // Add expand icon for items with submenus
-      if (hasSubmenu) {
-        const expandSub = document.createElement('span');
-        expandSub.className = 'expand-sub';
-        menuItem.appendChild(expandSub);
+    // Process submenu if it exists (recursively)
+    if (hasSubmenu) {
+      const expandSub = document.createElement('span');
+      expandSub.className = 'expand-sub';
+      menuItem.appendChild(expandSub);
 
-        // Store reference to expandSub for use in event handlers
-        const currentExpandSub = expandSub;
-        const currentMenuItem = menuItem;
+      const currentExpandSub = expandSub;
+      const currentMenuItem = menuItem;
 
-        // Add click handler for submenu toggle - works on both mobile and desktop at all levels
+      // Add click handler for submenu toggle
+      if (menuLink) {
         menuLink.addEventListener('click', (e) => {
-          // Always prevent default for spans, and for links with submenus
           if (menuLink.tagName === 'SPAN') {
             e.preventDefault();
-            e.stopPropagation(); // Prevent click from bubbling to document
+            e.stopPropagation();
             toggleSubmenu(currentMenuItem);
-            // Toggle expand-sub class based on new state
-            // Note: After toggleSubmenu, check if active (may be closed without opening)
             if (currentMenuItem.classList.contains('active')) {
               currentExpandSub.classList.add('expand-sub--open');
             } else {
@@ -660,36 +634,33 @@ function convertToMainMenu(ul, level = 0) {
           }
         });
 
-        expandSub.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation(); // Prevent click from bubbling to document
-          toggleSubmenu(currentMenuItem);
-          // Toggle expand-sub class based on new state
-          // Note: After toggleSubmenu, check if active (may be closed without opening)
-          if (currentMenuItem.classList.contains('active')) {
-            currentExpandSub.classList.add('expand-sub--open');
-          } else {
-            currentExpandSub.classList.remove('expand-sub--open');
-          }
-        });
-
-        // Add keyboard support
         menuLink.addEventListener('focus', focusMenuItem);
+      }
 
-        // Process submenu
-        const submenu = item.querySelector(':scope > ul');
-        if (submenu) {
-          const convertedSubmenu = convertToMainMenu(submenu, level + 1);
-
-          // Add "Go Back" link
-          addGoBackLink(convertedSubmenu, level + 1);
-
-          menuItem.appendChild(convertedSubmenu);
+      expandSub.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSubmenu(currentMenuItem);
+        if (currentMenuItem.classList.contains('active')) {
+          currentExpandSub.classList.add('expand-sub--open');
+        } else {
+          currentExpandSub.classList.remove('expand-sub--open');
         }
+      });
+
+      // Recursively process the submenu
+      const submenu = item.querySelector(':scope > ul');
+      if (submenu) {
+        const convertedSubmenu = convertToMainMenu(submenu, level + 1);
+        addGoBackLink(convertedSubmenu, level + 1);
+        menuItem.appendChild(convertedSubmenu);
       }
     }
 
-    menu.appendChild(menuItem);
+    // Always append the menuItem to the menu, but only if it has content or submenu
+    if (menuLink || hasSubmenu) {
+      menu.appendChild(menuItem);
+    }
   });
 
   return menu;
