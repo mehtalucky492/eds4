@@ -458,11 +458,33 @@ function convertToMainMenu(ul, level = 0) {
       content = { textContent };
     }
 
+    // Extract text content more robustly
+    let itemText = '';
+    if (anchor) {
+      itemText = anchor.textContent.trim();
+    } else if (content) {
+      // Try to get text content, excluding images
+      if (content.textContent) {
+        itemText = content.textContent.trim();
+      }
+      // If still empty, try to find text in child nodes
+      if (!itemText && content.childNodes) {
+        Array.from(content.childNodes).forEach((child) => {
+          if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
+            itemText = child.textContent.trim();
+          } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'IMG' && child.textContent.trim()) {
+            if (!itemText) itemText = child.textContent.trim();
+          }
+        });
+      }
+    } else if (textContent) {
+      itemText = textContent;
+    }
+
     let menuLink;
     
     // Process the menu item based on what content we found
-    if ((content && content.textContent && content.textContent.trim().length > 0) || anchor) {
-      const itemText = anchor ? anchor.textContent.trim() : content.textContent.trim();
+    if (itemText || anchor) {
       
       if (anchor && !hasSubmenu) {
         // Regular link item (no submenu)
