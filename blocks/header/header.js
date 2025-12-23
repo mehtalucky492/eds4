@@ -491,6 +491,19 @@ function convertToMainMenu(ul, level = 0) {
     } else if (textContent) {
       itemText = textContent;
     }
+    
+    // Debug logging to see what we extracted
+    if (hasSubmenu && !itemText) {
+      console.log('Menu item with submenu but no text found:', {
+        level,
+        hasSubmenu,
+        hasAnchor: !!anchor,
+        hasContent: !!content,
+        contentType: content?.tagName || content?.nodeType || 'unknown',
+        itemHTML: item.innerHTML.substring(0, 200),
+        extractedText: itemText
+      });
+    }
 
     let menuLink;
     
