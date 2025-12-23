@@ -463,6 +463,12 @@ function convertToMainMenu(ul, level = 0) {
     
     // Helper function to get direct text content excluding nested UL elements
     const getDirectTextContent = (element) => {
+      // Check if element has childNodes (is a real DOM element)
+      if (!element || !element.childNodes) {
+        // If it's a simple object with textContent, return that
+        return element?.textContent?.trim() || '';
+      }
+      
       let text = '';
       Array.from(element.childNodes).forEach((child) => {
         if (child.nodeType === Node.TEXT_NODE) {
