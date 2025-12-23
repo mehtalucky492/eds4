@@ -458,25 +458,30 @@ function convertToMainMenu(ul, level = 0) {
       content = { textContent };
     }
 
-    // Extract text content more robustly
+    // Extract text content more robustly - get only direct text, not nested ul content
     let itemText = '';
+    
+    // Helper function to get direct text content excluding nested UL elements
+    const getDirectTextContent = (element) => {
+      let text = '';
+      Array.from(element.childNodes).forEach((child) => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          text += child.textContent;
+        } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'UL' && child.tagName !== 'IMG') {
+          // For non-UL, non-IMG elements, get their text recursively but stop at UL
+          const childText = getDirectTextContent(child);
+          if (childText) text += childText;
+        }
+      });
+      return text.trim();
+    };
+    
     if (anchor) {
-      itemText = anchor.textContent.trim();
+      // Get direct text from anchor, excluding nested ul
+      itemText = getDirectTextContent(anchor);
     } else if (content) {
-      // Try to get text content, excluding images
-      if (content.textContent) {
-        itemText = content.textContent.trim();
-      }
-      // If still empty, try to find text in child nodes
-      if (!itemText && content.childNodes) {
-        Array.from(content.childNodes).forEach((child) => {
-          if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
-            itemText = child.textContent.trim();
-          } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'IMG' && child.textContent.trim()) {
-            if (!itemText) itemText = child.textContent.trim();
-          }
-        });
-      }
+      // Try to get text content, excluding images and nested ul
+      itemText = getDirectTextContent(content);
     } else if (textContent) {
       itemText = textContent;
     }
