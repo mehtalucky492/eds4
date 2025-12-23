@@ -429,7 +429,7 @@ function convertToMainMenu(ul, level = 0) {
     let content = null;
     let textContent = '';
     let anchor = null;
-    
+
     // First, check if there's an anchor tag anywhere in the item (excluding nested ul)
     const allNodes = Array.from(item.childNodes);
     allNodes.forEach((node) => {
@@ -460,7 +460,7 @@ function convertToMainMenu(ul, level = 0) {
 
     // Extract text content more robustly - get only direct text, not nested ul content
     let itemText = '';
-    
+
     // Helper function to get direct text content excluding nested UL elements
     const getDirectTextContent = (element) => {
       // Check if element has childNodes (is a real DOM element)
@@ -468,7 +468,7 @@ function convertToMainMenu(ul, level = 0) {
         // If it's a simple object with textContent, return that
         return element?.textContent?.trim() || '';
       }
-      
+
       let text = '';
       Array.from(element.childNodes).forEach((child) => {
         if (child.nodeType === Node.TEXT_NODE) {
@@ -481,14 +481,14 @@ function convertToMainMenu(ul, level = 0) {
       });
       return text.trim();
     };
-    
+
     if (anchor) {
       // Get direct text from anchor, excluding nested ul
       itemText = getDirectTextContent(anchor);
     } else if (content) {
       // Try to get text content, excluding images and nested ul
       itemText = getDirectTextContent(content);
-      
+
       // If still no text, check for direct text nodes in the parent li
       if (!itemText) {
         Array.from(item.childNodes).forEach((node) => {
@@ -500,25 +500,11 @@ function convertToMainMenu(ul, level = 0) {
     } else if (textContent) {
       itemText = textContent;
     }
-    
-    // Debug logging to see what we extracted
-    if (hasSubmenu && !itemText) {
-      console.log('Menu item with submenu but no text found:', {
-        level,
-        hasSubmenu,
-        hasAnchor: !!anchor,
-        hasContent: !!content,
-        contentType: content?.tagName || content?.nodeType || 'unknown',
-        itemHTML: item.innerHTML.substring(0, 200),
-        extractedText: itemText
-      });
-    }
 
     let menuLink;
-    
+
     // Process the menu item based on what content we found
     if (itemText || anchor) {
-      
       if (anchor && !hasSubmenu) {
         // Regular link item (no submenu)
         menuLink = document.createElement('a');
@@ -598,7 +584,8 @@ function convertToMainMenu(ul, level = 0) {
 
         // Add special classes based on data attributes
         if (content.dataset) {
-          const dataLinkStyle = content.dataset.linkStyle || content.parentElement?.dataset.linkStyle;
+          const dataLinkStyle = content.dataset.linkStyle
+            || content.parentElement?.dataset.linkStyle;
           if (dataLinkStyle) {
             menuLink.classList.add(dataLinkStyle);
           }
@@ -661,7 +648,7 @@ function convertToMainMenu(ul, level = 0) {
         ? 'main-menu__link main-menu__link--with-sub'
         : `main-menu__link main-menu__link--sub main-menu__link--sub-${level} main-menu__link--with-sub`;
       menuLink.setAttribute('tabindex', '0');
-      
+
       menuItem.appendChild(menuLink);
     }
 
