@@ -425,23 +425,23 @@ function convertToMainMenu(ul, level = 0) {
         : `main-menu__item main-menu__item--sub main-menu__item--sub-${level}`;
     }
 
-    // Get the text/link content - look for direct p, a, or button-container
-    let content = item.querySelector(':scope > p:not(.button-container)');
+      // Get the text/link content - look for direct p, a, or button-container
+//      let content = item.querySelector(':scope > p:not(.button-container)');
 
-    if (!content) {
-      content = item.querySelector(':scope > p.button-container');
-    }
-    if (!content) {
-      content = item.querySelector(':scope > a');
-    }
-     // if null content just look for regular text content
-    if(!content){
-      content = item.childNodes[0].textContent;
-    }
-
+//      if (!content) {
+//        content = item.querySelector(':scope > p.button-container');
+//      }
+//     if (!content) {
+//        content = item.querySelector(':scope > a');
+  //    }
+      // if null content just look for regular text content
+//      if(!content){
+  //      content = item.childNodes[0].textContent;
+  //    }
+      
     let menuLink;
 
-    if (content) {
+    if (content.textContent.trim().length > 0) {
       // Check if there's an anchor inside
       const anchor = content.querySelector('a') || (content.tagName === 'A' ? content : null);
 
