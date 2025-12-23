@@ -438,9 +438,8 @@ function convertToMainMenu(ul, level = 0) {
 //      if(!content){
   //      content = item.childNodes[0].textContent;
   //    }
-      
     let menuLink;
-
+    let content = item;
     if (content.textContent.trim().length > 0) {
       // Check if there's an anchor inside
       const anchor = content.querySelector('a') || (content.tagName === 'A' ? content : null);
