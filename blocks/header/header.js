@@ -436,9 +436,9 @@ function convertToMainMenu(ul, level = 0) {
     }
      // if null content just look for regular text content
     if(!content){
-      content = item.textContent;
+      content = item.childNodes[0].textContent;
     }
-    
+
     let menuLink;
 
     if (content) {
