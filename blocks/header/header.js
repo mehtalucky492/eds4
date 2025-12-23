@@ -534,7 +534,7 @@ function convertToMainMenu(ul, level = 0) {
         }
       } else {
         // Item with submenu or span
-        const textContent = content.textContent.trim();
+        const textContent = content.childNodes[0].textContent.trim() || content.querySelector(':scope > p').textContent.trim();
         menuLink = document.createElement('span');
         menuLink.textContent = textContent;
 
