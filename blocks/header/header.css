@@ -163,22 +163,34 @@ header.flexible-header.js--header-hidden {
 
 @media (width >= 992px) {
     .region-header-top .main-menu--sub-2 {
-        height: 127px;
-        width: 202px;
+        height: auto;
+        min-height: 127px;
+        width: auto;
+        min-width: 202px;
         background: #eaf2fa;
         top: -21px;
         left: 163px;
+        padding: 0.5rem;
+    }
+
+    /* Remove excessive margin from sub-2 items */
+    .region-header-top .main-menu--sub-2 .main-menu__item {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Remove margin from last item */
+    .region-header-top .main-menu--sub-2 .main-menu__item:last-child {
+        margin-bottom: 0;
+    }
+
+    /* No extra top margin on first visible item */
+    .region-header-top .main-menu--sub-2 li:nth-child(2) {
+        margin-top: 0;
     }
 }
 
 .region-header-top .main-menu--sub-2 li {
     margin-top: 0;
-}
-
-@media (width >= 992px) {
-    .region-header-top .main-menu--sub-2 li:nth-child(2) {
-        margin-top: 0.625rem;
-    }
 }
 
 .region-header-top > .block img {
@@ -212,7 +224,7 @@ header.flexible-header.js--header-hidden {
 @media (width <= 991.98px) {
     .main-nav {
         margin-top: 12rem;
-        position: relative; /* Add positioning context for submenus */
+        position: relative;
     }
 
     .region-header-top nav.open {
@@ -229,18 +241,6 @@ header.flexible-header.js--header-hidden {
     .region-header-top nav.open .main-nav {
         display: block;
         width: 100%;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
 }
 
@@ -522,16 +522,26 @@ header.flexible-header.js--header-hidden {
     .main-menu--sub {
         background-color: #fff;
         display: none;
-        height: 14.875rem;
+        min-height: 9.375rem;
+        height: auto;
+        overflow: visible;
         position: absolute;
         top: 3.438rem;
-        width: 12.625rem;
+        min-width: 12.625rem;
+        width: max-content;
+        max-width: 20rem;
         z-index: 1;
         font-size: 0.938rem;
         font-weight: 600;
         border-radius: 0.556rem;
         left: 1.7rem;
         margin-top: 0.625rem;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Reset bottom margin on last submenu item */
+    .main-menu--sub > .main-menu__item:last-child {
+        margin-bottom: 0;
     }
 }
 
@@ -705,7 +715,6 @@ header.flexible-header.js--header-hidden {
         display: block;
         position: relative;
         width: 100%;
-        margin-top: 0.875rem;
     }
     
     .main-menu__item--sub {
@@ -821,6 +830,8 @@ header.flexible-header.js--header-hidden {
     .main-menu__link--sub {
         display: flex;
         justify-content: left;
+        width: auto;
+        white-space: nowrap;
     }
 }
 
@@ -1071,12 +1082,6 @@ header.flexible-header.js--header-hidden {
     display: none;
 }
 
-@media (width >= 768px) {
-    .expand-sub {
-        display: none;
-    }
-}
-
 .expand-sub--open {
     background-color: #373d42;
     background-color: var(--c-accent-high);
@@ -1113,8 +1118,11 @@ header.flexible-header.js--header-hidden {
 @media (width >= 992px) {
     .main-menu__item--with-sub.active > .main-menu--sub {
         display: block;
-        min-height: 9.375rem;
-        height: auto;
+    }
+
+    /* Also apply display block when submenu is open via class */
+    .main-menu--sub.main-menu--sub-open {
+        display: block;
     }
 }
 
@@ -1184,15 +1192,6 @@ header.flexible-header.js--header-hidden {
     margin-left: 1.5rem;
 }
 
-@media (width <= 575.98px) {
-    [class*="icon-"][class*="--before"]::before,
-    [class*="icon-"][class*="--after"]::after {
-        margin-right: 0.75rem;
-        margin-left: 0.75rem;
-    }
-}
-
-/* Mobile-specific adjustments for icon spacing */
 @media (width <= 575.98px) {
     [class*="icon-"][class*="--before"]::before,
     [class*="icon-"][class*="--after"]::after {
