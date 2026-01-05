@@ -4,6 +4,12 @@ Starter project for Otsuka AEM-codekit
 ## Environments
 - Preview: https://main--otsuka-codekit-boilerplate--oapi-commercial-omni.aem.page/
 - Live: https://main--otsuka-codekit-boilerplate--oapi-commercial-omni.aem.live/
+- Prod Preview: https://main--otsuka-codekit-otsukapa--oapi-commercial-omni.aem.page/
+- Prod Live: https://main--otsuka-codekit-otsukapa--oapi-commercial-omni.aem.live/
+- QA Preview: https://qa--otsuka-codekit-otsukapa-qa--oapi-commercial-omni.aem.page/
+- QA Live: https://qa--otsuka-codekit-otsukapa-qa--oapi-commercial-omni.aem.live/
+- DEV Preview: https://dev--otsuka-codekit-otsukapa-dev--oapi-commercial-omni.aem.page/
+- DEV Live: https://dev--otsuka-codekit-otsukapa-dev--oapi-commercial-omni.aem.live/
 
 ## Documentation
 
