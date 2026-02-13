@@ -1,0 +1,23 @@
+/**
+ * Demo Theme
+ * This theme overrides default styles from styles.css and root.css
+ * To apply this theme, set the 'theme' metadata to 'demo' on your page.
+ */
+
+:root {
+  /* Override colors */
+  --background-color: #f5f5f5;
+  --text-color: #2c3e50;
+  --link-color: #e74c3c;
+  --link-hover-color: #c0392b;
+
+  /* Override heading sizes */
+  --heading-font-size-xxl: 60px;
+  --heading-font-size-xl: 48px;
+}
+
+/* Override body styles */
+body.demo {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}

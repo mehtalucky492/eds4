@@ -1,0 +1,5 @@
+mountpoints:
+  /:
+    url: "https://author-p7906-e1488805.adobeaemcloud.com/bin/franklin.delivery/mehtalucky492/eds-3/main"
+    type: "markup"
+    suffix: ".html"

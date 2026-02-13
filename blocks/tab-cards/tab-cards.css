@@ -1,0 +1,113 @@
+/* Tab Cards Block */
+
+.tab-cards {
+  display: flex;
+}
+
+.tab-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin: 0 auto;
+}
+
+.tab-cards-header {
+  text-align: center;
+}
+
+.tab-cards-header h2 {
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-heading-xl);
+  font-weight: var(--font-weight-headings);
+  line-height: var(--line-height-headings-xl);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tab-cards-content {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+  width: 100%;
+}
+
+.tab-card {
+  grid-column: span var(--grid-columns); /* Mobile: full width */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  min-width: var(--tab-card-min-width);
+}
+
+@media (width >= 768px) {
+  .tab-card {
+    grid-column: span calc(var(--grid-columns-tablet) / 2); /* Tablet: half width */
+  }
+}
+
+@media (width >= 900px) {
+  .tab-cards-content {
+    grid-template-columns: repeat(var(--grid-columns-desktop), 1fr);
+  }
+  
+  .tab-card {
+    grid-column: span 6; /* Desktop: half of 12 columns */
+  }
+}
+
+.tab-card-image {
+  aspect-ratio: 4/3;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border: var(--border-primary) solid var(--border-width-default);
+}
+
+.tab-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.tab-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.tab-card p {
+  font-family: var(--body-font-family);
+  font-size: var(--font-size-caption-xs); /* 14px from Figma - matches background-cards */
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body-xs); /* 21px from Figma - matches background-cards */
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tab-card h6, .tab-card h6 p {
+  font-family: var(--heading-font-family);
+  font-size: var(--font-size-heading-xs);
+  font-weight: var(--font-weight-headings);
+  line-height: var(--line-height-headings-xs);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Placeholder styling for empty cards in Universal Editor */
+[data-placeholder]::before {
+  content: attr(data-placeholder);
+  color: var(--text-disabled);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Ensure empty containers remain visible */
+.block [data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  display: inline-block;
+  min-height: 1em;
+  min-width: 100px;
+}

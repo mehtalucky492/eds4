@@ -1,0 +1,327 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+@media (width >= 900px) {
+  :root {
+    /* body sizes */
+    --body-font-size-m: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+
+    /* heading sizes */
+    --heading-font-size-xxl: 45px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 28px;
+    --heading-font-size-m: 22px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 18px;
+
+    /* body font family */
+    --body-font-family: 'Museo Sans', sans-serif;
+  }
+}
+
+body {
+  display: none;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+  padding-top: 130px; /* Account for fixed header (81px + alert ~50px) */
+}
+
+@media (width >= 1200px) {
+  body {
+    padding-top: 180px; /* Account for fixed header on desktop (120px + alert ~60px) */
+  }
+}
+
+body.appear {
+  display: block;
+}
+
+/*
+header {
+  height: var(--nav-height);
+}
+*/
+header .header,
+footer .footer {
+  visibility: hidden;
+}
+
+header .header[data-block-status="loaded"],
+footer .footer[data-block-status="loaded"] {
+  visibility: visible;
+}
+
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+}
+
+code,
+pre {
+  font-size: var(--body-font-size-s);
+}
+
+pre {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+main > div {
+  margin: 40px 16px;
+}
+
+/* Match Height Utility - makes all direct children equal height */
+.section.match-height > div {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+}
+
+.section.match-height > div > div {
+  display: flex;
+}
+
+.section.match-height > div > div > * {
+  height: 100%;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* links */
+a:any-link {
+  color: var(--link-color);
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+main img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.icon img {
+  height: 100%;
+  width: 100%;
+}
+
+/* sections */
+main > .section {
+  margin: 40px 0;
+}
+
+main > .section > div {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+main > .section:first-of-type {
+  margin-top: 0;
+}
+
+@media (width >= 900px) {
+  main > .section > div {
+    padding: 0 32px;
+  }
+}
+
+/* section metadata */
+main .section.light,
+main .section.highlight {
+  background-color: var(--light-color);
+  margin: 0;
+  padding: 40px 0;
+}
+
+/* Section style: row layout 2 */
+main > .section.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-m, 24px);
+  justify-content: center;
+  align-items: stretch;
+}
+
+main > .section.inline > div {
+  flex: 1 1 0;
+  min-width: 280px;
+  max-width: 100%;
+  display: flex;
+}
+
+/* Faintly template system styles */
+.faintly-original-content,
+.faintly-rendered-content {
+  width: 100%;
+}
+
+/* Hide unnecessary empty elements in Universal Editor */
+.ue-active .faintly-rendered-content,
+.aue-active .faintly-rendered-content,
+body.ue-active .faintly-rendered-content,
+body.aue-active .faintly-rendered-content {
+  display: none !important;
+}
+
+/* Make editable original content visible in Universal Editor */
+.ue-active .faintly-original-content,
+.aue-active .faintly-original-content,
+body.ue-active .faintly-original-content,
+body.aue-active .faintly-original-content {
+  display: block !important;
+}
+
+/* Reset for editor containers */
+[data-aue-resource] {
+  margin-bottom: 1rem;
+}
+
+/* About Us Description Section */
+.section.about-us-description {
+  background: #2b4c8b;
+}
+
+.section.about-us-description .default-content-wrapper {
+  display: flex;
+  padding: 2.5rem 1.0625rem;
+  width: 100%;
+  max-width: 1440px;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+
+.section.about-us-description p {
+  color: var(--primary-white, #fff);
+  text-align: center;
+  font-family: "Museo Sans", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%; /* 22.4px */
+  align-self: stretch;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+.section.about-us-description p:last-child {
+  margin-bottom: 0;
+}
+
+@media (width >= 992px) {
+  .section.about-us-description .default-content-wrapper {
+    padding: 5rem 1.0625rem;
+  }
+
+  .section.about-us-description p {
+    text-align: center;
+    max-width: 996px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.section.about-us-description a:any-link {
+  color: var(--primary-white, #fff);
+  font-family: "Museo Sans", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+button {
+  font: inherit;
+}
+
+/* buttons */
+a.button:any-link,
+button {
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 100%;
+  margin: 12px 0;
+  border: 2px solid transparent;
+  border-radius: 2.4em;
+  padding: 0.5em 1.2em;
+  font-family: var(--body-font-family);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--link-color);
+  color: var(--background-color);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+a.button:hover,
+a.button:focus,
+button:hover,
+button:focus {
+  background-color: var(--link-hover-color);
+  cursor: pointer;
+}
+
+button:disabled,
+button:disabled:hover {
+  background-color: var(--light-color);
+  cursor: unset;
+}
+
+a.button.secondary,
+button.secondary {
+  background-color: unset;
+  border: 2px solid currentcolor;
+  color: var(--text-color);
+}

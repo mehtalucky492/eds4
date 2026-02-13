@@ -1,0 +1,302 @@
+.teaser {
+  flex-direction: column;
+}
+
+.teaser .image {
+  width: 100%;
+}
+
+.teaser .image picture {
+  display: block;
+  width: 100%;
+}
+
+.teaser .image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.teaser .content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s, 16px);
+}
+
+.teaser .title {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  color: var(--text-color);
+}
+
+.teaser .body-text {
+  font-family: var(--body-font-family);
+  color: var(--text-color);
+}
+
+.teaser .body-text p {
+  margin: 0;
+}
+
+.teaser .link .button {
+  display: inline-block;
+  padding: var(--spacing-xs, 8px) var(--spacing-m, 24px);
+  background-color: var(--link-color);
+  color: var(--color-white);
+  font-family: var(--body-font-family);
+  text-decoration: none;
+  border-radius: var(--border-radius-s, 4px);
+  transition: background-color 0.2s ease;
+}
+
+.teaser .link .button:hover {
+  background-color: var(--link-hover-color);
+}
+
+/* Image Left Layout */
+.teaser.image-left {
+  flex-direction: row;
+  align-items: center;
+}
+
+.teaser.image-left .image {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.teaser.image-left .content {
+  flex: 1;
+}
+
+/* Image Right Layout */
+.teaser.image-right {
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.teaser.image-right .image {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.teaser.image-right .content {
+  flex: 1;
+}
+
+/* Responsive: Stack on mobile */
+@media (width <= 768px) {
+  .teaser.image-left,
+  .teaser.image-right {
+    flex-direction: column;
+  }
+
+  .teaser.image-left .image,
+  .teaser.image-right .image {
+    flex: none;
+    max-width: 100%;
+  }
+}
+
+/* Icon Teaser Variation */
+.teaser.icon-teaser {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-l, 24px);
+  box-shadow: 0 0 27px 0 rgb(0 0 0 / 8%);
+  padding: var(--spacing-xl, 32px);
+  padding-top: var(--spacing-s, 16px);
+  margin-top: var(--spacing-m, 48px);
+  align-items: center;
+  text-align: center;
+}
+
+.teaser.icon-teaser .image {
+  width: auto;
+  margin-top: calc(-1 * var(--spacing-xl, 96px));
+  margin-bottom: var(--spacing-xs, 8px);
+}
+
+.teaser.icon-teaser .image img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.teaser.icon-teaser .content {
+  align-items: center;
+  gap: 0;
+}
+
+.teaser.icon-teaser .title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--heading-color, #426BBA);
+  margin-bottom: 20px;
+}
+
+.teaser.icon-teaser .title h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--heading-color, #426BBA);
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.teaser.icon-teaser .body-text {
+  font-size: var(--body-font-size-xs, 17px);
+  line-height: 1.6;
+  color: var(--dark-color);
+}
+
+.teaser.icon-teaser .body-text p {
+  margin: 0;
+}
+
+.teaser.icon-teaser .link {
+  margin-top: var(--spacing-s, 16px);
+}
+
+/* Override inline section layout to use Grid for equal heights when containing teasers */
+main > .section.inline:has(.teaser-wrapper) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+  justify-content: center;
+  align-items: stretch;
+}
+
+main > .section.inline:has(.teaser-wrapper) > .teaser-wrapper {
+  height: 100%;
+}
+
+.teaser-wrapper {
+    flex-shrink: 0;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex;
+    align-items: stretch;
+}
+
+.teaser-wrapper:has(.icon-teaser) {
+  padding-top: var(--spacing-xl, 48px);
+  align-self: stretch;
+}
+
+.teaser-wrapper:has(.icon-teaser) .teaser.icon-teaser {
+  margin-top: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Icon Teaser Margin Utilities */
+.teaser.icon-teaser.margin-small {
+  margin-inline: var(--spacing-s, 16px);
+}
+
+.teaser.icon-teaser.margin-medium {
+  margin-inline: var(--spacing-m, 24px);
+}
+
+.teaser.icon-teaser.margin-large {
+  margin-inline: var(--spacing-l, 32px);
+}
+
+.teaser.icon-teaser.margin-left-small {
+  margin-left: var(--spacing-s, 16px);
+}
+
+.teaser.icon-teaser.margin-left-medium {
+  margin-left: var(--spacing-m, 24px);
+}
+
+.teaser.icon-teaser.margin-left-large {
+  margin-left: 500.5px;
+}
+
+.teaser.icon-teaser.margin-left-none {
+  margin-left: 0;
+}
+
+.teaser.icon-teaser.margin-right-small {
+  margin-right: var(--spacing-s, 16px);
+}
+
+.teaser.icon-teaser.margin-right-medium {
+  margin-right: var(--spacing-m, 24px);
+}
+
+.teaser.icon-teaser.margin-right-large {
+  margin-right: 500.5px;
+}
+
+.teaser.icon-teaser.margin-right-none {
+  margin-right: 0;
+}
+
+.teaser.icon-teaser.margin-none {
+  margin-inline: 0;
+}
+
+/* Select .teaser-wrapper if it contains .teaser.width-s */
+.teaser-wrapper:has(.teaser.width-s) {
+  max-width: var(--width-s, 250px);
+}
+
+.teaser-wrapper:has(.teaser.width-m) {
+  max-width: var(--width-m, 436px);
+}
+
+.teaser-wrapper:has(.teaser.width-l) {
+  max-width: var(--width-l, 750px);
+}
+
+/* Notification Box Variation - matches apply-online--bottom style */
+.teaser.icon-teaser.notification-box {
+  padding: 32px;
+  max-width: 436px;
+  box-shadow: 0 0 26.76px 0 rgb(0 0 0 / 8%);
+}
+
+.teaser.icon-teaser.notification-box .title {
+  margin: 0 78px 20px;
+  max-width: none;
+  font-family: var(--body-font-family, "Museo Sans", sans-serif);
+}
+
+.teaser.icon-teaser.notification-box .body-text {
+  font-size: 14px;
+  line-height: 22.4px;
+  color: #383D41;
+}
+
+.teaser.icon-teaser.notification-box .body-text p {
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.teaser.icon-teaser.notification-box .body-text ul {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: center;
+}
+
+.teaser.icon-teaser.notification-box .body-text li {
+  position: relative;
+  margin: 0 0 16px;
+  padding-left: 15px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 22.4px;
+}
+
+.teaser.icon-teaser.notification-box .body-text li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #426BBA;
+}

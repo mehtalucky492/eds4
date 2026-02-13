@@ -1,0 +1,45 @@
+/* Custom Asset Video Block Styles */
+
+.custom-asset-video {
+  max-width: 100%;
+}
+
+.custom-asset-video video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Dynamic Media specific styles */
+.custom-asset-video.dm-open-api video,
+.custom-asset-video.dm-scene7 video {
+  /* Ensure smooth video loading */
+  background-color: #000;
+}
+
+/* Responsive container */
+.custom-asset-video video {
+  max-width: 100%;
+}
+
+/* Aspect ratio container (optional) */
+.custom-asset-video.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.custom-asset-video.aspect-16-9 video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-asset-video.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.custom-asset-video.aspect-4-3 video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

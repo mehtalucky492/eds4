@@ -1,0 +1,41 @@
+{
+  "models": [
+    {
+      "id": "page-metadata",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "jcr:title",
+          "label": "Title"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "jcr:description",
+          "label": "Description"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "keywords",
+          "multi": true,
+          "label": "Keywords"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "theme",
+          "label": "Theme"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "onetrust-domain-script",
+          "label": "OneTrust Domain Script ID",
+          "description": "The OneTrust domain script ID for cookie consent (e.g., 0191114e-a4d4-7077-8d4e-2a37d6921964-test). Set this on the index/home page only - it will be used site-wide."
+        }
+      ]
+    }
+  ]
+}

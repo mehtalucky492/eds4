@@ -1,0 +1,7 @@
+{
+  "/tools/**": {
+    "Access-Control-Allow-Origin": "https://experience.adobe.com",
+    "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  }
+}

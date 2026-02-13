@@ -1,0 +1,128 @@
+/* Default alert styles - mimics header call section */
+.alert {
+    background: transparent;
+    padding: 1.4375rem 0;
+    text-align: center;
+    font-size: 1.2019rem;
+    line-height: 120%;
+}
+
+.alert-content {
+    margin: 0 auto;
+}
+
+.alert-text,
+.alert p {
+    font-size: 1.2019rem;
+    line-height: 120%;
+    color: white;
+    margin: 0;
+}
+
+/* Phone number styling - bold weight */
+.alert-text .alert-phone-number {
+    font-weight: 700;
+}
+
+@media (width >= 992px) {
+    .region-top .icon-phone--before::before {
+        margin-left: 0;
+    }
+}
+
+/* Generic icon styles for dynamic icons from authoring */
+.alert [class*="icon-"][class*="--before"]::before {
+    content: "";
+    display: inline-block;
+    width: 0.875rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    vertical-align: middle;
+
+    /* Use CSS custom property for dynamic icon URL */
+    background-image: var(--icon-url, url("../../icons/phone-without-bg.svg"));
+    margin-right: 0.75rem;
+}
+
+.alert [class*="icon-"][class*="--after"]::after {
+    content: "";
+    display: inline-block;
+    width: 0.875rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    vertical-align: middle;
+    background-image: var(--icon-url, url("../../icons/phone-without-bg.svg"));
+    margin-left: 1.5rem;
+}
+
+@media (width <= 575.98px) {
+    .alert [class*="icon-"][class*="--before"]::before,
+    .alert [class*="icon-"][class*="--after"]::after {
+        margin-right: 0.75rem;
+        margin-left: 0.75rem;
+    }
+}
+
+/* Red alert variant */
+.alert.red {
+    background: #ba202e;
+}
+
+/* Dark gray alert variant */
+.alert.dark-gray {
+    background: #383d41;
+}
+
+.alert.dark-gray .alert-text,
+.alert.dark-gray p {
+    color: #fff;
+}
+
+/* Ticker animation for mobile */
+@media (width <= 839px) {
+    .alert {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    .alert-ticker-wrapper {
+        display: inline-flex;
+        animation: ticker 15s linear infinite;
+    }
+
+    .alert-content {
+        display: inline-block;
+        white-space: nowrap;
+        padding-right: 2rem;
+    }
+}
+
+/* Desktop - normal centered display */
+@media (width > 839px) {
+    .alert-ticker-wrapper {
+        display: block;
+        width: 100%;
+    }
+
+    .alert-content {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .alert-content-clone {
+        display: none;
+    }
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
