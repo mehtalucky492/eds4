@@ -37,7 +37,7 @@ async function getOneTrustDomainScript() {
 
   // If we're on the homepage, no ID was found
   if (window.location.pathname === HOMEPAGE_PATH
-      || window.location.pathname === `${HOMEPAGE_PATH}index.html`) {
+    || window.location.pathname === `${HOMEPAGE_PATH}index.html`) {
     return '';
   }
 
@@ -307,3 +307,30 @@ if (document.body) {
 }
 
 loadPage();
+
+
+
+// Smooth scroll to ID
+
+const OFFSET = 200; // positive value for header height
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+
+    const target = document.querySelector(this.getAttribute('href'));
+    if (!target) return; // safety check
+
+    e.preventDefault();
+
+    const elementPosition = target.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - OFFSET;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+
+  });
+});
+
+
