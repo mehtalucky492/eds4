@@ -422,8 +422,7 @@ function decorateButtons(element) {
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
-      const thirdup = twoup.parentElement;
-      if (!a.querySelector('img') && !twoup.tagName === "LI") {
+      if (!a.querySelector('img') && !twoup.tagName === 'LI') {
         if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
           a.className = 'button'; // default
           up.classList.add('button-container');
