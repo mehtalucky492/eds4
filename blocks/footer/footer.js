@@ -174,10 +174,10 @@ export default async function decorate(block) {
 
 
   // Message Button
-const btn = Object.assign(document.createElement('button'), {
-  id: 'message-us',
-  ariaLabel: 'Message us',
-  className: 'message-button',
-});
-block.append(btn);
+// const btn = Object.assign(document.createElement('button'), {
+//   id: 'message-us',
+//   ariaLabel: 'Message us',
+//   className: 'message-button',
+// });
+// block.append(btn);
 }

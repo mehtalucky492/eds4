@@ -289,7 +289,7 @@ footer .middle {
 }
 
 /* message us */
-.message-button {
+#message-us,.footer-wrapper .otsuka-button .button {
     position: fixed;
     right: 0.5rem;
     bottom: 10%;
@@ -301,19 +301,29 @@ footer .middle {
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
+    font-size: 0;
 }
-
-.message-button:hover,.message-button:focus {
+.footer-wrapper .otsuka-button .button {
+    bottom: 0;
+    /* display: none; */
+}
+#message-ushover,#message-us:focus {
     background-color: transparent;
 }
 
-@media (min-width:768px) {
-    .message-button {
+@media (width >= 768px) {
+   #message-us,.footer-wrapper .otsuka-button .button{
         right: 2.5rem;
     }
 
 }
-
+@media (width >=  1400px) {
+    #message-us,.footer-wrapper .otsuka-button .button {
+        right: calc(50% - 680px);
+        width: 115px;
+        height: 115px;
+    }
+}
 /* Back to Top Button */
 .back-to-top-buttons {
     position: fixed;
