@@ -1,0 +1,99 @@
+{
+  "definitions": [
+    {
+      "title": "OPA Accordion",
+      "id": "opa-accordion",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "OPA Accordion",
+              "filter": "opa-accordion",
+              "model": "opa-accordion"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "OPA Accordion Item",
+      "id": "opa-accordion-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "OPA Accordion Item",
+              "model": "opa-accordion-item"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "opa-accordion",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "accordionHeading",
+          "label": "Accordion Heading",
+          "description": "Heading for the accordion",
+          "required": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "accordionID",
+          "label": "Accordion ID",
+          "description": "ID for the accordion",
+          "required": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "openIcon",
+          "label": "Open Icon",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "closeIcon",
+          "label": "Close Icon",
+          "multi": false
+        }
+      ]
+    },
+    {
+      "id": "opa-accordion-item",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "question",
+          "label": "Question",
+          "required": true
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "answer",
+          "label": "Answer",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "opa-accordion",
+      "components": [
+        "opa-accordion-item"
+      ]
+    }
+  ]
+}

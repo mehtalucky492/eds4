@@ -243,6 +243,42 @@
     ]
   },
   {
+    "id": "alert",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "alert-text",
+        "label": "Alert Text"
+      },
+      {
+        "component": "select",
+        "name": "alertStyle",
+        "label": "Style",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "Red",
+            "value": "red"
+          },
+          {
+            "name": "Dark Gray",
+            "value": "dark-gray"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "phone-number-mobile",
+        "label": "Phone Number (mobile view)"
+      }
+    ]
+  },
+  {
     "id": "audio",
     "fields": [
       {
@@ -371,6 +407,64 @@
     ]
   },
   {
+    "id": "custom-asset-image",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "image",
+        "label": "Image",
+        "configUrl": "https://dev--otsuka-codekit-otsukapa--oapi-commercial-omni.aem.page/tools/assets-selector/image.config.json",
+        "valueType": "string"
+      },
+      {
+        "component": "custom-asset-namespace:custom-asset-mimetype",
+        "valueType": "string",
+        "name": "imageMimeType"
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "custom-asset-video",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "video",
+        "label": "Video",
+        "configUrl": "https://dev--otsuka-codekit-otsukapa--oapi-commercial-omni.aem.live/tools/assets-selector/video.config.json",
+        "valueType": "string"
+      },
+      {
+        "component": "custom-asset-namespace:custom-asset-mimetype",
+        "valueType": "string",
+        "name": "videoMimeType"
+      },
+      {
+        "component": "text",
+        "name": "videoAlt",
+        "label": "Video Title/Description",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "eligibility-wizard",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "mainHeading",
+        "label": "Main Heading",
+        "description": "Main title of the wizard"
+      }
+    ]
+  },
+  {
     "id": "embed",
     "fields": [
       {
@@ -392,6 +486,57 @@
         "valueType": "string",
         "name": "embed_uri",
         "label": "URI"
+      }
+    ]
+  },
+  {
+    "id": "faq-search",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "searchIcon",
+        "label": "Search Icon",
+        "description": "Icon displayed on the left side of the search input",
+        "required": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "closeIcon",
+        "label": "Close Icon",
+        "description": "Icon displayed to clear the search input",
+        "required": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "noResultIcon",
+        "label": "No Result Icon",
+        "description": "Icon displayed with the no results message",
+        "required": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "placeholder",
+        "label": "Search Placeholder",
+        "description": "Placeholder text for the search input (e.g., 'Search by question...')"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "suggestions",
+        "label": "Search Suggestions",
+        "description": "Add a heading (e.g., 'Most popular requests') as a paragraph, followed by a bulleted list of suggested search terms",
+        "required": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "result",
+        "label": "No Result message",
+        "description": "Message to be shown when no result found"
       }
     ]
   },
@@ -484,6 +629,146 @@
         "component": "text",
         "name": "linkTitle",
         "label": "Title"
+      }
+    ]
+  },
+  {
+    "id": "opa-accordion",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "accordionHeading",
+        "label": "Accordion Heading",
+        "description": "Heading for the accordion",
+        "required": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "accordionID",
+        "label": "Accordion ID",
+        "description": "ID for the accordion",
+        "required": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "openIcon",
+        "label": "Open Icon",
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "closeIcon",
+        "label": "Close Icon",
+        "multi": false
+      }
+    ]
+  },
+  {
+    "id": "opa-accordion-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "question",
+        "label": "Question",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "answer",
+        "label": "Answer",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "opa-tab",
+    "fields": [
+      {
+        "component": "text",
+        "name": "tabId",
+        "label": "Tab Id",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "tabName",
+        "label": "Tab Name",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "otsuka-button",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "name": "button-text",
+        "label": "Button Text"
+      },
+      {
+        "component": "text",
+        "name": "button-title",
+        "label": "Button Title"
+      },
+      {
+        "component": "select",
+        "name": "button-style",
+        "label": "Button Style",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "Blue Gray",
+            "value": "blue-gray"
+          },
+          {
+            "name": "White Gray",
+            "value": "white-gray"
+          },
+          {
+            "name": "Icon Right Blue Gray",
+            "value": "icon-right-blue-gray"
+          },
+          {
+            "name": "Icon Right White Gray",
+            "value": "icon-right-white-gray"
+          },
+          {
+            "name": "Icon Left Blue Gray",
+            "value": "icon-left-blue-gray"
+          },
+          {
+            "name": "Icon Left White Gray",
+            "value": "icon-left-white-gray"
+          },
+          {
+            "name": "White Button download",
+            "value": "white-button-download"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "otsuka-text",
+    "fields": [
+      {
+        "component": "text",
+        "name": "text-id",
+        "label": "Text ID"
       }
     ]
   },
@@ -651,6 +936,30 @@
     ]
   },
   {
+    "id": "separator",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Style",
+        "options": [
+          {
+            "name": "1 pixel",
+            "value": "separator-1px"
+          },
+          {
+            "name": "5 pixels",
+            "value": "separator-5px"
+          },
+          {
+            "name": "10 pixels",
+            "value": "separator-10px"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "slide",
     "fields": [
       {
@@ -709,6 +1018,90 @@
     ]
   },
   {
+    "id": "spacer",
+    "fields": [
+      {
+        "component": "select",
+        "name": "height",
+        "label": "Spacer Height",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Extra Small (16px)",
+            "value": "xs"
+          },
+          {
+            "name": "Small (32px)",
+            "value": "sm"
+          },
+          {
+            "name": "Medium (64px)",
+            "value": "md"
+          },
+          {
+            "name": "Large (96px)",
+            "value": "lg"
+          },
+          {
+            "name": "Extra Large (128px)",
+            "value": "xl"
+          }
+        ],
+        "value": "md"
+      }
+    ]
+  },
+  {
+    "id": "tab-cards",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "mainHeading",
+        "label": "Main Heading",
+        "description": "Main heading displayed above the cards",
+        "required": false
+      }
+    ]
+  },
+  {
+    "id": "tab-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "cardImage",
+        "label": "Card Image",
+        "description": "Image for the card",
+        "required": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cardImageAlt",
+        "label": "Card Image Alt Text",
+        "description": "Alternative text for the card image",
+        "required": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cardHeading",
+        "label": "Card Heading",
+        "description": "Heading for the individual card",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "cardBody",
+        "label": "Card Body Text",
+        "description": "Body text content for the card",
+        "required": true
+      }
+    ]
+  },
+  {
     "id": "tabs-item",
     "fields": [
       {
@@ -724,6 +1117,118 @@
         "value": "",
         "label": "Content",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "teaser",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Title"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "headingSize",
+        "label": "Heading Size",
+        "value": "h2",
+        "options": [
+          {
+            "name": "H1",
+            "value": "h1"
+          },
+          {
+            "name": "H2",
+            "value": "h2"
+          },
+          {
+            "name": "H3",
+            "value": "h3"
+          },
+          {
+            "name": "H4",
+            "value": "h4"
+          },
+          {
+            "name": "H5",
+            "value": "h5"
+          },
+          {
+            "name": "H6",
+            "value": "h6"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "label": "Text"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "cta",
+        "label": "Call to Action Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaText",
+        "label": "Call to Action Text",
+        "value": "Learn More"
+      },
+      {
+        "component": "multiselect",
+        "valueType": "string",
+        "name": "classes",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Image Left",
+            "value": "image-left"
+          },
+          {
+            "name": "Image Right",
+            "value": "image-right"
+          },
+          {
+            "name": "Icon",
+            "value": "icon-teaser"
+          },
+          {
+            "name": "Notification Box",
+            "value": "notification-box"
+          },
+          {
+            "name": "Small",
+            "value": "width-s"
+          },
+          {
+            "name": "Medium",
+            "value": "width-m"
+          },
+          {
+            "name": "Large",
+            "value": "width-l"
+          }
+        ]
       }
     ]
   },

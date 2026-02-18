@@ -1,0 +1,113 @@
+/* Separator Block - Adobe EDS with Figma Design System */
+
+.separator {
+  width: 100%;
+}
+
+.separator .separator-content {
+  max-width: var(--grid-max-width-desktop);
+  margin: 0 auto;
+  padding: var(--spacing-xs) 0;
+  position: relative;
+}
+
+.separator .separator-line {
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to right, #32FFFF, #B4FF00, #FFD500);
+  position: relative;
+}
+
+/* 1px separator variant - white line */
+.separator.separator-1px .separator-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  align-self: stretch;
+}
+
+.separator.separator-1px .separator-line {
+  width: 996px;
+  max-width: 100%;
+  height: 1px;
+  background: var(--primary-white, #FFF);
+}
+
+/* 5px separator variant - white line */
+.separator.separator-5px .separator-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  align-self: stretch;
+}
+
+.separator.separator-5px .separator-line {
+  width: 996px;
+  max-width: 100%;
+  height: 5px;
+  background: var(--primary-white, #FFF);
+}
+
+/* 10px separator variant - white line */
+.separator.separator-10px .separator-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  align-self: stretch;
+}
+
+.separator.separator-10px .separator-line {
+  width: 996px;
+  max-width: 100%;
+  height: 10px;
+  background: var(--primary-white, #FFF);
+}
+
+/* Mobile Responsive Design */
+@media (width <= 767px) {
+  .separator .separator-content {
+    max-width: var(--grid-max-width);
+  }
+  
+  .separator.separator-1px .separator-line,
+  .separator.separator-5px .separator-line,
+  .separator.separator-10px .separator-line {
+    width: 100%;
+  }
+}
+
+/* Tablet Responsive Design */
+@media (width >= 768px) and (width <= 899px) {
+  .separator .separator-content {
+    max-width: var(--grid-max-width-tablet);
+  }
+}
+
+/* Desktop Responsive Design */
+@media (width > 900px) {
+  .separator .separator-content {
+    max-width: var(--grid-max-width-desktop);
+  }
+}
+
+/* Accessibility */
+.separator .separator-line:focus-visible {
+  outline: var(--border-width-thick) solid var(--button-primary);
+  outline-offset: var(--border-width-thick-offset);
+}
+
+/* High contrast support */
+@media (prefers-contrast: more) {
+  .separator .separator-line {
+    background: linear-gradient(to right, #0FF, #CF0, #FF0);
+  }
+  
+  .separator.separator-1px .separator-line,
+  .separator.separator-5px .separator-line,
+  .separator.separator-10px .separator-line {
+    background: #FFF;
+  }
+}

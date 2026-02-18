@@ -1,0 +1,30 @@
+/* Custom Asset Image Block Styles */
+
+.custom-asset-image {
+  max-width: 100%;
+}
+
+.custom-asset-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.custom-asset-image picture {
+  display: block;
+  width: 100%;
+}
+
+/* Dynamic Media specific styles */
+.custom-asset-image.dm-open-api img,
+.custom-asset-image.dm-scene7 img {
+  /* Ensure smooth image loading */
+  background-color: #f4f4f4;
+}
+
+/* Responsive container */
+.custom-asset-image picture source,
+.custom-asset-image picture img {
+  width: 100%;
+}

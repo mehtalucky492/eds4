@@ -1,0 +1,134 @@
+{
+  "repoNames": [
+    "author-p172753-e1855059.adobeaemcloud.com",
+    "delivery-p172753-e1855059.adobeaemcloud.com"
+  ],
+  "aemTierType": [
+    "delivery",
+    "author"
+  ],
+  "expiryOptions": {
+    "allowSelectionAndDrag": false
+  },
+  "filterSchema": [
+    {
+      "fields": [
+        {
+          "defaultValue": ["video/*"],
+          "element": "checkbox",
+          "name": "type",
+          "options": [
+            {
+              "label": "Video",
+              "readOnly": true,
+              "value": "video/*"
+            }
+          ]
+        }
+      ],
+      "groupKey": "FileTypeGroup",
+      "header": "File Type"
+    },
+    {
+      "fields": [
+        {
+          "columns": 3,
+          "defaultValue": ["arena"],
+          "element": "taggroup",
+          "name": "property=xcm:keywords.id=",
+          "options": [
+            {
+              "label": "Demo",
+              "value": "demo"
+            }
+          ]
+        }
+      ],
+      "groupKey": "AssetTagsGroup",
+      "header": "Assets Tags"
+    }
+  ],
+  "filterSchemaMapping": {
+    "author-p172753-e1855059.adobeaemcloud.com": [
+      {
+        "fields": [
+          {
+            "defaultValue": ["video/*"],
+            "element": "checkbox",
+            "name": "type",
+            "options": [
+              {
+                "label": "Video",
+                "readOnly": true,
+                "value": "video/*"
+              }
+            ]
+          }
+        ],
+        "groupKey": "FileTypeGroup",
+        "header": "File Type"
+      },
+      {
+        "fields": [
+          {
+            "defaultValue": ["dam:assetStatus==approved"],
+            "element": "radiogroup",
+            "name": "property",
+            "options": [
+              {
+                "label": "Approved",
+                "value": "dam:assetStatus==approved"
+              }
+            ],
+            "readOnly": true
+          }
+        ],
+        "groupKey": "StatusGroup",
+        "header": "Approval Status"
+      },
+      {
+        "fields": [
+          {
+            "columns": 3,
+            "defaultValue": ["arena"],
+            "element": "taggroup",
+            "name": "property=xcm:keywords.id=",
+            "options": [
+              {
+                "label": "arena",
+                "value": "arena"
+              }
+            ]
+          }
+        ],
+        "groupKey": "AssetTagsGroup",
+        "header": "Assets Tags"
+      }
+    ],
+    "delivery-p172753-e1855059.adobeaemcloud.com": [
+      {
+        "fields": [
+          {
+            "defaultValue": ["video/*"],
+            "element": "checkbox",
+            "name": "type",
+            "options": [
+              {
+                "label": "Video",
+                "readOnly": true,
+                "value": "video/*"
+              }
+            ]
+          }
+        ],
+        "groupKey": "FileTypeGroup",
+        "header": "File Type"
+      }
+    ]
+  },
+  "alwaysUseDMDelivery": true,
+  "assetDomainMapping": {
+    "author-p172753-e1855059.adobeaemcloud.com": "delivery-p172753-e1855059.adobeaemcloud.com"
+  },
+  "rootPath": "/content/dam/otsukapatientassistance"
+}

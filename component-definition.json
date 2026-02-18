@@ -74,6 +74,21 @@
           }
         },
         {
+          "title": "Alert",
+          "id": "alert",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Alert",
+                  "model": "alert"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Audio",
           "id": "audio",
           "plugins": {
@@ -195,6 +210,52 @@
           }
         },
         {
+          "title": "Custom Asset Image",
+          "id": "custom-asset-image",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Custom Asset Image",
+                  "model": "custom-asset-image"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Custom Asset Video",
+          "id": "custom-asset-video",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Custom Asset Video",
+                  "model": "custom-asset-video"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Eligibility Wizard",
+          "id": "eligibility-wizard",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Eligibility Wizard",
+                  "filter": "eligibility-wizard",
+                  "model": "eligibility-wizard"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Embed",
           "id": "embed",
           "plugins": {
@@ -204,6 +265,22 @@
                 "template": {
                   "name": "Embed",
                   "model": "embed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "FAQ Search",
+          "id": "faq-search",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "FAQ Search",
+                  "filter": "faq-search",
+                  "model": "faq-search"
                 }
               }
             }
@@ -264,6 +341,98 @@
                 "template": {
                   "name": "Hero",
                   "model": "hero"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "OPA Accordion",
+          "id": "opa-accordion",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "OPA Accordion",
+                  "filter": "opa-accordion",
+                  "model": "opa-accordion"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "OPA Accordion Item",
+          "id": "opa-accordion-item",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "OPA Accordion Item",
+                  "model": "opa-accordion-item"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "OPA Tabs",
+          "id": "opa-tabs",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "OPA Tabs",
+                  "filter": "opa-tabs"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "OPA Tab",
+          "id": "opa-tab",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "OPA Tab",
+                  "model": "opa-tab"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Otsuka Button",
+          "id": "otsuka-button",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Otsuka Button",
+                  "model": "otsuka-button"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Otsuka Text",
+          "id": "otsuka-text",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "attributes": {
+                    "id": "text-id"
+                  }
                 }
               }
             }
@@ -331,6 +500,21 @@
           }
         },
         {
+          "title": "Separator",
+          "id": "separator",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Separator",
+                  "model": "separator"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Slides",
           "id": "slides",
           "plugins": {
@@ -355,6 +539,52 @@
                 "template": {
                   "name": "Slide",
                   "model": "slide"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Spacer",
+          "id": "spacer",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Spacer",
+                  "model": "spacer"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Tab Cards",
+          "id": "tab-cards",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Tab Cards",
+                  "filter": "tab-cards",
+                  "model": "tab-cards"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Tab Card",
+          "id": "tab-card",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Tab Card",
+                  "model": "tab-card"
                 }
               }
             }
@@ -387,6 +617,23 @@
                   "model": "tabs-item",
                   "tabName": "Tab Name",
                   "content": "<p>Lorem Ipsum</p>"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Teaser",
+          "id": "teaser",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Teaser",
+                  "model": "teaser",
+                  "heading": "Sample Title",
+                  "headingSize": "h2"
                 }
               }
             }

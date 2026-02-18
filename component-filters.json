@@ -75,6 +75,18 @@
     ]
   },
   {
+    "id": "opa-accordion",
+    "components": [
+      "opa-accordion-item"
+    ]
+  },
+  {
+    "id": "opa-tabs",
+    "components": [
+      "opa-tab"
+    ]
+  },
+  {
     "id": "panels",
     "components": [
       "panel"
@@ -90,6 +102,12 @@
     "id": "slides",
     "components": [
       "slide"
+    ]
+  },
+  {
+    "id": "tab-cards",
+    "components": [
+      "tab-card"
     ]
   },
   {

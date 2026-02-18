@@ -1,0 +1,81 @@
+{
+  "definitions": [
+    {
+      "title": "Otsuka Button",
+      "id": "otsuka-button",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Otsuka Button",
+              "model": "otsuka-button"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "otsuka-button",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "name": "button-text",
+          "label": "Button Text"
+        },
+        {
+          "component": "text",
+          "name": "button-title",
+          "label": "Button Title"
+        },
+        {
+          "component": "select",
+          "name": "button-style",
+          "label": "Button Style",
+          "options": [
+            {
+              "name": "default",
+              "value": ""
+            },
+            {
+              "name": "Blue Gray",
+              "value": "blue-gray"
+            },
+            {
+              "name": "White Gray",
+              "value": "white-gray"
+            },
+            {
+              "name": "Icon Right Blue Gray",
+              "value": "icon-right-blue-gray"
+            },
+            {
+              "name": "Icon Right White Gray",
+              "value": "icon-right-white-gray"
+            },
+            {
+              "name": "Icon Left Blue Gray",
+              "value": "icon-left-blue-gray"
+            },
+            {
+              "name": "Icon Left White Gray",
+              "value": "icon-left-white-gray"
+            },
+            {
+              "name": "White Button download",
+              "value": "white-button-download"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

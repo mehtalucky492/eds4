@@ -1,0 +1,1401 @@
+/**
+ * Eligibility Wizard Styles
+ * Mimics the look and feel of the original OPAF eligibility tool
+ */
+
+/* CSS Variables for Wizard Colors */
+:root {
+  --c-wizard-white: #fff;
+  --c-wizard-red: #ba202e;
+  --c-wizard-blue: #426bba;
+  --c-opaf-error: #ee0004;
+}
+
+/* Main Container */
+#eligibility-wizard-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#eligibility-wizard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (width >= 1200px) {
+  #eligibility-wizard {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  @media (width >= 1200px) {
+    #eligibility-wizard-wrapper .wizard-fixed-wrapper {
+        width: 793px;
+        padding: 0 2.5rem;
+    }
+}
+}
+
+#eligibility-wizard h2 {
+  font-weight: 600;
+  font-size: 2rem;
+  text-align: left;
+  margin-bottom: 2.5rem;
+  color: #2b4c8b;
+  line-height: 2.4rem;
+}
+
+@media (width >= 1200px) {
+  #eligibility-wizard h2 {
+    flex: 0 0 280px;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
+#eligibility-wizard .wizard-content-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Progress Indicator */
+#eligibility-wizard-wrapper .wizard-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  position: relative;
+  padding: 0;
+  flex-flow: column;
+}
+
+@media (width >= 1200px) {
+  #eligibility-wizard-wrapper .wizard-progress {
+    width: 793px;
+    flex-flow: row;
+  }
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper {
+  position: relative;
+  padding: 1rem 1.5rem;
+  flex: 1;
+  text-align: left;
+}
+
+@media (width >= 1200px) {
+  #eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper {
+    width: 25%;
+    text-align: center;
+  }
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper input[type="checkbox"] {
+  display: none;
+  appearance: none;
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper label {
+  position: relative;
+  color: #7991c7;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+  padding-left: 2.25rem;
+  height: 22px;
+  cursor: default;
+  display: inline-block;
+  margin: 0;
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper label::before {
+    position: absolute;
+    width: 20px;
+    height: 22px;
+    line-height: 1.3125rem;
+    border-radius: 10px;
+    border: 1px solid #7991c7;
+    text-align: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    content: "1";
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper:nth-child(2) label::before {
+  content: "2";
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper:nth-child(3) label::before {
+  content: "3";
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper:nth-child(4) label::before {
+  content: "4";
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-current {
+  background: var(--c-wizard-blue);
+  color: var(--c-wizard-white);
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-current label {
+  color: var(--c-wizard-white);
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-current label::before {
+  border-color: #fff;
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-completed {
+  color: #383d41;
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-completed label {
+  color: #383d41;
+}
+
+#eligibility-wizard-wrapper .wizard-progress .selection-progress-wrapper.state-completed label::before {
+  background: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%228%22%20height%3D%226%22%20viewBox%3D%220%200%208%206%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M2.3535%204.1465L0.707%202.5L0%203.207L2.3535%205.5605L7.207%200.707L6.5%200L2.3535%204.1465Z%22%20fill%3D%22white%22/%3E%3C/svg%3E") no-repeat center var(--c-wizard-blue);
+  width: 20px;
+  height: 20px;
+  content: "";
+  border: none;
+}
+
+.selection-progress-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+
+#eligibility-wizard-wrapper .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+
+/* Wizard Container */
+
+
+.wizard-form {
+  width: 100%;
+}
+
+/* Wizard Steps */
+.selection-screen {
+  transition: opacity 0.3s ease;
+}
+
+.selection-screen.wizard-hidden {
+  display: none;
+}
+
+.selection-screen-internal {
+  margin-top: 1.5rem;
+}
+
+.selection-screen-internal.wizard-hidden {
+  display: none;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.select-wrapper select:hover {
+  border-color: var(--c-wizard-blue);
+}
+
+.select-wrapper select:focus {
+  outline: none;
+  border-color: var(--c-wizard-blue);
+  box-shadow: 0 0 0 3px rgb(66 107 186 / 10%);
+}
+
+/* Sub-options */
+.sub-options {
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--c-wizard-blue);
+  transition: opacity 0.3s ease;
+}
+
+.sub-options.wizard-hidden {
+  display: none;
+}
+
+.sub-options p {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* Input Fields */
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.input-group input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input[type="text"]:hover {
+  border-color: var(--c-wizard-blue);
+}
+
+.input-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--c-wizard-blue);
+  box-shadow: 0 0 0 3px rgb(66 107 186 / 10%);
+}
+
+.error-message {
+  color: var(--c-opaf-error);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.error-message.visible,
+.has-error .error-message {
+  display: block;
+}
+
+/* Currency Input */
+.currency-input-container {
+  margin-bottom: 1.5rem;
+}
+
+
+#field-size label,
+#field-income label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #333;
+}
+
+#field-size-input-group,
+#field-income-input-group {
+  position: relative;
+}
+
+/* Medication and Insurance selectors */
+#medication-selector-wrapper,
+#insurance-types-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+
+@media (width >= 768px) {
+    .paragraph, .cke_editable p, .ui-dialog-content p, .text-long p {
+        font-size: .875rem;
+    }
+}
+
+/* Additional brand information */
+
+
+.text-wrapper {
+  width: 100%;
+}
+
+#eligibility-wizard-wrapper .text-long {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+#eligibility-wizard-wrapper .text-long p {
+  margin-bottom: 0.75rem;
+}
+
+#eligibility-wizard-wrapper .text-long a {
+  color: var(--c-wizard-blue);
+  text-decoration: underline;
+}
+
+#eligibility-wizard-wrapper .text-long a:hover {
+  color: #2e4d8f;
+}
+
+#eligibility-wizard-wrapper .nobr {
+  white-space: nowrap;
+}
+
+.radio-field-wrapper input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  accent-color: var(--c-wizard-blue);
+}
+
+.radio-field-wrapper label {
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-field-wrapper label:hover {
+  color: var(--c-wizard-blue);
+}
+
+/* Navigation Buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.button:focus:not(.btn-prev, .btn-next, .btn-print, .btn-email, .btn-restart, .disabled),
+.button:hover:not(.btn-prev, .btn-next, .btn-print, .btn-email, .btn-restart, .disabled) {
+  color: #fff !important;
+  background: #434343 !important;
+  border: none !important;
+  text-decoration: none !important;
+}
+
+.button.btn-prev {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.button.btn-prev:hover:not(.disabled) {
+  background: #434343;
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.btn-next {
+  background: var(--c-wizard-blue);
+  color: var(--c-wizard-white);
+}
+
+.button.btn-next:hover:not(.disabled) {
+  background: #434343;
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Results Section */
+#eligibility-wizard-results {
+  padding: 2rem 0;
+}
+
+#eligibility-wizard-results.wizard-hidden {
+  display: none;
+}
+
+#personalized-results {
+  margin-bottom: 2rem;
+}
+
+.paragraph-icon-callout {
+  background: #fff;
+  border-radius: 8px;
+}
+
+#personalized-results #result-actions-wrapper .btn-restart::after {
+  background-image: url("../../icons/reload.svg");
+}
+
+.cta-copy-wrapper {
+  width: 100%;
+}
+
+.cta-copy {
+  width: 100%;
+}
+
+.result-content {
+  width: 100%;
+}
+
+.result-permutation {
+  display: block;
+}
+
+.result-permutation.wizard-hidden {
+  display: none;
+}
+
+.txt-section {
+  display: inline-block;
+}
+
+.result-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.result-title.eligible {
+  color: #00a651;
+}
+
+.result-title.not-eligible {
+  color: var(--c-wizard-red);
+}
+
+.result-title.conditional {
+  color: #ff9800;
+}
+
+.result-intro {
+  margin-bottom: 1.5rem;
+}
+
+.result-intro h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.next-steps,
+.result-next-steps {
+  background: #fff;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.next-steps .row {
+  margin-bottom: 1.5rem;
+}
+
+.next-steps .row:last-child {
+  margin-bottom: 0;
+}
+
+.result-step-content {
+  width: 100%;
+}
+
+.result-step-content p {
+  margin-bottom: 1rem;
+}
+
+.result-step-content p:last-child {
+  margin-bottom: 0;
+}
+
+.result-next-steps {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.result-next-steps h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.result-next-steps p {
+  margin-bottom: 1rem;
+}
+
+.result-next-steps a {
+  color: var(--c-wizard-blue);
+  text-decoration: underline;
+}
+
+.result-next-steps a:hover {
+  color: #2e4d8f;
+}
+
+.result-contact {
+  background: #f0f7ff;
+  padding: 1.5rem;
+  border-radius: 4px;
+  border-left: 4px solid var(--c-wizard-blue);
+  margin-bottom: 1.5rem;
+}
+
+.result-notes {
+  font-size: 0.875rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Result Actions */
+.result-actions-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.result-actions-wrapper .button {
+  min-width: 150px;
+}
+
+.result-actions-wrapper .btn-restart {
+  background: #666;
+  color: var(--c-wizard-white);
+}
+
+.result-actions-wrapper .btn-restart:hover {
+  background: #555;
+}
+
+.result-intro-footnote {
+  margin-top: 1.5rem;
+}
+
+.result-intro-footnote p {
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.2rem;
+}
+
+/* Responsive Design */
+@media (width <= 768px) {
+  .eligibility-wizard-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .wizard-main-heading,
+  #eligibility-wizard h2 {
+    font-size: 1.5rem;
+  }
+
+
+  .wizard-progress {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .wizard-progress::before {
+    display: none;
+  }
+
+  .selection-progress-wrapper {
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .income-frequency {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .result-title {
+    font-size: 1.5rem;
+  }
+
+  .result-actions-wrapper {
+    flex-direction: column;
+  }
+
+  .result-actions-wrapper .button {
+    width: 100%;
+  }
+}
+
+@media (width <= 480px) {
+  .selection-progress-wrapper .title {
+    font-size: 0.75rem;
+  }
+
+  .selection-progress-wrapper .selection {
+    width: 30px;
+    height: 30px;
+  }
+
+  .select-wrapper select,
+  .input-group input[type="text"] {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.875rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .wizard-progress,
+  .buttons,
+  .result-actions-wrapper {
+    display: none;
+  }
+}
+
+/* Accessibility */
+.select-wrapper select:focus,
+.input-group input:focus,
+.radio-field-wrapper input:focus + label {
+  outline: 2px solid var(--c-wizard-blue);
+  outline-offset: 2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Additional Drupal-specific overrides for exact match */
+
+/* Wrapper background */
+#eligibility-wizard-wrapper .wizard-progress {
+  background: #f1f5f9;
+  margin: 0 0 2rem;
+}
+
+/* Main heading styles */
+#eligibility-wizard-wrapper #eligibility-wizard > h2 {
+  font-weight: 600;
+  font-size: 2rem;
+  text-align: left;
+  margin-bottom: 2.5rem;
+  color: #2b4c8b;
+  line-height: 2.4rem;
+}
+
+@media (width >= 1200px) {
+  #eligibility-wizard-wrapper #eligibility-wizard > h2 {
+    max-width: 277px;
+    float: left;
+    margin-right: 66px;
+  }
+}
+
+@media all and (width >= 1264px) {
+  #eligibility-wizard-wrapper #eligibility-wizard > h2 {
+    margin-right: 130px;
+  }
+}
+
+/* Button styles with proper sizing */
+#eligibility-wizard-wrapper .wizard-form .buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+  max-width: 323px;
+  margin: 0;;
+}
+
+#eligibility-wizard-wrapper .button {
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    width: auto;
+    height: auto;
+    border-radius: 100px;
+    letter-spacing: 0.0875rem;
+    transition: background-color .25s cubic-bezier(0.4, 0, 0.2, 1), color .25s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.5rem 1.5rem;
+    line-height: 2.0938rem;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #fff;
+    background: #426bba;
+    border: none;
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button {
+    width: 100%;
+    max-width: 150px;
+    height: 50px;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 3.125rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    position: relative;
+    white-space: nowrap;
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button:hover:not(.btn-prev, .btn-next, .disabled),
+#eligibility-wizard-wrapper .wizard-form .buttons .button:focus:not(.btn-prev, .btn-next, .disabled) {
+  background: #434343;
+  color: #fff;
+  text-decoration: none;
+}
+
+@media screen and (width <= 364px) {
+  #eligibility-wizard-wrapper .wizard-form .buttons .button {
+    max-width: 130px;
+    font-size: 12px;
+  }
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button.btn-prev {
+  padding: 0 22px 0 55px;
+  background: var(--c-wizard-blue);
+  color: var(--c-wizard-white);
+  max-width: 170px;
+}
+
+@media screen and (width <= 364px) {
+  #eligibility-wizard-wrapper .wizard-form .buttons .button.btn-prev {
+    padding: 0 22px 0 40px;
+  }
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button.btn-next {
+  padding: 0 70px 0 38px;
+}
+
+@media screen and (width <= 364px) {
+  #eligibility-wizard-wrapper .wizard-form .buttons .button.btn-next {
+    padding: 0 50px 0 38px;
+  }
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button.disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Label styles */
+#eligibility-wizard-wrapper label {
+  position: relative;
+  display: block;
+  padding-left: 0;
+  color: #383d41;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Wrappers */
+#eligibility-wizard-wrapper #medication-selector-wrapper,
+#eligibility-wizard-wrapper #insurance-types-wrapper,
+#eligibility-wizard-wrapper #eligibility-wizard-results,
+#eligibility-wizard-wrapper #commercial-coverage-wrapper,
+#eligibility-wizard-wrapper #income-basis {
+  width: 100%;
+  max-width: 1143px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Select dropdown styling */
+#eligibility-wizard-wrapper select {
+  border-radius: 8px;
+  border: 1px solid var(--c-wizard-blue);
+  padding: 0 2.625rem 0 1.125rem;
+  color: #383d41;
+  font-size: 0.875rem;
+  height: 42px;
+  line-height: 42px;
+  appearance: none;
+  background: var(--c-wizard-white);
+  width: 100%;
+}
+
+#eligibility-wizard-wrapper .select-wrapper {
+  position: relative;
+  max-width: 320px;
+}
+
+#eligibility-wizard-wrapper .select-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 7px;
+  top: calc(50% - 3px);
+  right: 14px;
+  background: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 width%3D%2215%22 height%3D%228%22 viewBox%3D%220 0 15 8%22 fill%3D%22none%22%3E%3Cpath d%3D%22M7.22292 7.16458C6.63958 7.16458 6.05625 6.93958 5.61458 6.49792L0.18125 1.06458C-0.0604167 0.822916 -0.0604167 0.422917 0.18125 0.18125C0.422917 -0.0604167 0.822917 -0.0604167 1.06458 0.18125L6.49792 5.61458C6.89792 6.01458 7.54792 6.01458 7.94792 5.61458L13.3812 0.18125C13.6229 -0.0604167 14.0229 -0.0604167 14.2646 0.18125C14.5062 0.422917 14.5062 0.822916 14.2646 1.06458L8.83125 6.49792C8.38958 6.93958 7.80625 7.16458 7.22292 7.16458Z%22 fill%3D%22%23383D41%22/%3E%3C/svg%3E") no-repeat center;
+  pointer-events: none;
+}
+
+/* Radio button styles */
+#eligibility-wizard-wrapper input[type="radio"] {
+  display: none;
+  appearance: none;
+}
+
+#eligibility-wizard-wrapper input[type="radio"]::before,
+#eligibility-wizard-wrapper input[type="radio"]::after {
+  display: none;
+}
+
+#eligibility-wizard-wrapper .radio-field-wrapper {
+  display: flex;
+  position: relative;
+  padding-bottom: 1.25rem;
+}
+
+#eligibility-wizard-wrapper .radio-field-wrapper:last-child {
+  padding-bottom: 0;
+}
+
+#eligibility-wizard-wrapper .radio-field-wrapper::before,
+#eligibility-wizard-wrapper .radio-field-wrapper::after {
+  display: none;
+}
+
+#eligibility-wizard-wrapper input[type="radio"] ~ label {
+  color: #383d41;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4rem;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  margin: 0;
+}
+
+#eligibility-wizard-wrapper input[type="radio"] ~ label::before {
+  content: "";
+  position: absolute;
+  border-radius: 10px;
+  border: 1px solid var(--c-wizard-blue);
+  width: 20px;
+  height: 20px;
+  left: 0;
+  top: 1px;
+}
+
+#eligibility-wizard-wrapper input[type="radio"]:checked ~ label::after {
+  content: "";
+  position: absolute;
+  border-radius: 6px;
+  background: var(--c-wizard-blue);
+  width: 12px;
+  height: 12px;
+  left: 4px;
+  top: 5px;
+}
+
+/* Mobile slider for medication selection */
+#eligibility-wizard-wrapper .mobile-slider {
+  width: 100%;
+}
+
+@media (width >= 768px) {
+  #eligibility-wizard-wrapper .mobile-slider {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+#eligibility-wizard-wrapper .mobile-slider .radio-field-wrapper {
+  width: 100%;
+  padding: 1.5625rem;
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  #eligibility-wizard-wrapper .mobile-slider .radio-field-wrapper {
+    width: 50%;
+  }
+}
+
+@media (width >= 992px) {
+  #eligibility-wizard-wrapper .mobile-slider .radio-field-wrapper {
+    width: 33.3333%;
+  }
+}
+
+#eligibility-wizard-wrapper .mobile-slider .radio-field-wrapper label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.25rem 1.875rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--c-text-alt);
+  border-radius: 42px;
+  box-shadow: 0 10px 15px rgb(0 0 0 / 4%);
+  height: 155px;
+  width: 332px;
+  max-width: 100%;
+  cursor: pointer;
+  background-color: var(--c-background);
+  margin: 0 auto;
+  transition: all 0.25s;
+}
+
+@media (width >= 992px) {
+  #eligibility-wizard-wrapper .mobile-slider .radio-field-wrapper label {
+    box-shadow: 0 45px 87px rgb(0 0 0 / 4%);
+  }
+}
+
+/* Input field styles */
+#selection-household .input-group,
+#selection-income .input-group {
+  position: relative;
+  display: block;
+  width: auto;
+  max-width: 320px;
+  margin: 0;
+}
+
+#selection-household input[type="text"],
+#selection-income input[type="text"] {
+  border-radius: 8px;
+  border: 1px solid #ced6e0;
+  color: #383d41;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4rem;
+  height: 36px;
+  padding: 0.5rem 0.75rem;
+  min-width: 320px;
+}
+
+#field-income {
+  margin-bottom: 1.5625rem;
+}
+
+#selection-income .radio-field-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Selection screen styles */
+#eligibility-wizard-wrapper .selection-screen {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+#eligibility-wizard-wrapper .wizard-form h2 ~ p {
+  margin-bottom: 1.25rem;
+  color: #383d41;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+
+#eligibility-wizard-wrapper .wizard-form .selection-screen {
+  padding-bottom: 1em;
+}
+
+#eligibility-wizard-wrapper .wizard-form .selection-screen:last-of-type {
+  padding-bottom: 110px;
+}
+
+@media (width >= 992px) {
+  #eligibility-wizard-wrapper .wizard-form .selection-screen:last-of-type {
+    padding-bottom: 0;
+  }
+}
+
+/* Results section */
+#eligibility-wizard-wrapper #eligibility-wizard-results h2 {
+  color: var(--c-wizard-blue);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.4rem;
+  margin-bottom: 1.25rem;
+}
+
+#personalized-results .result-intro p {
+  margin-bottom: 1.5625rem;
+}
+
+@media (width >= 992px) {
+  #personalized-results .result-intro p {
+    margin-bottom: 2.8125rem;
+  }
+}
+
+#personalized-results p,
+#personalized-results ul {
+  color: #383d41;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4rem;
+}
+
+#personalized-results h3 {
+  color: #383d41;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+#personalized-results .next-steps {
+  margin: 0;
+}
+
+#personalized-results .next-steps .row {
+  display: block;
+  clear: both;
+}
+
+#eligibility-wizard-results #result-actions-wrapper {
+  margin: 2.25rem 0;
+}
+
+#eligibility-wizard-results #result-actions-wrapper .button {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 50px 0 23px;
+  width: 180px;
+  position: relative;
+  background: var(--c-wizard-blue);
+  color: var(--c-wizard-white);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+#eligibility-wizard-results #result-actions-wrapper .button::after {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: transparent;
+  background-size: contain;
+  position: absolute;
+  right: 24px;
+  top: calc(50% - 12px);
+}
+
+#eligibility-wizard-results #result-actions-wrapper .btn-restart::after {
+  background-image: url("../../icons/reload.svg");
+}
+
+#personalized-results .result-intro-footnote {
+  margin-top: 1.25rem;
+}
+
+#personalized-results .result-intro-footnote p {
+  margin-bottom: 0;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2rem;
+}
+
+/* Additional brand information */
+#eligibility-wizard-wrapper .wizard-form .additional-brand-information p {
+  line-height: 1.6;
+  color: #383d41;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+#eligibility-wizard-wrapper .wizard-form .additional-brand-information p a {
+  text-decoration: underline;
+  color: #383d41;
+  font-weight: 600;
+}
+
+#eligibility-wizard-wrapper .button:hover{
+    background: #434343;
+}
+
+#eligibility-wizard-wrapper .wizard-form .additional-brand-information p a:hover,
+#eligibility-wizard-wrapper .wizard-form .additional-brand-information p a:focus {
+  text-decoration: none;
+}
+
+/* Commercial coverage wrapper */
+#eligibility-wizard-wrapper #commercial-coverage-wrapper {
+  margin-top: 1.5625rem;
+}
+
+#eligibility-wizard-wrapper #insurance-types-wrapper,
+#eligibility-wizard-wrapper #commercial-coverage-wrapper,
+#eligibility-wizard-wrapper #income-basis {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  flex-flow: column wrap;
+}
+
+#eligibility-wizard-wrapper #insurance-types-wrapper p,
+#eligibility-wizard-wrapper #commercial-coverage-wrapper p,
+#eligibility-wizard-wrapper #income-basis p {
+  margin-bottom: 1.25rem;
+  color: #383d41;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.75rem;
+  margin-top: 0;
+}
+
+#eligibility-wizard-wrapper .wizard-form p {
+    margin-bottom: 1.25rem;
+    color: #383d41;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.75rem;
+    margin-top: 0;
+}
+
+/* Hidden class */
+.wizard-hidden {
+  display: none !important;
+}
+
+/* Geo-block message styles */
+.geo-block-message {
+  padding-bottom: 1rem;
+}
+
+.geo-block-message h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #434343;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  margin-top: 0;
+}
+
+.geo-block-message p {
+  font-size: 1rem;
+  color: #434343;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.geo-block-message a {
+  color: var(--c-wizard-blue);
+  text-decoration: none;
+}
+
+.geo-block-message a:hover {
+  text-decoration: underline;
+}
+
+/* Tooltip reveal state - CRITICAL for tooltip functionality */
+#eligibility-wizard-wrapper .tooltip {
+  display: none;
+}
+
+#eligibility-wizard-wrapper .tooltip.tt-revealed {
+  display: block;
+  position: absolute;
+  top: 75%;
+  left: 2.75em;
+  background: var(--c-wizard-white);
+  border: 2px solid rgb(89 181 227 / 80%);
+  border: 2px solid var(--c-outline);
+  padding: 1.25em;
+  z-index: 5;
+  max-width: 380px;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+#eligibility-wizard-wrapper .reveal-tooltip {
+  cursor: help;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  color: var(--c-wizard-blue);
+}
+
+#eligibility-wizard-wrapper .tt-closer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: 1.5em;
+  height: 1.5em;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #666;
+}
+
+#eligibility-wizard-wrapper .tt-closer::before {
+  content: '×';
+}
+
+#eligibility-wizard-wrapper .tt-closer:hover {
+  color: #000;
+}
+
+/* Error message visible state */
+#eligibility-wizard-wrapper .error-message {
+  display: none;
+  color: var(--c-opaf-error);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+#eligibility-wizard-wrapper .error-message.visible,
+#eligibility-wizard-wrapper .has-error .error-message {
+  display: block;
+}
+
+/* Button disabled state improvements */
+#eligibility-wizard-wrapper .button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+#eligibility-wizard-wrapper .radio-field-wrapper label:focus {
+  outline: 2px solid rgb(89 181 227 / 80%);
+  outline-offset: 2px;
+}
+
+/* Input placeholder styling */
+#eligibility-wizard-wrapper input::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Currency input $ prefix alignment */
+/* stylelint-disable-next-line selector-id-pattern */
+#eligibility-wizard-wrapper #household_income {
+  text-align: left;
+}
+
+/* Mobile responsiveness for form elements */
+@media (width <= 767px) {
+  #eligibility-wizard-wrapper .tooltip.tt-revealed {
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    width: calc(100% - 2em);
+  }
+
+  #eligibility-wizard-wrapper #selection-income .tooltip.tt-revealed {
+    top: 95%;
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Button arrow styles (if using SVG arrows) */
+#eligibility-wizard-wrapper .wizard-form .buttons .button.btn-prev::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("../../icons/arrow-norm-white-right.svg") no-repeat center center;
+  background-size: contain;
+  transform: rotate(180deg);
+  position: absolute;
+  top: calc(50% - 8px);
+  left: 24px;
+}
+
+#eligibility-wizard-wrapper .wizard-form .buttons .button.btn-next::after {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("../../icons/arrow-norm-white-right.svg") no-repeat center center; 
+  background-size: contain;
+  position: absolute;
+  top: calc(50% - 8px);
+  right: 40px;
+}
+
+.input-group.has-error input {
+    position: relative;
+    border-color: #EE0004 !important;
+    border-color: var(--c-opaf-error) !important;
+}
+
+.input-group.has-error::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 25px);
+    right: -18px;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url("../../icons/error.svg") no-repeat left center rgb(0 0 0 / 0%);
+    background-size: 16px 16px;
+}
+
+@media (width >= 992px) {
+    .input-group.has-error::after {
+        right: -30px;
+    }
+}

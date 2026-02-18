@@ -10,7 +10,87 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+<<<<<<< HEAD
 } from './aem.js';
+=======
+  getMetadata,
+} from './aem.js';
+import assetsInit from './aem-assets-plugin-support.js';
+
+/**
+ * Cache for site-wide settings fetched from homepage
+ */
+let siteSettingsCache = null;
+
+/**
+ * Homepage path for site-wide settings
+ */
+const HOMEPAGE_PATH = '/live-content/';
+
+/**
+ * Gets OneTrust domain script ID, first checking current page, then fetching from homepage.
+ * @returns {Promise<string>} The OneTrust domain script ID, or empty string if not configured
+ */
+async function getOneTrustDomainScript() {
+  // First, check if current page has the metadata
+  const currentPageId = getMetadata('onetrust-domain-script');
+  if (currentPageId) {
+    return currentPageId;
+  }
+
+  // If we're on the homepage, no ID was found
+  if (window.location.pathname === HOMEPAGE_PATH
+    || window.location.pathname === `${HOMEPAGE_PATH}index.html`) {
+    return '';
+  }
+
+  // Return cached value if available
+  if (siteSettingsCache !== null) {
+    return siteSettingsCache;
+  }
+
+  // Fetch homepage and extract the OneTrust ID
+  try {
+    const resp = await fetch(HOMEPAGE_PATH);
+    if (resp.ok) {
+      const html = await resp.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const homepageId = doc.querySelector('meta[name="onetrust-domain-script"]')?.content || '';
+      siteSettingsCache = homepageId;
+      return homepageId;
+    }
+  } catch (e) {
+    // Silent fail - OneTrust will not load if homepage fetch fails
+  }
+
+  siteSettingsCache = '';
+  return '';
+}
+
+/**
+ * Loads OneTrust consent management script dynamically.
+ * @param {string} domainScriptId The OneTrust domain script ID
+ */
+function loadOneTrust(domainScriptId) {
+  if (!domainScriptId) {
+    return;
+  }
+
+  // Check if OneTrust is already loaded
+  if (document.querySelector('script[src*="otSDKStub.js"]')) {
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
+  script.type = 'text/javascript';
+  script.charset = 'UTF-8';
+  script.setAttribute('data-domain-script', domainScriptId);
+  script.async = true;
+  document.head.appendChild(script);
+}
+>>>>>>> 12ef2e056f5152b74e77c9be2ad24fd6d338aa58
 
 /**
  * Detects if Universal Editor is active
@@ -95,6 +175,13 @@ function buildAutoBlocks() {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+<<<<<<< HEAD
+=======
+  if (window.hlx.aemassets?.decorateExternalImages) {
+    window.hlx.aemassets.decorateExternalImages(main);
+  }
+
+>>>>>>> 12ef2e056f5152b74e77c9be2ad24fd6d338aa58
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
@@ -110,6 +197,15 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+<<<<<<< HEAD
+=======
+
+  // Load OneTrust early (checks current page, then fetches from homepage if needed)
+  getOneTrustDomainScript().then((onetrustId) => {
+    loadOneTrust(onetrustId);
+  });
+
+>>>>>>> 12ef2e056f5152b74e77c9be2ad24fd6d338aa58
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

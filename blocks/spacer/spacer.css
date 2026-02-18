@@ -1,0 +1,24 @@
+.spacer {
+  width: 100%;
+  display: block;
+}
+
+.spacer.xs {
+  height: var(--spacing-s, 16px);
+}
+
+.spacer.sm {
+  height: var(--spacing-l, 32px);
+}
+
+.spacer.md {
+  height: var(--spacing-2xl, 64px);
+}
+
+.spacer.lg {
+  height: var(--spacing-3xl, 96px);
+}
+
+.spacer.xl {
+  height: var(--spacing-4xl, 128px);
+}
