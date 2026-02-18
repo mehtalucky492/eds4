@@ -4,6 +4,8 @@
  * https://www.hlx.live/developer/block-collection/video
  */
 
+/* global OtsukaPCM */
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function embedYoutube(url, autoplay, background) {
@@ -35,7 +37,7 @@ function embedYoutube(url, autoplay, background) {
 }
 
 function embedVimeo(url, autoplay, background) {
-  const [, , video] = url.pathname.split('/');
+  const [, video] = url.pathname.split('/');
   let suffix = '';
   if (background || autoplay) {
     const suffixParams = {
@@ -106,6 +108,35 @@ const loadVideoEmbed = (block, link, autoplay, background) => {
   }
 };
 
+const loadVideoWithConsent = (videoContainer, link, autoplay, showModal) => {
+  const isYoutube = link.includes('youtube') || link.includes('youtu.be');
+  const isVimeo = link.includes('vimeo');
+
+  // Wait for OtsukaPCM to be available (loaded by delayed.js after 3 seconds)
+  const maxWaitTime = 3000; // Wait up to 3 seconds
+  const checkInterval = 100;
+  let elapsed = 0;
+
+  const waitForConsent = () => {
+    if (typeof OtsukaPCM !== 'undefined' && OtsukaPCM.initVideoBlock) {
+      // Use consent management for YouTube/Vimeo
+      OtsukaPCM.initVideoBlock(videoContainer, link, {
+        autoplay,
+        showModal,
+      });
+    } else if ((isYoutube || isVimeo) && elapsed < maxWaitTime) {
+      // Wait a bit longer for OtsukaPCM to load
+      elapsed += checkInterval;
+      setTimeout(waitForConsent, checkInterval);
+    } else {
+      // OtsukaPCM not loaded after waiting, or not a YouTube/Vimeo video
+      loadVideoEmbed(videoContainer, link, autoplay, false);
+    }
+  };
+
+  waitForConsent();
+};
+
 export default async function decorate(block) {
   const rows = [...block.children];
   let link = '';
@@ -113,7 +144,7 @@ export default async function decorate(block) {
   let caption = '';
 
   // Extract content from Universal Editor structure or fallback to legacy
-  rows.forEach((row, index) => {
+  rows.forEach((row) => {
     const cells = [...row.children];
     if (cells.length === 0) return;
 
@@ -121,10 +152,6 @@ export default async function decorate(block) {
     const cellContent = cell.textContent.trim();
     const linkElement = cell.querySelector('a');
     const pictureElement = cell.querySelector('picture');
-
-    // Debug: log each row
-    // eslint-disable-next-line no-console
-    console.log(`Row ${index}:`, { cellContent, hasLink: !!linkElement, hasPicture: !!pictureElement });
 
     if (linkElement) {
       link = linkElement.href;
@@ -141,12 +168,6 @@ export default async function decorate(block) {
         console.log('Found caption text:', caption);
       }
     }
-  });
-
-  // Debug: log all extracted content
-  // eslint-disable-next-line no-console
-  console.log('Video block extraction results:', {
-    link, caption, hasPlaceholder: !!placeholder, rowCount: rows.length,
   });
 
   // Fallback: if no link found, try the legacy approach
@@ -190,16 +211,22 @@ export default async function decorate(block) {
         'beforeend',
         '<div class="video-placeholder-play"><button type="button" title="Play"></button></div>',
       );
-      wrapper.addEventListener('click', () => {
-        wrapper.remove();
-        loadVideoEmbed(videoContainer, link, true, false);
-      });
     }
+
     videoContainer.append(wrapper);
   }
 
   // Add video container to block
   block.append(videoContainer);
+
+  // Add event listener for consent-approved loading
+  videoContainer.addEventListener('loadVideoWithConsent', (e) => {
+    // eslint-disable-next-line no-console
+    console.log('loadVideoWithConsent event received', e.detail);
+    const wrapper = videoContainer.querySelector('.video-placeholder');
+    if (wrapper) wrapper.remove();
+    loadVideoEmbed(videoContainer, e.detail.url, e.detail.autoplay, false);
+  });
 
   // Add caption if it exists
   if (caption) {
@@ -211,7 +238,56 @@ export default async function decorate(block) {
     block.append(captionElement);
   }
 
-  if (!placeholder || autoplay) {
+  // Initialize consent management for all videos
+  const isYoutube = link.includes('youtube') || link.includes('youtu.be');
+  const isVimeo = link.includes('vimeo');
+
+  if (isYoutube || isVimeo) {
+    // YouTube/Vimeo video - use consent management (wait for it to load)
+    if (placeholder && !autoplay) {
+      const maxWaitTime = 3000;
+      const checkInterval = 100;
+      let elapsed = 0;
+
+      const waitAndInit = () => {
+        if (typeof OtsukaPCM !== 'undefined' && OtsukaPCM.initVideoBlock) {
+          OtsukaPCM.initVideoBlock(videoContainer, link, {
+            autoplay: true,
+            showModal: true,
+          });
+          // OtsukaPCM handles the click listener, no fallback needed
+        } else if (elapsed < maxWaitTime) {
+          elapsed += checkInterval;
+          setTimeout(waitAndInit, checkInterval);
+        } else {
+          // Fallback: OtsukaPCM not available, set up manual click handler
+          const wrapper = videoContainer.querySelector('.video-placeholder');
+          if (wrapper) {
+            let clicked = false;
+            wrapper.addEventListener('click', () => {
+              if (clicked) return;
+              clicked = true;
+              wrapper.remove();
+              loadVideoEmbed(videoContainer, link, true, false);
+            });
+          }
+        }
+      };
+
+      waitAndInit();
+    } else {
+      // No placeholder or autoplay - load when visible
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          const playOnLoad = autoplay && !prefersReducedMotion.matches;
+          loadVideoWithConsent(videoContainer, link, playOnLoad, !placeholder);
+        }
+      });
+      observer.observe(block);
+    }
+  } else if (!placeholder || autoplay) {
+    // Direct video file - no consent needed, load when visible
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();

@@ -1,16 +1,16 @@
 footer {
-    font-family: "Museo Sans", sans-serif;
+    font-family: 'Museo Sans', sans-serif;
     color: #fff;
-    font-size: 0.6875rem;
-    line-height: 1.1818;
-    padding: 5.625rem 2.5rem;
+    font-size: 0.75rem;
+    line-height: 1.05rem;
+    padding: 2.5rem 1.375rem;
     font-weight: 300;
-    background: #434343;
+    background: #383d41;
 }
 
 footer .footer.block {
     margin: auto;
-    max-width: 59.375rem;
+    max-width: 64.125rem;
     padding: 0 0.9375rem;
 }
 
@@ -18,14 +18,16 @@ footer .footer p {
     margin: 0;
 }
 
-footer .footer .logo{
-    text-align: center;
+footer .footer .logo {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    font-size: 0;
 }
 
 footer .middle {
-    margin: 2.5rem 0 3.75rem;
-    margin: var(--s-extra-extra-large) 0 3.75rem;
-    text-align: center;
+    margin: 2.5rem 0 0;
+    text-align: left;
 }
 
 .footer ul {
@@ -33,12 +35,31 @@ footer .middle {
     padding: 0;
 }
 
+.footer .section.top {
+    display: flex;
+    align-items: flex-end;
+    max-height: 56px;
+}
+
+.footer .section.top .default-content-wrapper {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    gap: 0;
+}
+
 .footer .section.top picture {
-    margin: 0 auto;
+    margin: 0;
+    padding: 0;
+    display: block;
+    line-height: 0;
 }
 
 .footer .section.top img {
-    margin: 0 auto;
+    width: 147px;
+    height: 56px;
+    display: block;
+    max-width: 100%;
 }
 
 .footer .section.top .main-menu {
@@ -51,7 +72,7 @@ footer .middle {
 .footer .section.top .main-menu li {
     position: relative;
     padding: 0 1.375rem 0 1.3125rem;
-    flex: 1 0 50%;
+    flex: 0 0 auto;
     margin: 0;
 }
 
@@ -61,24 +82,45 @@ footer .middle {
 }
 
 .footer .section.middle p {
-    margin-bottom: 1.2em;
     font-size: 11px;
     line-height: 13px;
     font-weight: 300;
+    margin-bottom: 1.2em;
 }
 
-/* .footer .section.middle .text-long p {
-      margin: 0 0 2.5rem;
-      margin: 0 0 var(--s-extra-extra-large);
-  } */
+.footer .section.middle .separator {
+    max-height: 42.3px;
+}
+
+.footer .section.middle .separator-content {
+    margin-top: 4rem;
+    padding-bottom: 3rem;
+}
+
+.footer .section.middle .default-content-wrapper > ul > li {
+    border-top: none;
+    display: inline-block;
+}
+
+.footer .section.middle .default-content-wrapper > ul > li > a {
+    display: inline-block;
+    width: 34px;
+    height: 35px;
+    margin: 0.25rem;
+}
+
+.footer .section.middle .default-content-wrapper .icon img {
+    display: inline-block;
+    width: 34px;
+    height: 35px;
+}
 
 .footer .section.top .main-menu a,
 .footer .section.section.bottom .copyright,
 .footer .section.section.bottom .prc-date,
 .footer .section.section.bottom .prc-code {
     color: #fff;
-    font-size: 0.875rem;
-    line-height: 1.2143;
+    font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: normal;
 }
@@ -89,23 +131,83 @@ footer .middle {
     margin: 0 var(--s-small);
 }
 
-@media (width < 991px) {
-    .footer .section.section.bottom .copyright {
-        text-align: center;
-        max-width: 16.625rem;
-        margin: 0 auto 2.5rem;
-        margin: 0 auto var(--s-extra-extra-large);
+@media (width <= 991px) {
+    .footer .section.top {
+        flex-direction: column;
+        align-items: center;
+        max-height: none;
+        gap: 2rem;
     }
-}
 
-.footer .section.section.bottom .prc {
-    display: flex;
-    justify-content: center;
+    .footer .section.top .default-content-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer .section.top .main-menu {
+        margin-top: 2.2rem;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: left;
+        margin-left: auto;
+    }
+
+    .footer .section.top .main-menu li:nth-child(1) {
+        text-align: left;
+        padding: 0.1875rem 1.25rem 0.1875rem 0;
+    }
+
+    .footer .section.middle .separator-content {
+        margin-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .footer .section.middle p {
+        font-family: 'Museo Sans', sans-serif;
+        color: #fff;
+        font-size: 0.75rem;
+        line-height: 1.05rem;
+        font-weight: 300;
+    }
+
+    .footer .section.middle ul {
+        margin: 0;
+    }
+
+    .footer .section.bottom .default-content-wrapper {
+        display: flex;
+        flex-flow: column-reverse;
+    }
+
+    .footer .section.middle {
+        margin: 1.25rem 0;
+        text-align: left;
+    }
+
+    .footer .section.bottom {
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: normal;
+    }
+
+    .footer .section.bottom .prc {
+        justify-content: flex-start;
+        display: flex;
+    }
+
+    .footer .section.bottom .prc .prc-date {
+        margin-left: 0;
+    }
+
+    .footer .section.bottom .copyright {
+        margin-top: 0.75rem;
+    }
 }
 
 @media (width >= 992px) {
     footer {
-        padding: 3.6875rem 0 4rem;
+        padding: 4rem 0;
     }
 
     footer .section.top {
@@ -137,8 +239,20 @@ footer .middle {
     }
 
     footer .section.middle {
-        margin: 3.125rem 0 2.8125rem;
+        margin: 2.5rem 0 0;
         text-align: left;
+    }
+
+    .footer .section.middle p {
+        font-weight: 300;
+        margin-bottom: 1.5625rem;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    .footer .section.section.bottom .prc {
+        display: flex;
+        justify-content: center;
     }
 
     footer .section.bottom {
@@ -171,6 +285,40 @@ footer .middle {
     }
 }
 
+/* message us button */
+.message-button {
+    position: fixed;
+    right: 0.5rem;
+    bottom: 10%;
+    z-index: 13;
+    width: 98px;
+    height: 98px;
+    background-color: transparent;
+    background-image: url("../../icons/message-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.message-button:hover,
+.message-button:focus {
+    background-color: transparent;
+}
+
+@media (width >= 768px) {
+    .message-button {
+        right: 2.5rem;
+    }
+}
+
+@media (width >= 1400px) {
+    .message-button {
+        right: calc(50% - 680px);
+        width: 115px;
+        height: 115px;
+    }
+}
+
 /* Back to Top Button */
 .back-to-top-buttons {
     position: fixed;
@@ -191,7 +339,7 @@ footer .middle {
 .back-to-top-buttons .back-to-top-button__oval {
     font-family: 'Museo Sans', sans-serif;
     font-family: var(--f-f-body);
-    color: #FFF;
+    color: #fff;
     color: var(--c-text-inverse);
     font-size: 1rem;
     border-radius: 50%;
@@ -201,13 +349,16 @@ footer .middle {
     width: 3.125rem;
     height: 3.125rem;
     background-color: #4a6cb3;
-    background-image: url("../../icons/top-arrow-white.svg");
+    background-image: url('../../icons/top-arrow-white.svg');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.3s ease;
+    transition:
+        opacity 0.5s ease,
+        visibility 0.5s ease,
+        transform 0.3s ease;
     display: inline-block;
     appearance: auto;
     overflow: visible;
@@ -242,13 +393,13 @@ footer .middle {
 
 .back-to-top-buttons .back-to-top-button__oval:focus,
 .back-to-top-buttons .back-to-top-button__oval:active {
-    box-shadow: 0 0 0 .2rem rgb(108 117 125 / 50%) !important;
+    box-shadow: 0 0 0 0.2rem rgb(108 117 125 / 50%) !important;
 }
 
 .back-to-top-buttons .back-to-top-button__square {
     font-family: 'Museo Sans', sans-serif;
     font-family: var(--f-f-body);
-    color: #FFF;
+    color: #fff;
     color: var(--c-text-inverse);
     font-size: 1rem;
     width: 53px;
@@ -273,7 +424,7 @@ footer .middle {
 
 .back-to-top-buttons .back-to-top-button__square:focus,
 .back-to-top-buttons .back-to-top-button__square:active {
-    box-shadow: 0 0 0 .2rem rgb(108 117 125 / 50%) !important;
+    box-shadow: 0 0 0 0.2rem rgb(108 117 125 / 50%) !important;
 }
 
 .back-to-top-buttons .text-center {
@@ -296,5 +447,3 @@ footer .middle {
         bottom: 30%;
     }
 }
-
-

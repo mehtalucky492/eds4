@@ -1,0 +1,186 @@
+/* Hero Banner - Phase 1: Minimal CSS */
+
+/* Wrapper styling */
+.hero-banner-container .hero-banner-wrapper {
+  padding: 0;
+  color: var(--color-white);
+  position: relative;
+  max-width: unset;
+}
+
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Content section */
+.hero-banner .hero-banner__content {
+  padding: 4rem 2rem 1.625rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Title styling */
+.hero-banner .hero-banner__title {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 3.3449rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  max-width: 610px;
+}
+
+/* Description styling */
+.hero-banner .hero-banner__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  margin: 0 0 40px;
+  max-width: 630px;
+}
+
+/* Button styling */
+.hero-banner .hero-banner__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
+  color: #434343;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 33.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 8px 24px;
+  border-radius: 100px;
+}
+
+/* Button icon */
+.hero-banner .hero-banner__button-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.hero-banner .hero-banner__button-icon img {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+/* Mobile First: Show mobile image, hide desktop image */
+.hero-banner .hero-banner__images {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-banner .hero-banner__image--desktop {
+  display: none;
+}
+
+.hero-banner .hero-banner__image--mobile {
+  display: block;
+}
+
+/* Basic image sizing */
+.hero-banner .hero-banner__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Alternate variant styles */
+.hero-banner .hero-banner__content.alternate {
+  max-width: 540px;
+  margin: auto;
+}
+
+.hero-banner .hero-banner__content.alternate .hero-banner__title {
+  margin-bottom: 2.5rem;
+  max-width: unset;
+}
+
+.hero-banner .hero-banner__content.alternate .hero-banner__description {
+  font-size: 0.985rem;
+  line-height: 1.5761rem;
+  margin-bottom: 3rem;
+}
+
+.hero-banner .hero-banner__content.alternate p + p {
+  font-size: 0.844rem;
+  line-height: 1.351rem;
+  margin-bottom: 0;
+}
+
+@media (width >= 768px) {
+  .hero-banner .hero-banner__content.alternate {
+    max-width: 720px;
+    margin: auto;
+  }
+}
+
+/* Desktop */
+@media (width >= 992px) {
+  .hero-banner .hero-banner__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 9.5rem 0.9375rem;
+  }
+
+  .hero-banner .hero-banner__title {
+    margin-bottom: 1.125rem;
+  }
+
+  .hero-banner .hero-banner__description {
+    margin-bottom: 1.625rem;
+  }
+
+  .hero-banner .hero-banner__images {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-banner .hero-banner__image--desktop {
+    display: block;
+  }
+
+  .hero-banner .hero-banner__image--desktop img {
+    min-height: 593px;
+  }
+  
+  .hero-banner .hero-banner__image--mobile {
+    display: none;
+  }
+
+   .hero-banner .hero-banner__content.alternate{
+    padding: 4.128rem 2rem;
+    max-width: 530px;
+  }
+
+  .hero-banner .hero-banner__images.alternate img {
+    min-height: 427px;
+    width: 599px;
+  }
+}
+
+/* Large Desktop */
+@media (width > 1200px) {
+  .hero-banner .hero-banner__content.alternate {
+    margin-left: calc((100vw - 1200px) / 2);
+    margin-right: calc((100vw - 1200px) / 2);
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Large Desktop */
+@media (width > 1230px) {
+  .hero-banner .hero-banner__content {
+    margin-left: calc((100vw - 1230px) / 2);
+    margin-right: calc((100vw - 1230px) / 2);
+  }
+}
+

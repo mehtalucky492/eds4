@@ -10,7 +10,83 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  getMetadata,
 } from './aem.js';
+import assetsInit from './aem-assets-plugin-support.js';
+
+/**
+ * Cache for site-wide settings fetched from homepage
+ */
+let siteSettingsCache = null;
+
+/**
+ * Homepage path for site-wide settings
+ */
+const HOMEPAGE_PATH = '/live-content/';
+
+/**
+ * Gets OneTrust domain script ID, first checking current page, then fetching from homepage.
+ * @returns {Promise<string>} The OneTrust domain script ID, or empty string if not configured
+ */
+async function getOneTrustDomainScript() {
+  // First, check if current page has the metadata
+  const currentPageId = getMetadata('onetrust-domain-script');
+  if (currentPageId) {
+    return currentPageId;
+  }
+
+  // If we're on the homepage, no ID was found
+  if (window.location.pathname === HOMEPAGE_PATH
+      || window.location.pathname === `${HOMEPAGE_PATH}index.html`) {
+    return '';
+  }
+
+  // Return cached value if available
+  if (siteSettingsCache !== null) {
+    return siteSettingsCache;
+  }
+
+  // Fetch homepage and extract the OneTrust ID
+  try {
+    const resp = await fetch(HOMEPAGE_PATH);
+    if (resp.ok) {
+      const html = await resp.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const homepageId = doc.querySelector('meta[name="onetrust-domain-script"]')?.content || '';
+      siteSettingsCache = homepageId;
+      return homepageId;
+    }
+  } catch (e) {
+    // Silent fail - OneTrust will not load if homepage fetch fails
+  }
+
+  siteSettingsCache = '';
+  return '';
+}
+
+/**
+ * Loads OneTrust consent management script dynamically.
+ * @param {string} domainScriptId The OneTrust domain script ID
+ */
+function loadOneTrust(domainScriptId) {
+  if (!domainScriptId) {
+    return;
+  }
+
+  // Check if OneTrust is already loaded
+  if (document.querySelector('script[src*="otSDKStub.js"]')) {
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js';
+  script.type = 'text/javascript';
+  script.charset = 'UTF-8';
+  script.setAttribute('data-domain-script', domainScriptId);
+  script.async = true;
+  document.head.appendChild(script);
+}
 
 /**
  * Detects if Universal Editor is active
@@ -95,6 +171,10 @@ function buildAutoBlocks() {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+  if (window.hlx.aemassets?.decorateExternalImages) {
+    window.hlx.aemassets.decorateExternalImages(main);
+  }
+
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
@@ -110,6 +190,12 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  // Load OneTrust early (checks current page, then fetches from homepage if needed)
+  getOneTrustDomainScript().then((onetrustId) => {
+    loadOneTrust(onetrustId);
+  });
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -191,4 +277,53 @@ export function getProps(block, config) {
   });
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
+
+// OneTrust button fix - run immediately when modal opens, not waiting for delayed.js
+const fixOneTrustButtons = () => {
+  const acceptBtn = document.getElementById('accept-recommended-btn-handler');
+  const rejectBtn = document.getElementsByClassName('ot-pc-refuse-all-handler')[0];
+  const container = document.getElementsByClassName('ot-btn-container')[0];
+
+  if (acceptBtn && rejectBtn && container && acceptBtn.parentElement !== container) {
+    container.prepend(acceptBtn, rejectBtn);
+    acceptBtn.style.display = '';
+    rejectBtn.style.display = '';
+  }
+};
+
+// Watch for OneTrust modal to appear
+const observeOneTrust = new MutationObserver(() => {
+  const modal = document.getElementById('onetrust-pc-sdk');
+  if (modal && modal.style.display !== 'none') {
+    fixOneTrustButtons();
+  }
+});
+
+if (document.body) {
+  observeOneTrust.observe(document.body, {
+    childList: true, subtree: true, attributes: true, attributeFilter: ['style'],
+  });
+}
+
 loadPage();
+
+// Smooth scroll to ID
+const OFFSET = 200; // positive value for header height
+
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener('click', function (e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (!target) return; // safety check
+
+    e.preventDefault();
+
+    const elementPosition = target.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - OFFSET;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  });
+});

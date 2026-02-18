@@ -348,7 +348,16 @@ function decorateTemplateAndTheme() {
   const template = getMetadata('template');
   if (template) addClasses(document.body, template);
   const theme = getMetadata('theme');
-  if (theme) addClasses(document.body, theme);
+  // To support a new theme, add a CSS file inside /styles/themes/ with the theme name
+  // (e.g., /styles/themes/{theme-name}.css).
+  // The theme name should match the 'theme' metadata value.
+  if (theme) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `/styles/themes/${theme}.css`;
+    document.head.appendChild(link);
+    addClasses(document.body, theme);
+  }
 }
 
 /**
@@ -413,7 +422,7 @@ function decorateButtons(element) {
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
-      if (!a.querySelector('img')) {
+      if (!a.querySelector('img') && !twoup.tagName === 'LI') {
         if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
           a.className = 'button'; // default
           up.classList.add('button-container');
@@ -588,6 +597,12 @@ function buildBlock(blockName, content) {
  * @param {Element} block The block element
  */
 async function loadBlock(block) {
+  // Add below lines of code //
+  if (window.hlx?.aemassets?.loadBlock) {
+    return window.hlx.aemassets.loadBlock(block);
+  }
+  // Add above lines of code //
+
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
@@ -752,6 +767,22 @@ async function getCFData(persistedQuery, contentPath, variationName) {
   return cfReq;
 }
 
+/**
+ * Handles external links and PDFs to be opened in a new tab/window
+ * @param {Element} main The main element
+ */
+async function decorateExternalLinks(body) {
+  body.querySelectorAll('a').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href) {
+      const extension = href.split('.').pop().trim();
+      if (extension === 'pdf' || (!href.startsWith('/') && !href.startsWith('#') && !href.includes(window.location.host))) {
+        a.setAttribute('target', '_blank');
+      }
+    }
+  });
+}
+
 init();
 
 export {
@@ -762,6 +793,7 @@ export {
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateExternalLinks,
   decorateTemplateAndTheme,
   getMetadata,
   loadBlock,

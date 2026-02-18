@@ -1,0 +1,141 @@
+{
+  "definitions": [
+    {
+      "title": "OPA Cards",
+      "id": "opa-cards",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "OPA Cards",
+              "filter": "opa-cards"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "OPA Card",
+      "id": "opa-card",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "OPA Card",
+              "model": "opa-card"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "opa-card",
+      "fields": [
+        {
+          "component": "select",
+          "name": "card-type",
+          "label": "Card Type",
+          "options": [
+            {
+              "name": "Text Only",
+              "value": "text-only"
+            },
+            {
+              "name": "Text & Button",
+              "value": "white-button-download"
+            },
+            {
+              "name": "Info Card",
+              "value": "opa-info-card"
+            },
+            {
+              "name": "Care connect faq Card (White)",
+              "value": "care-connect-faq-card-white"
+            },
+            {
+              "name": "Care connect faq Card (Blue)",
+              "value": "care-connect-faq-card-blue"
+            }
+          ],
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "richtext",
+          "name": "heading",
+          "value": "",
+          "label": "Heading",
+          "valueType": "string"
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
+        },
+        {
+          "component": "aem-content",
+          "name": "cta_link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "name": "cta_text",
+          "label": "Button Text"
+        },
+        {
+          "component": "select",
+          "name": "cta_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "name": "White Button download",
+              "value": "white-button-download"
+            },
+            {
+              "name": "Button rounded blue",
+              "value": "button-rounded-blue"
+            },
+            {
+              "name": "Button rounded white",
+              "value": "button-rounded-white"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "wrap_withlink",
+          "label": "Wrap with link",
+          "options": [
+            {
+              "name": "Yes",
+              "value": "true"
+            },
+            {
+              "name": "No",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "opa-cards",
+      "components": ["opa-card"]
+    }
+  ]
+}

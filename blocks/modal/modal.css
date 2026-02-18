@@ -1,49 +1,365 @@
 .modal dialog {
-  --dialog-border-radius: 16px;
+    --dialog-border-radius: 16px;
 
-  overscroll-behavior: none;
-  border: 1px solid #ccc;
-  border-radius: var(--dialog-border-radius);
-  width: 100vw;
+    overscroll-behavior: none;
+    border: 1px solid #ccc;
+    border-radius: var(--dialog-border-radius);
+    width: 100vw;
+    padding: 0;
+    overflow: hidden;
 }
 
 .modal dialog .modal-content {
-  overflow-y: auto;
-  overscroll-behavior: none;
-  max-height: calc(100dvh - 60px);
+    overscroll-behavior: none;
+    max-height: calc(100dvh - 60px);
+    overflow: hidden;
 }
 
 @media (width >= 600px) {
-  .modal dialog {
-    padding: 30px;
-    width: 80vw;
-    max-width: 700px;
-  }
+    .modal dialog {
+        width: 80vw;
+        max-width: 919px;
+    }
 
-  .modal dialog .modal-content {
-    max-height: calc(100vh - 90px);
-  }
+    .modal dialog .modal-content {
+        max-height: calc(100vh - 90px);
+    }
 }
 
 .modal dialog::backdrop {
-  background-color: rgb(0 0 0 / 50%);
+    background-color: rgb(0 0 0 / 50%);
 }
 
 .modal .close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20px;
-  height: 100%;
-  max-height: 54px;
-  border-radius: 0 var(--dialog-border-radius) 0 0;
-  background-color: unset;
-  text-overflow: clip;
-  margin: 0;
-  border: none;
-  padding-right: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    max-height: 54px;
+    border-radius: 0 var(--dialog-border-radius) 0 0;
+    background: white;
+    text-overflow: clip;
+    margin: 0;
+    border: none;
+    padding-right: 30px;
+    z-index: 100;
 }
 
 .modal dialog .section {
-  padding: 0;
+    padding: 0;
+}
+
+.modal-secure-messaging-heading .default-content-wrapper {
+    position: relative;
+}
+
+.modal-secure-messaging-heading h2 {
+    height: 104px;
+    background-color: #426bba;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+    margin-block: 0;
+    color: #fff;
+    font-size: 1.1875rem;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.modal-secure-messaging-heading p {
+    margin: 0;
+}
+
+.modal-secure-messaging-heading picture,
+.modal-secure-messaging-heading img {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.modal-secure-messaging-body h4 {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    line-height: 20px;
+    font-weight: 600;
+    letter-spacing: 0.15rem;
+    margin: 70px 0 36px;
+    color: rgb(67 67 67);
+}
+
+.section.modal-secure-messaging-body p {
+    font-size: 0.9375rem;
+    color: #434343;
+    line-height: 1.6;
+    font-family: "Museo Sans", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    margin-top: 0;
+}
+
+.section.modal-secure-messaging-body p strong {
+    line-height: 1.4444;
+    font-weight: 600;
+}
+
+.modal .modal-secure-messaging-body {
+    max-height: 70vh;
+    overflow: hidden;
+}
+
+.modal-secure-messaging-body .simplebar-content-wrapper {
+    height: 100%;
+    overflow: hidden scroll;
+}
+
+.modal-secure-messaging-body .simplebar-content {
+    padding: 84px 77px 0 0;
+}
+
+.modal-secure-messaging-body .simplebar-track.simplebar-vertical {
+    visibility: visible;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    border-right: 0.0625rem solid rgb(128 128 128 / 20%);
+    border-left: 0.0625rem solid rgb(128 128 128 / 20%);
+}
+
+.modal-secure-messaging-body .simplebar-scrollbar {
+    width: 20px;
+}
+
+.modal-secure-messaging-body .simplebar-scrollbar::before {
+    background: #a7c8e8;
+    border-radius: 999px;
+    opacity: 1;
+}
+
+.modal-secure-messaging-body .simplebar-scrollbar.simplebar-visible::before {
+    opacity: 1;
+}
+
+.modal-secure-messaging-body ul {
+    margin-bottom: 45px;
+    padding-right: 2px;
+    padding-inline-start: 17px;
+    margin-left: 17px;
+}
+
+.modal-secure-messaging-body .default-content-wrapper p:last-of-type {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-weight: 400;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+.modal-secure-messaging-body a.button {
+    font-size: 0.875rem;
+    font-weight: normal;
+    width: 267px;
+}
+
+.external-link-popup {
+    position: relative;
+}
+
+.external-link-popup h3 {
+    color: rgb(67 67 67);
+    font-family: "Museo Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.875rem;
+    line-height: 1.2;
+    width: auto;
+}
+
+.external-link-popup .default-content-wrapper {
+    max-width: 680px;
+    margin: 3.125rem auto 2.8125rem;
+    overflow: hidden;
+    padding: 0 30px;
+}
+
+.external-link-popup .default-content-wrapper p {
+    margin: 0;
+}
+
+.external-link-popup .default-content-wrapper p picture,
+.external-link-popup .default-content-wrapper p img {
+    position: absolute;
+    top: 30px;
+    right: 25px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.modal dialog .section.external-link-popup {
+    box-shadow: 0 4px 15px rgb(0 0 0 / 20%) !important;
+    border: none;
+    border-radius: 20px;
+    padding: 1.875rem 1.5625rem 6.875rem;
+    text-align: center;
+    max-width: 919px;
+    background: #a7c8e8;
+    max-height: inherit;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal dialog .section.external-link-popup .parent-otsuka-button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.modal
+    dialog
+    .section.external-link-popup
+    .parent-otsuka-button-wrapper
+    .otsuka-button-wrapper {
+    width: 267px;
+}
+
+.modal
+    dialog
+    .section.external-link-popup
+    .parent-otsuka-button-wrapper
+    .otsuka-button-wrapper
+    a.button {
+    width: 100%;
+    max-width: 267px;
+}
+
+@media (width >= 768px) {
+    .modal:has(.modal-secure-messaging-heading) dialog {
+        width: 90vw !important;
+        max-width: 919px;
+        max-height: 502px;
+    }
+
+    .modal-secure-messaging-heading h2 {
+        font-size: 2rem;
+    }
+
+    .modal dialog .section.modal-secure-messaging-body {
+        margin-inline: 6.125rem 2.125rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .section.modal-secure-messaging-body p {
+        font-size: 1rem;
+        margin-bottom: 29px;
+    }
+
+    .modal-secure-messaging-body .default-content-wrapper {
+        padding: 65px 77px 0 0;
+        z-index: -1;
+        position: relative;
+    }
+
+    .modal-secure-messaging-body ul {
+        margin-top: 45px;
+        font-size: 1.125rem;
+    }
+
+    .modal-secure-messaging-body li {
+        font-size: 1rem;
+        color: rgb(67 67 67);
+    }
+
+    .modal-secure-messaging-body .default-content-wrapper p:last-of-type {
+        max-width: 615px;
+    }
+
+    .modal-secure-messaging-body .otsuka-button-wrapper {
+        padding: 0 77px 50px 0;
+        text-align: center;
+    }
+}
+
+@media (width >= 428px) {
+    .modal-secure-messaging-body .simplebar-track.simplebar-vertical {
+        width: 38px;
+    }
+
+    .modal-secure-messaging-body .simplebar-scrollbar {
+        width: 20px;
+        margin: 0 auto;
+    }
+}
+
+@media (width <= 767px) {
+    .modal dialog .section.modal-secure-messaging-body {
+        margin-left: 2.875rem;
+        margin-right: 2rem;
+    }
+
+    .modal-secure-messaging-body .default-content-wrapper {
+        padding: 84px 29px 0 0;
+    }
+
+    .modal-secure-messaging-body ul {
+        margin-bottom: 45px;
+        padding-right: 2px;
+        padding-inline-start: 17px;
+        margin-left: 0;
+    }
+
+    .modal-secure-messaging-body ul li {
+        margin-bottom: 0;
+        color: #434343;
+        font-size: 0.9375rem;
+        font-weight: 400;
+        line-height: 1.6;
+    }
+
+    .modal-secure-messaging-body h3 {
+        margin: 0;
+    }
+
+    .modal dialog .section.external-link-popup .parent-otsuka-button-wrapper {
+        gap: 0;
+    }
+
+    .modal-secure-messaging-body a.button {
+        font-size: 1rem;
+        font-weight: 600;
+        width: 267px;
+    }
+
+    .modal-secure-messaging-body .simplebar-scrollbar {
+        width: 13px;
+        margin: 0 auto;
+    }
+
+    .section.modal-secure-messaging-body p {
+        margin-bottom: 1.5rem;
+    }
+
+    .external-link-popup .default-content-wrapper {
+        margin: 3.125rem auto 0;
+    }
+
+    .modal-secure-messaging-body .simplebar-track.simplebar-vertical {
+        width: 20px;
+    }
+}
+
+.modal dialog .section.modal-secure-messaging-body {
+    max-height: calc(100vh - 194px);
 }

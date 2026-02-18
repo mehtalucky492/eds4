@@ -13,7 +13,9 @@
     height: auto;
     border-radius: 100px;
     letter-spacing: 0.0875rem;
-    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+        background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0.5rem 1.5rem;
     line-height: 2.0938rem;
     font-style: normal;
@@ -36,12 +38,12 @@
 /* Blue Gray Button */
 .otsuka-button a.button.blue-gray,
 .otsuka-button a.button.icon-right-blue-gray,
-.otsuka-button a.button.icon-left-blue-gray {
+.otsuka-button a.button.icon-left-blue-gray,
+.otsuka-button a.button.icon-right-blue-gray-message-us {
     background-color: #426bba;
     color: white;
     border: none;
 }
-
 
 /* White Gray Button */
 .otsuka-button a.button.white-gray,
@@ -58,6 +60,18 @@
     display: block;
     background-image: url("/icons/arrow-norm-white-right.svg");
     background-size: contain;
+    margin-left: 0.625rem;
+    width: 1.0625rem;
+    height: 1.0625rem;
+}
+
+.otsuka-button a.button.icon-right-blue-gray-message-us::after {
+    content: "";
+    display: block;
+    background-image: url("/icons/message-us-right-white.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     margin-left: 0.625rem;
     width: 1.0625rem;
     height: 1.0625rem;
@@ -96,7 +110,6 @@
     transform: rotate(180deg);
 }
 
-
 /* white download button */
 .otsuka-button a.button.button.white-button-download {
     padding: 0.5rem 3.125rem 0.5rem 2.25rem;
@@ -132,6 +145,7 @@
 .otsuka-button a.button.blue-gray:hover,
 .otsuka-button a.button.white-gray:hover,
 .otsuka-button a.button.icon-right-blue-gray:hover,
+.otsuka-button a.button.icon-right-blue-gray-message-us:hover,
 .otsuka-button a.button.icon-left-blue-gray:hover,
 .otsuka-button a.button.icon-right-white-gray:hover,
 .otsuka-button a.button.icon-left-white-gray:hover {
@@ -140,7 +154,7 @@
     border: none;
 }
 
-.otsuka-button a.button.button.white-button-download:hover{
+.otsuka-button a.button.button.white-button-download:hover {
     color: #fff;
     background: #426bba;
     border-color: #426bba;
@@ -152,14 +166,13 @@
     line-height: 1.4375rem;
     letter-spacing: 0;
     position: relative;
-    
 }
 
-.otsuka-button a.button.button.white-button-download:hover::after{
+.otsuka-button a.button.button.white-button-download:hover::after {
     background-image: url("/icons/download.svg");
 }
 
 .otsuka-button a.button.icon-left-white-gray:hover::before,
-.otsuka-button a.button.icon-right-white-gray:hover::after{
+.otsuka-button a.button.icon-right-white-gray:hover::after {
     background-image: url("/icons/arrow-norm-white-right.svg");
 }

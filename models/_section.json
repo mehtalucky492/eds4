@@ -49,6 +49,134 @@
             {
               "name": "Navigation (header)",
               "value": "navigation"
+            },
+            {
+              "name": "about-top-section",
+              "value": "about-top-section"
+            },
+            {
+              "name": "About Us Description",
+              "value": "about-us-description"
+            },
+            {
+              "name": "2 col Title Text",
+              "value": "two-col-title-text"
+            },
+            {
+              "name": "3 col Icon Title Text",
+              "value": "three-col-icon-title-text"
+            },
+            {
+              "name": "Blue",
+              "value": "blue"
+            },
+            {
+              "name": "white",
+              "value": "white"
+            },
+            {
+              "name": "Light Blue",
+              "value": "light-blue"
+            },
+            {
+              "name": "Offwhite",
+              "value": "offwhite"
+            },
+            {
+              "name": "Gradiant 1",
+              "value": "gradient-1"
+            },
+            {
+              "name": "Gradiant 2",
+              "value": "gradient-2"
+            },
+            {
+              "name": "Supported Brands",
+              "value": "supported-brands"
+            },
+            {
+              "name": "Cream White",
+              "value": "cream-white"
+            },
+            {
+              "name": "Supported Brands Component",
+              "value": "supported-brands-component"
+            },
+            {
+              "name": "Terms and Conditions",
+              "value": "terms-and-conditions"
+            },
+            {
+              "name": "OPAF Care Connect",
+              "value": "opaf-care-connect"
+            },
+            {
+              "name": "Inline",
+              "value": "inline"
+            },
+            {
+              "name": "Padding Top Small",
+              "value": "padding-top-small"
+            },
+            {
+              "name": "Padding Top Medium",
+              "value": "padding-top-medium"
+            },
+            {
+              "name": "Padding Top Large",
+              "value": "padding-top-large"
+            },
+            {
+              "name": "Padding Bottom Small",
+              "value": "padding-bottom-small"
+            },
+            {
+              "name": "Padding Bottom Medium",
+              "value": "padding-bottom-medium"
+            },
+            {
+              "name": "Padding Bottom Large",
+              "value": "padding-bottom-large"
+            },
+            {
+              "name": "Modal Secure Messaging Heading",
+              "value": "modal-secure-messaging-heading"
+            },
+            {
+              "name": "Modal Secure Messaging Body",
+              "value": "modal-secure-messaging-body"
+            },
+            {
+              "name": "External Link Popup",
+              "value": "external-link-popup"
+            },
+            {
+              "name": "No Top Margin",
+              "value": "no-top-margin"
+            },
+            {
+              "name": "No Bottom Margin",
+              "value": "no-bottom-margin"
+            },
+            {
+              "name": " Are you a patient left section",
+              "value": "are-you-a-patient-left-section"
+            },
+            {
+              "name": " Are you a patient right section",
+              "value": "are-you-a-patient-right-section"
+            },
+            {
+              "name": "Patient Forms",
+              "value": "patient-forms"
+            },
+            {
+              "name": "Want To Apply Online Left Section",
+              "value": "want-to-apply-online-left-section"
+            },
+            {
+              "name": "Want To Apply Online Right Section",
+              "value": "want-to-apply-online-right-section"
             }
           ]
         }
@@ -60,24 +188,38 @@
       "id": "section",
       "components": [
         "accordions",
+        "alert",
         "audio",
+        "alert",
         "button",
         "cards",
         "carousel",
         "columns",
+        "custom-asset-image",
+        "custom-asset-video",
+        "eligibility-wizard",
         "embed",
+        "faq-search",
         "flip-cards",
         "fragment",
         "hero",
+        "hero-banner",
+        "otsuka-button",
         "image",
         "scrolling-timeline",
+        "spacer",
         "tabs",
-        "tester-card",
+        "tab-cards",
+        "teaser",
         "text",
         "title",
         "panels",
+        "separator",
         "slides",
-        "video"
+        "video",
+        "opa-accordion",
+        "opa-tabs",
+        "opa-cards"
       ]
     }
   ]

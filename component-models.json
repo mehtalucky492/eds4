@@ -20,6 +20,19 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "theme",
+        "label": "Theme"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "onetrust-domain-script",
+        "label": "OneTrust Domain Script ID",
+        "description": "The OneTrust domain script ID for cookie consent (e.g., 0191114e-a4d4-7077-8d4e-2a37d6921964-test). Set this on the index/home page only - it will be used site-wide."
       }
     ]
   },
@@ -72,6 +85,134 @@
           {
             "name": "Navigation (header)",
             "value": "navigation"
+          },
+          {
+            "name": "about-top-section",
+            "value": "about-top-section"
+          },
+          {
+            "name": "About Us Description",
+            "value": "about-us-description"
+          },
+          {
+            "name": "2 col Title Text",
+            "value": "two-col-title-text"
+          },
+          {
+            "name": "3 col Icon Title Text",
+            "value": "three-col-icon-title-text"
+          },
+          {
+            "name": "Blue",
+            "value": "blue"
+          },
+          {
+            "name": "white",
+            "value": "white"
+          },
+          {
+            "name": "Light Blue",
+            "value": "light-blue"
+          },
+          {
+            "name": "Offwhite",
+            "value": "offwhite"
+          },
+          {
+            "name": "Gradiant 1",
+            "value": "gradient-1"
+          },
+          {
+            "name": "Gradiant 2",
+            "value": "gradient-2"
+          },
+          {
+            "name": "Supported Brands",
+            "value": "supported-brands"
+          },
+          {
+            "name": "Cream White",
+            "value": "cream-white"
+          },
+          {
+            "name": "Supported Brands Component",
+            "value": "supported-brands-component"
+          },
+          {
+            "name": "Terms and Conditions",
+            "value": "terms-and-conditions"
+          },
+          {
+            "name": "OPAF Care Connect",
+            "value": "opaf-care-connect"
+          },
+          {
+            "name": "Inline",
+            "value": "inline"
+          },
+          {
+            "name": "Padding Top Small",
+            "value": "padding-top-small"
+          },
+          {
+            "name": "Padding Top Medium",
+            "value": "padding-top-medium"
+          },
+          {
+            "name": "Padding Top Large",
+            "value": "padding-top-large"
+          },
+          {
+            "name": "Padding Bottom Small",
+            "value": "padding-bottom-small"
+          },
+          {
+            "name": "Padding Bottom Medium",
+            "value": "padding-bottom-medium"
+          },
+          {
+            "name": "Padding Bottom Large",
+            "value": "padding-bottom-large"
+          },
+          {
+            "name": "Modal Secure Messaging Heading",
+            "value": "modal-secure-messaging-heading"
+          },
+          {
+            "name": "Modal Secure Messaging Body",
+            "value": "modal-secure-messaging-body"
+          },
+          {
+            "name": "External Link Popup",
+            "value": "external-link-popup"
+          },
+          {
+            "name": "No Top Margin",
+            "value": "no-top-margin"
+          },
+          {
+            "name": "No Bottom Margin",
+            "value": "no-bottom-margin"
+          },
+          {
+            "name": " Are you a patient left section",
+            "value": "are-you-a-patient-left-section"
+          },
+          {
+            "name": " Are you a patient right section",
+            "value": "are-you-a-patient-right-section"
+          },
+          {
+            "name": "Patient Forms",
+            "value": "patient-forms"
+          },
+          {
+            "name": "Want To Apply Online Left Section",
+            "value": "want-to-apply-online-left-section"
+          },
+          {
+            "name": "Want To Apply Online Right Section",
+            "value": "want-to-apply-online-right-section"
           }
         ]
       }
@@ -573,6 +714,86 @@
         "component": "aem-content",
         "name": "reference",
         "label": "Reference"
+      },
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Variant",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Care Connect FAQ",
+            "value": "care-connect-faq"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-banner",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "content",
+        "label": "Content",
+        "description": "Content to be displayed"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "button_text",
+        "label": "Button Text",
+        "description": "Text displayed on the button"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "button_link",
+        "label": "Button Link",
+        "description": "URL for the button"
+      },
+      {
+        "component": "select",
+        "name": "button_target",
+        "label": "Button Target",
+        "description": "Button link target",
+        "options": [
+          {
+            "name": "_self",
+            "value": "_self"
+          },
+          {
+            "name": "_blank",
+            "value": "_blank"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "button_icon",
+        "label": "Button Icon",
+        "description": "Icon displayed on the button (arrow icon)",
+        "required": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image_desktop",
+        "label": "Image Desktop",
+        "description": "Image displayed on desktop view (right side)"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image_mobile",
+        "label": "Image Mobile",
+        "description": "Image displayed on mobile view",
+        "required": false
       }
     ]
   },
@@ -687,6 +908,105 @@
     ]
   },
   {
+    "id": "opa-card",
+    "fields": [
+      {
+        "component": "select",
+        "name": "card-type",
+        "label": "Card Type",
+        "options": [
+          {
+            "name": "Text Only",
+            "value": "text-only"
+          },
+          {
+            "name": "Text & Button",
+            "value": "white-button-download"
+          },
+          {
+            "name": "Info Card",
+            "value": "opa-info-card"
+          },
+          {
+            "name": "Care connect faq Card (White)",
+            "value": "care-connect-faq-card-white"
+          },
+          {
+            "name": "Care connect faq Card (Blue)",
+            "value": "care-connect-faq-card-blue"
+          }
+        ],
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "heading",
+        "value": "",
+        "label": "Heading",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      },
+      {
+        "component": "aem-content",
+        "name": "cta_link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "name": "cta_text",
+        "label": "Button Text"
+      },
+      {
+        "component": "select",
+        "name": "cta_style",
+        "label": "Button Style",
+        "options": [
+          {
+            "name": "White Button download",
+            "value": "white-button-download"
+          },
+          {
+            "name": "Button rounded blue",
+            "value": "button-rounded-blue"
+          },
+          {
+            "name": "Button rounded white",
+            "value": "button-rounded-white"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "wrap_withlink",
+        "label": "Wrap with link",
+        "options": [
+          {
+            "name": "Yes",
+            "value": "true"
+          },
+          {
+            "name": "No",
+            "value": "false"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "opa-tab",
     "fields": [
       {
@@ -757,6 +1077,10 @@
           {
             "name": "White Button download",
             "value": "white-button-download"
+          },
+          {
+            "name": "icon-right-blue-gray-message-us",
+            "value": "icon-right-blue-gray-message-us"
           }
         ]
       }
@@ -1336,10 +1660,6 @@
           {
             "name": "h6",
             "value": "h6"
-          },
-          {
-            "name": "h7",
-            "value": "h7"
           }
         ]
       }
@@ -1349,7 +1669,7 @@
     "id": "video",
     "fields": [
       {
-        "component": "richtext",
+        "component": "text",
         "name": "videoUrl",
         "label": "Video URL",
         "valueType": "string"

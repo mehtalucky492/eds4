@@ -46,3 +46,57 @@ npm run lint
 1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
 1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
 1. Open the `aem-codekit-boilerplate` directory in your favorite IDE and start coding :)
+
+## Theming
+
+This project supports custom themes that allow you to override default styles on a per-page or site-wide basis.
+
+### How Themes Work
+
+Themes are CSS files located in the `/styles/themes/` directory. When a page specifies a theme via metadata, the corresponding theme CSS file is automatically loaded and the theme name is added as a class to the `<body>` element.
+
+### Adding a New Theme
+
+1. Create a new CSS file in `/styles/themes/` with your theme name (e.g., `/styles/themes/my-theme.css`)
+2. Override any CSS variables or styles from `styles.css` or `root.css` in your theme file
+3. Use the theme name class (e.g., `body.my-theme`) for theme-specific overrides
+
+### Applying a Theme to a Single Page 
+
+To apply a theme to a single page:
+
+1. Open the page in **Universal Editor**
+2. In the right-side **Page Properties** panel, locate the **Theme** field
+3. Enter your theme name (e.g., `demo`)
+4. Click **Publish** to publish the page
+
+The theme CSS will be automatically loaded and applied to that page only.
+
+### Applying a Theme Site-Wide
+
+To apply a theme across the entire site:
+
+1. Navigate to your site's root folder in AEM
+2. Open or create a metadata configuration file
+3. Add the `theme` metadata with your desired theme name
+4. All pages inheriting from this configuration will use the specified theme
+
+### Example Theme File
+
+```css
+/**
+ * Custom Theme
+ * /styles/themes/my-theme.css
+ */
+
+:root {
+  /* Override colors */
+  --background-color: #f5f5f5;
+  --text-color: #2c3e50;
+  --link-color: #e74c3c;
+}
+
+body.my-theme {
+  /* Theme-specific styles */
+}
+```

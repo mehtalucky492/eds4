@@ -6,6 +6,7 @@ import { loadFragment } from '../fragment/fragment.js';
  * @param {Element} button The back-to-top button element
  * @param {Element} footerBlock The footer block element
  */
+
 function initBackToTop(button, footerBlock) {
   let footerHeight = 0;
   let windowHeight = 0;
@@ -60,7 +61,9 @@ function initBackToTop(button, footerBlock) {
 export default async function decorate(block) {
   // load footer as fragment
   const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
+  const footerPath = footerMeta
+    ? new URL(footerMeta, window.location).pathname
+    : '/footer';
   const fragment = await loadFragment(footerPath);
 
   // decorate footer DOM
@@ -99,7 +102,9 @@ export default async function decorate(block) {
   // Add classes to middle section
   const middleSection = footer.querySelector('.section.middle');
   if (middleSection) {
-    const contentWrapper = middleSection.querySelector('.default-content-wrapper');
+    const contentWrapper = middleSection.querySelector(
+      '.default-content-wrapper',
+    );
     if (contentWrapper) {
       // Add text-long class to the wrapper
       contentWrapper.classList.add('text-long');
@@ -170,14 +175,11 @@ export default async function decorate(block) {
   // Initialize back-to-top functionality
   initBackToTop(backToTopButton, block);
 
-  //
-
-
   // Message Button
-// const btn = Object.assign(document.createElement('button'), {
-//   id: 'message-us',
-//   ariaLabel: 'Message us',
-//   className: 'message-button',
-// });
-// block.append(btn);
+  const btn = Object.assign(document.createElement('button'), {
+    id: 'message-us',
+    ariaLabel: 'Message us',
+    className: 'message-button',
+  });
+  block.append(btn);
 }

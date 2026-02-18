@@ -24,6 +24,21 @@
           "component": "aem-content",
           "name": "reference",
           "label": "Reference"
+        },
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Variant",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Care Connect FAQ",
+              "value": "care-connect-faq"
+            }
+          ]
         }
       ]
     }

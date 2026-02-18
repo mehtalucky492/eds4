@@ -9,24 +9,38 @@
     "id": "section",
     "components": [
       "accordions",
+      "alert",
       "audio",
+      "alert",
       "button",
       "cards",
       "carousel",
       "columns",
+      "custom-asset-image",
+      "custom-asset-video",
+      "eligibility-wizard",
       "embed",
+      "faq-search",
       "flip-cards",
       "fragment",
       "hero",
+      "hero-banner",
+      "otsuka-button",
       "image",
       "scrolling-timeline",
+      "spacer",
       "tabs",
-      "tester-card",
+      "tab-cards",
+      "teaser",
       "text",
       "title",
       "panels",
+      "separator",
       "slides",
-      "video"
+      "video",
+      "opa-accordion",
+      "opa-tabs",
+      "opa-cards"
     ]
   },
   {
@@ -78,6 +92,12 @@
     "id": "opa-accordion",
     "components": [
       "opa-accordion-item"
+    ]
+  },
+  {
+    "id": "opa-cards",
+    "components": [
+      "opa-card"
     ]
   },
   {

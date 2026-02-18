@@ -1,8 +1,8 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, decorateBlock, loadBlock } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 992px)');
+const isDesktop = window.matchMedia('(min-width: 1200px)');
 
 /**
  * Add "Go Back" link to submenus
@@ -563,6 +563,8 @@ function convertToMainMenu(ul, level = 0) {
           fetch(mobileOptions[0], { method: 'HEAD' }).then((response) => {
             if (response.ok && mobileOptions[0].includes('-mobile')) {
               menuLink.setAttribute('data-icon-mobile-src', mobileOptions[0]);
+              // Set CSS variable for mobile icon
+              menuLink.style.setProperty('--icon-mobile-bg', `url(${mobileOptions[0]})`);
             }
           }).catch(() => {});
         }
@@ -721,160 +723,72 @@ export default async function decorate(block) {
   // decorate nav DOM
   block.textContent = '';
 
-  // Process fragment sections to find call now section
-  const allSections = fragment.querySelectorAll(':scope > div.section, :scope > div');
-  let callNowSection = null;
-
-  allSections.forEach((section) => {
-    // Look for a section with "call now" class or text content
-    if (section.classList.contains('call-now')
-        || section.textContent.toLowerCase().includes('call')
-        || section.querySelector('p')?.textContent.toLowerCase().includes('call')) {
-      // Make sure it's not the navigation section
-      if (!section.querySelector('ul') && !section.classList.contains('nav-sections')) {
-        callNowSection = section;
-      }
-    }
-  });
-
-  // Create region-top section (above header)
-  const regionTop = document.createElement('div');
-  regionTop.className = 'region region-top clearfix';
-
-  const phoneBlock = document.createElement('div');
-  phoneBlock.id = 'block-phonefax';
-  phoneBlock.className = 'block block-content-phone--fax block-content-paragraphs block-content-phone--fax block-content-paragraphs';
-  phoneBlock.setAttribute('data-block-plugin-id', 'block_content:76e4c96b-f912-44a7-a081-694cd6184460');
-
-  const fieldItems = document.createElement('div');
-  fieldItems.className = 'field field--name-field-paragraph field--type-entity-reference-revisions field--label-hidden field__items';
-
-  const fieldItem = document.createElement('div');
-  fieldItem.className = 'field__item';
-
-  const paragraph = document.createElement('div');
-  paragraph.className = 'paragraph paragraph--wrapper-text';
-
-  const content = document.createElement('div');
-  content.className = 'content';
-
-  const textWrapper = document.createElement('div');
-  textWrapper.className = 'text-wrapper';
-
-  const textLong = document.createElement('div');
-  textLong.className = 'text-long';
-
-  // Check if we found a call now section with authored content
-  if (callNowSection) {
-    // Look for the paragraph with the phone content
-    const authoredPara = callNowSection.querySelector('p');
-    if (authoredPara) {
-      const phoneText = document.createElement('p');
-      phoneText.className = 'align-center d-flex justify-content-center white';
-
-      // Check if there's an icon in the authored content
-      const icon = authoredPara.querySelector('img');
-      if (icon) {
-        const iconName = icon.dataset?.iconName || icon.alt || 'phone-without-bg';
-        const iconSrc = icon.src || icon.getAttribute('src');
-        phoneText.classList.add(`icon-${iconName}--before`);
-
-        // Set the icon as a CSS custom property so ::before can use it
-        if (iconSrc) {
-          phoneText.style.setProperty('--icon-url', `url(${iconSrc})`);
-        }
-      } else {
-        // Default to phone icon if no icon specified
-        phoneText.classList.add('icon-phone--before');
-      }
-
-      // Get the text content (without the image)
-      const textContent = Array.from(authoredPara.childNodes)
-        .filter((node) => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'IMG'))
-        .map((node) => node.textContent)
-        .join('')
-        .trim();
-
-      phoneText.textContent = textContent;
-      textLong.appendChild(phoneText);
-    } else {
-      // Fallback to default if no paragraph found
-      const phoneText = document.createElement('p');
-      phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
-      phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
-      textLong.appendChild(phoneText);
-    }
-  } else {
-    // Fallback to default hardcoded text if no call now section found
-    const phoneText = document.createElement('p');
-    phoneText.className = 'align-center d-flex justify-content-center white icon-phone--before';
-    phoneText.textContent = 'Call 1-855-727-6274 or Fax 1-844-727-6274';
-    textLong.appendChild(phoneText);
-  }
-
-  textWrapper.appendChild(textLong);
-  content.appendChild(textWrapper);
-  paragraph.appendChild(content);
-  fieldItem.appendChild(paragraph);
-  fieldItems.appendChild(fieldItem);
-  phoneBlock.appendChild(fieldItems);
-  regionTop.appendChild(phoneBlock);
-
-  // Add region-top to the block first
-  block.appendChild(regionTop);
-
-  // Create container and region structure for main header
+  // Create container for the entire header
   const container = document.createElement('div');
   container.className = 'container';
-
-  const region = document.createElement('div');
-  region.className = 'region region-header-top clearfix';
 
   // Process fragment sections - look for .section divs or direct children
   const sections = fragment.querySelectorAll(':scope > div.section, :scope > div');
 
-  // Find the brand section (logo) and menu section
-  let brandSection = null;
-  let menuSection = null;
+  // Process all sections from the fragment
+  const sectionsArray = Array.from(sections);
 
-  sections.forEach((section) => {
-    // Check for site-branding class
-    if (section.classList.contains('site-branding')) {
-      brandSection = section;
-    } else if (section.classList.contains('navigation')) {
-      // Check for navigation class for menu
-      menuSection = section;
-    } else if (section.classList.contains('nav-brand')) {
-      // Fallback: Check for nav-brand class (legacy support)
-      brandSection = section;
-    } else if (section.classList.contains('nav-sections')) {
-      // Fallback: Check for nav-sections class for menu (legacy support)
-      menuSection = section;
-    } else if (section.querySelector('ul') && !menuSection) {
-      // Look for menu section (has ul)
-      menuSection = section;
-    } else if (!brandSection
-      && !section.querySelector('ul')
-      && section.querySelector('picture, img')) {
-      // Look for brand section (first with image/picture, no ul, not call section)
-      // Make sure this isn't the "call now" section
-      const textContent = section.textContent.toLowerCase();
-      const isCallSection = textContent.includes('call')
-        || textContent.includes('fax')
-        || section.classList.contains('call-now');
+  // Separate sections into blocks, branding, and navigation
+  const blockSections = [];
+  const brandingSections = [];
+  const navigationSections = [];
 
-      if (!isCallSection) {
-        brandSection = section;
+  sectionsArray.forEach((section) => {
+    // Check if this section contains blocks (divs with class names)
+    const blocks = section.querySelectorAll(':scope > div > div[class]');
+
+    if (blocks.length > 0) {
+      blockSections.push({ section, blocks });
+    } else {
+      // Check if this is a navigation section with ul/li structure
+      const hasNavigation = section.querySelector('ul');
+      if (hasNavigation) {
+        navigationSections.push(section);
+      } else {
+        // Check if this is a branding section (has image/picture but no blocks or navigation)
+        const hasImage = section.querySelector('picture, img');
+        if (hasImage) {
+          brandingSections.push(section);
+        }
       }
     }
   });
 
-  // First section: Site Branding (Logo)
-  if (brandSection) {
+  // Process block sections - decorate and load all blocks
+  await Promise.all(blockSections.map(async ({ blocks }) => {
+    // Decorate blocks
+    blocks.forEach(decorateBlock);
+
+    // Load blocks asynchronously
+    await Promise.all([...blocks].map((blockElement) => loadBlock(blockElement)));
+
+    // Don't append yet - we'll control the order below
+  }));
+
+  // After blocks are loaded, check if alert block exists and get phone number
+  const alertSection = blockSections.find(({ blocks }) => Array.from(blocks).some(
+    (blockElement) => blockElement.classList.contains('alert'),
+  ));
+  if (alertSection) {
+    // Append alert section directly to block (full width, outside container)
+    block.appendChild(alertSection.section);
+  }
+
+  // Create region for logo and navigation (side by side)
+  const region = document.createElement('div');
+  region.className = 'region region-header-top clearfix';
+
+  // Process branding sections (logo/images without block structure)
+  brandingSections.forEach((section) => {
     // Create wrapper div with section class and style
     const brandWrapper = document.createElement('div');
     // Preserve classes like "section site-branding"
-    brandWrapper.className = brandSection.className;
+    brandWrapper.className = section.className;
 
     const siteBranding = document.createElement('div');
     siteBranding.id = 'block-sitebranding-2';
@@ -887,52 +801,49 @@ export default async function decorate(block) {
     logoLink.className = 'site-logo';
 
     // Look for picture or img in the brand section
-    const logoImg = brandSection.querySelector('picture') || brandSection.querySelector('img');
-    if (logoImg) {
-      const cloned = logoImg.cloneNode(true);
+    const logoElement = section.querySelector('picture') || section.querySelector('img');
+    if (logoElement) {
+      // Store the original desktop logo element
+      const desktopLogoElement = logoElement.cloneNode(true);
 
-      // If it's an img element, ensure src attribute is preserved
-      if (cloned.tagName === 'IMG') {
-        const originalSrc = logoImg.getAttribute('src');
-        if (originalSrc && originalSrc !== cloned.getAttribute('src')) {
-          cloned.setAttribute('src', originalSrc);
+      // Create mobile logo img element
+      const mobileLogoImg = document.createElement('img');
+      mobileLogoImg.src = '/icons/site-logo-mobile.svg';
+      mobileLogoImg.alt = 'Nav Logo';
+      mobileLogoImg.className = 'logo-mobile';
+
+      // Function to update logo based on screen size
+      const updateLogoForScreenSize = () => {
+        // Clear the logoLink
+        logoLink.innerHTML = '';
+
+        if (window.innerWidth < 1200) {
+          // Mobile view - use mobile logo
+          logoLink.appendChild(mobileLogoImg);
+        } else {
+          // Desktop view - use original logo (picture element with sources)
+          logoLink.appendChild(desktopLogoElement.cloneNode(true));
         }
-      }
+      };
 
-      logoLink.appendChild(cloned);
+      // Set initial logo based on screen size
+      updateLogoForScreenSize();
+
+      // Update logo on window resize
+      window.addEventListener('resize', updateLogoForScreenSize);
     }
 
     siteBranding.appendChild(logoLink);
     brandWrapper.appendChild(siteBranding);
     region.appendChild(brandWrapper);
-  }
+  });
 
-  // Add "Call Us" link block (appears on mobile)
-  const callUsBlock = document.createElement('div');
-  callUsBlock.id = 'block-calluslink';
-  callUsBlock.className = 'block block-content-call-us-link block-content-basic block-content-call-us-link block-content-basic';
-  callUsBlock.setAttribute('data-block-plugin-id', 'block_content:ea999aaa-6c4b-41d7-9595-7b03786bc779');
-
-  const textLongDiv = document.createElement('div');
-  textLongDiv.className = 'text-long';
-
-  const callUsPara = document.createElement('p');
-  const callUsLink = document.createElement('a');
-  callUsLink.className = 'call-us';
-  callUsLink.href = 'tel:18557276274';
-  callUsLink.textContent = 'Call Us';
-
-  callUsPara.appendChild(callUsLink);
-  textLongDiv.appendChild(callUsPara);
-  callUsBlock.appendChild(textLongDiv);
-  region.appendChild(callUsBlock);
-
-  // Second section: Navigation Menu
-  if (menuSection) {
+  // Process navigation sections (if any)
+  navigationSections.forEach((section) => {
     // Create wrapper div with section class and style
     const navWrapper = document.createElement('div');
-    // Preserve classes like "section navigation"
-    navWrapper.className = menuSection.className;
+    // Preserve classes from the section
+    navWrapper.className = section.className;
 
     const nav = document.createElement('nav');
     nav.setAttribute('role', 'navigation');
@@ -955,13 +866,13 @@ export default async function decorate(block) {
     toggleExpand.className = 'toggle-expand';
     toggleExpand.setAttribute('aria-label', 'Open navigation');
     toggleExpand.innerHTML = `
-      <span class="toggle-expand__open">
-        <span class="toggle-expand__text"></span>
-      </span>
-      <span class="toggle-expand__close">
-        <span class="toggle-expand__text"></span>
-      </span>
-    `;
+          <span class="toggle-expand__open">
+            <span class="toggle-expand__text"></span>
+          </span>
+          <span class="toggle-expand__close">
+            <span class="toggle-expand__text"></span>
+          </span>
+        `;
     navInnerWrapper.appendChild(toggleExpand);
 
     // Create main nav container
@@ -969,23 +880,10 @@ export default async function decorate(block) {
     mainNav.id = 'main-nav';
     mainNav.className = 'main-nav';
 
-    // Convert the section's ul to main-menu - look deeper in the structure
-    const originalUl = menuSection.querySelector('ul');
+    // Convert the section's ul to main-menu
+    const originalUl = section.querySelector('ul');
     if (originalUl) {
       const mainMenu = convertToMainMenu(originalUl, 0);
-
-      // Add "Call us" link as the last item in the main menu (mobile only)
-      const callUsItem = document.createElement('li');
-      callUsItem.className = 'main-menu__item';
-
-      const callUsMenuLink = document.createElement('a');
-      callUsMenuLink.href = 'tel:18557276274';
-      callUsMenuLink.target = '_self';
-      callUsMenuLink.className = 'call-us-menu-link main-menu__link';
-      callUsMenuLink.textContent = 'Call us';
-
-      callUsItem.appendChild(callUsMenuLink);
-      mainMenu.appendChild(callUsItem);
 
       mainNav.appendChild(mainMenu);
     }
@@ -1012,14 +910,9 @@ export default async function decorate(block) {
 
     navWrapper.appendChild(nav);
     region.appendChild(navWrapper);
-  }
+  });
 
   container.appendChild(region);
-
-  // Add middle header section (empty for now, matching site-head.html)
-  const headerMiddle = document.createElement('div');
-  headerMiddle.className = 'flexible-header__b header-middle';
-  container.appendChild(headerMiddle);
 
   block.append(container);
 

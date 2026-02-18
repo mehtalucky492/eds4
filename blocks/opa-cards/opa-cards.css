@@ -1,0 +1,357 @@
+:root{
+  --download-card-bg: #fff; 
+  --download-card-text: #383d41; 
+  --download-card-button-text: #426bba; 
+  --download-card-family: 'Museo Sans', sans-serif;
+  --text-card-shadow: 0 0.25rem 0.9375rem rgb(0 0 0 / 20%);
+  --download-card-transition: background-color .25s cubic-bezier(0.4, 0, 0.2, 1), color .25s cubic-bezier(0.4, 0, 0.2, 1);
+} 
+ 
+/* Text & Button */
+
+.opa-cards-container {
+  padding: 2.5rem 2rem;
+}
+
+.opa-cards {
+     display: flex;
+    flex-wrap: wrap;
+      gap: 2rem;
+}
+
+
+.opa-cards > div {
+  width: 100%;
+}
+
+
+.opa-cards > div a {
+  display: block;
+  margin: 0;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  background: var(--download-card-bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+    line-height: 1.4375rem;
+    letter-spacing: 0;
+    position: relative;
+    text-decoration: none;
+}
+
+
+.opa-cards-wrapper .opa-cards > div > a p {
+  margin: 0;  
+  color: var(--download-card-text);
+    margin-bottom: 1.25rem;
+    line-height: 1.4rem;
+    font-weight: 400;
+} 
+
+@media (width >= 375px) {
+.opa-cards-wrapper .opa-cards > div > a p{
+    max-width: 400px;
+}
+
+}
+
+
+@media (width >= 992px) {
+  .opa-cards-wrapper .opa-cards > div > a p{
+    max-width: unset;
+}
+
+.opa-cards-container {
+  padding: 0;
+}
+
+.opa-cards > div a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  background: var(--download-card-bg);
+  font-size: 0.875rem;
+  line-height: 1.4rem;
+}
+
+    .opa-cards{
+        max-width: 702px;
+        margin: 0 auto;
+    }
+
+   .opa-cards-wrapper .opa-cards > div > a p{
+    max-width: 390px;
+    margin: 0;
+    }
+}
+
+
+/* white download button */
+ a.button.white-button-download {
+  margin:0;
+font-family: var(--download-card-family);
+  display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 3.125rem 0.5rem 2.25rem;
+    color: var(--download-card-button-text);
+    text-align: center;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.4375rem;
+    letter-spacing: 0;
+    position: relative;
+    background: none;
+    border: 1.4px solid var(--download-card-button-text);
+    text-transform: none;
+    transition: var(--download-card-transition);
+}
+
+a.button.white-button-download::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 16px;
+    margin-left: 8px;
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 8px);
+    background-image: url("/icons/arrow-small-blue-down.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.opa-cards > div > a:hover a.button.white-button-download, a.button.white-button-download:hover{
+    color: var(--download-card-bg);
+    background: var(--download-card-button-text);
+    border-color: var(--download-card-button-text);
+    padding: 0.5rem 3.125rem 0.5rem 2.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.4375rem;
+    letter-spacing: 0;
+    position: relative;
+    
+}
+
+.opa-cards > div > a:hover a.button.white-button-download::after, a.button.white-button-download:hover::after{
+    background-image: url("/icons/download.svg");
+}
+
+
+/* Only Text Variation */
+
+.text-only-card {
+    box-shadow: var(--text-card-shadow) ;
+    background: var(--download-card-bg);
+    font-family: var(--download-card-family);
+    text-align: center;
+    padding: 1.25rem 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 3rem;
+    border-radius: 24px;
+    max-width: 982px;
+    color: var(--download-card-text);
+}
+
+@media (width >= 992px) {
+    .text-only-card {
+        padding: 1.25rem 3.25rem;
+        max-width: 932px;
+    }
+  }
+
+  .text-only-card p {
+    margin: 0;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.625rem;
+    margin-bottom: 0;
+  }
+
+/* Start: OPA Info Card  */
+
+.opa-cards:has(.opa-info-card) {
+  max-width: unset;
+}
+
+.opa-cards-wrapper:has(.opa-info-card) {
+  max-width: 1035px;
+  padding-inline: 0;
+}
+
+.opa-cards-container:has(.opa-info-card) {
+  padding-block: 0;
+
+  @media (width > 992px) {
+    margin-bottom: 60px;
+  }
+}
+
+.opa-info-card {
+  max-width: 932px;
+  margin-inline: auto;
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 15px 0 rgb(0 0 0 / 20%);
+  padding: 14px;
+
+  @media (width > 992px) {
+    padding-left: 33px;
+  }
+
+  a {
+    display: inline !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+    font-size: inherit !important;
+    color: var(--link-color);
+  }
+
+  div:nth-child(4) {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+
+    p {
+      margin: 0;
+    }
+
+    .icon {
+      width: 27px;
+      height: 27px;
+      display: block;
+    }
+  }
+
+  /* authoring editor styles */
+  &[data-aue-component] {
+    div:nth-child(4) {
+      & > p,
+      & > p > div {
+        display: contents;
+      }
+    }
+  }
+}
+
+/* End: OPA Info Card  */
+
+.opa-cards-container {
+  clear: both;
+}
+
+/* Start: care connect faq */
+.opa-cards div[class*='care-connect-faq-card-'] {
+  padding: 24px 32px;
+  border-radius: 12px;
+  background-color: var(--bg-color-white);
+
+  @media (width > 768px) {
+    display: flex;
+    padding: 40px 48px;
+    flex-direction: column;
+  }
+
+  &.care-connect-faq-card-blue {
+    background-color: var(--bg-color-blue);
+    color: var(--bg-color-white);
+  }
+
+  h4 {
+    letter-spacing: 0.2px;
+    margin-block: 0 23px;
+    font-size: 20px;
+    line-height: 1.4em;
+    font-weight: 600;
+    color: var(--supported-brand-text);
+
+    @media (width > 992px) {
+      padding-right: 90px;
+    }
+  }
+
+  h3 {
+    font-size: 20px;
+    margin: 0 0 16px;
+    line-height: 1.2em;
+
+    @media (width > 992px) {
+      font-size: 32px;
+      padding-right: 100px;
+    }
+  }
+
+  p {
+    margin: 0 0 17px;
+    font-size: 14px;
+    line-height: 1.6em;
+  }
+
+  .button {
+    margin-top: auto;
+  }
+}
+
+a.button[class*='button-rounded-'] {
+  padding: 0 25px;
+  margin: 0;
+  height: 39.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background-color: #426bba;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition:
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  & > .icon {
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+
+    @media (width < 992px) {
+      transform: rotate(90deg);
+    }
+  }
+
+  @media (width > 992px) {
+    height: 49.5px;
+    width: fit-content;
+  }
+
+  &.button-rounded-white {
+    background-color: var(--bg-color-white);
+    color: var(--supported-brand-text);
+
+    &:is(:hover, :focus) {
+      color: var(--bg-color-white);
+    }
+  }
+
+  &:is(:hover, :focus) {
+    background-color: var(--supported-brand-text);
+
+    & > .icon {
+      filter: brightness(0) invert(1);
+    }
+  }
+}
+
+/* End: cate connect faq */

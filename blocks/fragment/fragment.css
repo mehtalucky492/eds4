@@ -1,1 +1,53 @@
-/* stylelint-disable no-empty-source */
+/* Start: Care connect faq */
+
+.fragment-container:has(.care-connect-faq) {
+  background-color: var(--bg-color-light-blue);
+  padding: 17px 0 0;
+
+  @media (width > 992px) {
+    padding: 70px 30px 48px;
+  }
+
+  .fragment-wrapper {
+    padding-inline: 0;
+
+    @media (width > 992px) {
+      max-width: 1026px;
+    }
+  }
+}
+
+.care-connect-faq > .default-content-wrapper > * {
+    color: var(--bg-color-white);
+    font-size: 32px;
+    margin: 0 0 30px;
+    text-align: center;
+    line-height: 1.2em;
+
+    @media (width > 992px) {
+      font-size: 48px;
+      margin: 0 0 50px;
+    }
+  }
+
+.care-connect-faq .opa-cards {
+  gap: 32px;
+  flex-flow: column nowrap;
+  max-width: unset;
+  margin: 0;
+
+  @media (width > 992px) {
+    align-items: stretch;
+    gap: 24px;
+    flex-flow: row nowrap;
+  }
+}
+
+.care-connect-faq .opa-card {
+  @media (width > 992px) {
+    width: calc(50% - 12px);
+    flex: 0 0 auto;
+  }
+}
+
+/* End: Care connect faq */
