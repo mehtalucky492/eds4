@@ -776,7 +776,7 @@ async function decorateExternalLinks(body) {
     const href = a.getAttribute('href');
     if (href) {
       const extension = href.split('.').pop().trim();
-      if (extension === 'pdf' || (!href.startsWith('/') && !href.startsWith('#') && !href.includes(window.location.host))) {
+      if (extension === 'pdf' || (!href.startsWith('/') && !href.startsWith('#') && !href.includes(window.location.host) && !href.includes('mailto:') && !href.includes('tel:'))) {
         a.setAttribute('target', '_blank');
       }
     }

@@ -285,34 +285,31 @@ footer .middle {
     }
 }
 
+
 /* message us button */
-.message-button {
+footer .section.bottom a {
     position: fixed;
     right: 0.5rem;
     bottom: 10%;
     z-index: 13;
     width: 98px;
     height: 98px;
-    background-color: transparent;
-    background-image: url("../../icons/message-icon.svg");
-    background-repeat: no-repeat;
-    background-position: center;
     cursor: pointer;
 }
-
-.message-button:hover,
-.message-button:focus {
-    background-color: transparent;
+footer .section.bottom a img{
+     width: 98px;
+    height: 98px;
 }
 
+
 @media (width >= 768px) {
-    .message-button {
+    footer .section.bottom a{
         right: 2.5rem;
     }
 }
 
 @media (width >= 1400px) {
-    .message-button {
+    footer .section.bottom a{
         right: calc(50% - 680px);
         width: 115px;
         height: 115px;

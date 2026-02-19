@@ -4,7 +4,7 @@ header.header-wrapper {
     --bs-bg-opacity: 1;
 
     background-color: rgb(248 249 250 / var(--bs-bg-opacity)) !important;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;

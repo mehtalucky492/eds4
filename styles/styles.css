@@ -38,14 +38,8 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   line-height: 1.6;
-  padding-top: 130px; /* Account for fixed header (81px + alert ~50px) */
 }
 
-@media (width >= 1200px) {
-  body {
-    padding-top: 180px; /* Account for fixed header on desktop (120px + alert ~60px) */
-  }
-}
 
 body.appear {
   display: block;
@@ -149,14 +143,14 @@ select {
 
 /* links */
 a:any-link {
-  color: var(--link-color);
+  color: var(--link-default-color);
   text-decoration: none;
   overflow-wrap: break-word;
 }
 
 a:hover {
-  color: var(--link-hover-color);
-  text-decoration: underline;
+  color: var(--link-default-color);
+  text-decoration: none;
 }
 
 main img {

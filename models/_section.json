@@ -139,18 +139,6 @@
               "value": "padding-bottom-large"
             },
             {
-              "name": "Modal Secure Messaging Heading",
-              "value": "modal-secure-messaging-heading"
-            },
-            {
-              "name": "Modal Secure Messaging Body",
-              "value": "modal-secure-messaging-body"
-            },
-            {
-              "name": "External Link Popup",
-              "value": "external-link-popup"
-            },
-            {
               "name": "No Top Margin",
               "value": "no-top-margin"
             },

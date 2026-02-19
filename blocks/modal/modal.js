@@ -5,23 +5,30 @@ import {
   decorateIcons,
   loadBlock,
   loadCSS,
-  loadScript,
 } from '../../scripts/aem.js';
 
 async function loadSimpleBar() {
-  if (!window.SimpleBar) {
-    await loadCSS('https://unpkg.com/simplebar@latest/dist/simplebar.min.css');
-    await loadScript('https://unpkg.com/simplebar@latest/dist/simplebar.min.js');
-  }
+  if (window.SimpleBar) return;
+
+  await loadCSS('https://unpkg.com/simplebar@latest/dist/simplebar.min.css');
+
+  await new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/simplebar@latest/dist/simplebar.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
 
-export async function createModal(contentNodes) {
+export async function createModal(contentNodes, path) {
   await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
 
   const dialog = document.createElement('dialog');
 
   const dialogContent = document.createElement('div');
   dialogContent.classList.add('modal-content');
+  dialogContent.classList.add(path.pathname.split('/')[path.pathname.split('/').length - 1]);
   dialogContent.append(...contentNodes);
   dialog.append(dialogContent);
 
@@ -37,16 +44,18 @@ export async function createModal(contentNodes) {
     const dialogDimensions = dialog.getBoundingClientRect();
 
     if (
-      event.clientX < dialogDimensions.left
-      || event.clientX > dialogDimensions.right
-      || event.clientY < dialogDimensions.top
-      || event.clientY > dialogDimensions.bottom
+      event.clientX < dialogDimensions.left ||
+      event.clientX > dialogDimensions.right ||
+      event.clientY < dialogDimensions.top ||
+      event.clientY > dialogDimensions.bottom
     ) {
       dialog.close();
     }
   });
 
   const block = buildBlock('modal', '');
+  dialog.querySelectorAll('.otsuka-button a')[1].href = new URLSearchParams(path.search).get('redirectURl');
+  dialog.querySelectorAll('.otsuka-button a')[1].target = '_blank';
   document.querySelector('main').append(block);
   decorateBlock(block);
   await loadBlock(block);
@@ -80,15 +89,18 @@ export async function createModal(contentNodes) {
         dialog.close();
       });
 
-      const secureHeading = dialog.querySelector('.modal-secure-messaging-heading');
+      const secureHeading = dialog.querySelector(
+        '.modal-secure-messaging-heading',
+      );
       const secureBody = dialog.querySelector('.modal-secure-messaging-body');
       const patientPortalSection = dialog.querySelector('.external-link-popup');
 
       if (secureHeading) {
         closeButton.style.display = 'none';
 
-        const closeImg = secureHeading.querySelector('picture')
-          || secureHeading.querySelector('img');
+        const closeImg =
+          secureHeading.querySelector('picture') ||
+          secureHeading.querySelector('img');
 
         if (closeImg) {
           closeImg.style.cursor = 'pointer';
@@ -103,8 +115,9 @@ export async function createModal(contentNodes) {
       if (patientPortalSection) {
         closeButton.style.display = 'none';
 
-        const closeImg = patientPortalSection.querySelector('picture')
-          || patientPortalSection.querySelector('img');
+        const closeImg =
+          patientPortalSection.querySelector('picture') ||
+          patientPortalSection.querySelector('img');
 
         if (closeImg) {
           closeImg.style.cursor = 'pointer';
@@ -125,7 +138,9 @@ export async function createModal(contentNodes) {
 
       setTimeout(() => {
         if (secureHeading && secureBody) {
-          const sbWrapper = secureBody.querySelector('.simplebar-content-wrapper');
+          const sbWrapper = secureBody.querySelector(
+            '.simplebar-content-wrapper',
+          );
           if (sbWrapper) sbWrapper.scrollTop = 0;
         } else {
           dialogContent.scrollTop = 0;
@@ -136,11 +151,11 @@ export async function createModal(contentNodes) {
 }
 
 export async function openModal(fragmentUrl) {
-  const path = fragmentUrl.startsWith('http')
-    ? new URL(fragmentUrl, window.location).pathname
-    : fragmentUrl;
-
-  const fragment = await loadFragment(path);
-  const { showModal } = await createModal(fragment.childNodes);
+  const path = new URL(fragmentUrl, window.location);
+  const fragment = await loadFragment(path.pathname);
+  const { showModal } = await createModal(
+    fragment.childNodes,
+    path,
+  );
   showModal();
 }

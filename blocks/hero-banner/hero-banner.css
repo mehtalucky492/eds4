@@ -156,8 +156,8 @@
   }
 
    .hero-banner .hero-banner__content.alternate{
-    padding: 4.128rem 2rem;
-    max-width: 530px;
+    padding: 4.128rem 0;
+    max-width: 466px;
   }
 
   .hero-banner .hero-banner__images.alternate img {
@@ -169,8 +169,8 @@
 /* Large Desktop */
 @media (width > 1200px) {
   .hero-banner .hero-banner__content.alternate {
-    margin-left: calc((100vw - 1200px) / 2);
-    margin-right: calc((100vw - 1200px) / 2);
+    margin-left: calc((100vw - 1200px - 16px) / 2);
+    margin-right: calc((100vw - 1200px - 16px) / 2);
     padding-left: 0;
     padding-right: 0;
   }
